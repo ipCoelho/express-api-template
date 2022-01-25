@@ -1,5 +1,3 @@
-import AnimalController from './controller/AnimalsController';
+import Animal from "@models/Animal";
 
-const animal = new AnimalController();
-
-// animal.create('/create', )
+const animal = new Animal();
