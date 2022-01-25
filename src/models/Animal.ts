@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface Animal extends Document {
+interface Animal {
     name: string;
     breed: string;
     sex: string;
