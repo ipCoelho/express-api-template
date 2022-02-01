@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 
-const app = express();
+const API = express();
 
-app.listen(3000);
-app.use(cors())
+API.listen(process.env['API_PORT']);
+console.log("\nThe API is listening the port "+process.env['API_PORT']);
 
-app.get('/', (req, res) => {
-    return res.json({ message: "Hello World!" });
-})
+
+API
+    .use(cors())
