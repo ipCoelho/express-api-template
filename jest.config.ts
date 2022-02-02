@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-import { compilerOptions } = require('./tsconfig.json');
+// import { compilerOptions } = require('./tsconfig.json');
 
 export default {
   // All imported modules in your tests should be mocked automatically

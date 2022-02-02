@@ -16,4 +16,3 @@ API
 
 
 ;
-let car = 0;
