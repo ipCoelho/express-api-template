@@ -5,7 +5,8 @@
     "experimentalDecorators": true,                   
     "emitDecoratorMetadata": true,                    
     "module": "commonjs",                                
-    "rootDir": "./src",                                  
+    // "rootDir": "./src",                                  
+    "rootDir": "./",
     "typeRoots": [ 
       "./node_modules/@types", 
       "./src/@types" 
@@ -21,7 +22,10 @@
     "baseUrl": ".",
     "paths": {
       "@controllers/*": ["./src/controllers/*"],
-      "@models/*": ["./src/models/*"]
+      "@models/*": ["./src/models/*"],
+      "@config/*": ["./src/config/*"],
+      "@utils/*": ["./src/utils/*"],
+
     },                           
   }
-}
+} 

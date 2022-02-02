@@ -10,3 +10,4 @@ router.get("/animal/search:id", AnimalsController.readID);
 router.post("animal/create", AnimalsController.create);
 router.delete("/animal/delete:id", AnimalsController.delete);
 router.put("/animal/update:id", AnimalsController.update);
+
