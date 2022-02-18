@@ -9,10 +9,4 @@ console.log("\nThe API is listening the port "+process.env['API_PORT']);
 
 API
     .use(cors())
-
-
-
-
-
-
 ;
