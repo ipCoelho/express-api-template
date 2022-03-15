@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Animal from '@models/Animal';
+import Animal from 'src/mongo/Animal';
 
 class AnimalController {
     public async create(req: Request, res: Response): Promise<Response> {

@@ -6,12 +6,47 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Usuario {
+model Ong {
   id Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  senha String @db.Char(80)
+  descricao String @db.Text
+  numeroDeSeguidores Int @db.Int
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
-  nome String @db.VarChar(255)
-  sobrenome String @db.VarChar(255) 
-  comidaFavorita String @db.VarChar(100)
-  gostaDe String @db.VarChar(100)
+  updatedAt DateTime @updatedAt
 }
+
+
+
+
+// model DadosBancarios {
+//   id Int @id @default(autoincrement())
+//   banco String @db.VarChar(50)
+//   agencia String @db.VarChar(10)
+//   conta String @db.VarChar(20)
+//   contaCorrente Boolean @db.TinyInt
+//   createdAt DateTime @default(now())
+//   updateAt DateTime @updatedAt
+// }
+
+// model MeiosDeDoacao {
+//   id Int @id @default(autoincrement())
+//   site String @db.VarChar(500)
+//   pix String @db.VarChar(100)
+//   DadosBancarios DadosBancarios @relation(fields: [idDadosBancarios] references: [id])
+//   idDadosBancarios Int
+//   createdAt DateTime @default(now())
+//   updateAt DateTime @updatedAt
+// }
+
+// model {
+//   id Int @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updateAt DateTime @updatedAt
+// }
+
+// model {
+//   id Int @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updateAt DateTime @updatedAt
+// }

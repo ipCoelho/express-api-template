@@ -5,8 +5,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpileOnly --ignore-watch node_modules --no-notify src/server.ts",
-    "test": "jest"
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/server.ts",
+    "test": "jest",
+    "migrate": "npx prisma migrate dev --name init"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

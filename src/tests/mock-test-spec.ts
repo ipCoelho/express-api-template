@@ -1,4 +1,4 @@
-import Animal from "@models/Animal";
+import Animal from "src/mongo/Animal";
 
 test("This should works fine.", () => {
     const animal = new Animal();

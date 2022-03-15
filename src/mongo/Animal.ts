@@ -1,3 +1,4 @@
+// MONGOOSE FILE, MONGO STUFF GOES HERE...
 import { Schema, model } from 'mongoose';
 
 interface Animal {

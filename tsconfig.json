@@ -22,7 +22,7 @@
     "baseUrl": ".",
     "paths": {
       "@controllers/*": ["./src/controllers/*"],
-      "@models/*": ["./src/models/*"],
+      "@models/*": ["src/mongo-models/*"],
       "@config/*": ["./src/config/*"],
       "@utils/*": ["./src/utils/*"],
 
