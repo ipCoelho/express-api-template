@@ -1,52 +1,418 @@
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
 generator client {
   provider = "prisma-client-js"
 }
 
-model Ong {
-  id Int @id @default(autoincrement())
-  nome String @db.VarChar(100)
-  senha String @db.Char(80)
-  descricao String @db.Text
-  numeroDeSeguidores Int @db.Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
+model tbl_categorias {
+  idCategorias      Int                 @id @unique(map: "idtblCategorias_UNIQUE") @default(autoincrement())
+  nome              String              @db.VarChar(150)
+  tbl_ong_categoria tbl_ong_categoria[]
+}
 
+model tbl_chat {
+  idChat         Int              @id @unique(map: "idtblChat_UNIQUE") @default(autoincrement())
+  nomeArquivo    String           @db.Text
+  tbl_chat_login tbl_chat_login[]
+}
 
+model tbl_chat_login {
+  idChatLogin Int       @id @unique(map: "idtblChatLogin_UNIQUE") @default(autoincrement())
+  idLogin     Int
+  idChat      Int
+  tbl_chat    tbl_chat  @relation(fields: [idChat], references: [idChat], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_chat_login_tbl_chat1")
+  tbl_login   tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_chat_login_tbl_login1")
 
-// model DadosBancarios {
-//   id Int @id @default(autoincrement())
-//   banco String @db.VarChar(50)
-//   agencia String @db.VarChar(10)
-//   conta String @db.VarChar(20)
-//   contaCorrente Boolean @db.TinyInt
-//   createdAt DateTime @default(now())
-//   updateAt DateTime @updatedAt
-// }
+  @@index([idChat], map: "fk_tbl_chat_login_tbl_chat1_idx")
+  @@index([idLogin], map: "fk_tbl_chat_login_tbl_login1_idx")
+}
 
-// model MeiosDeDoacao {
-//   id Int @id @default(autoincrement())
-//   site String @db.VarChar(500)
-//   pix String @db.VarChar(100)
-//   DadosBancarios DadosBancarios @relation(fields: [idDadosBancarios] references: [id])
-//   idDadosBancarios Int
-//   createdAt DateTime @default(now())
-//   updateAt DateTime @updatedAt
-// }
+model tbl_cidade {
+  idCidade   Int        @id @unique(map: "idCidade_UNIQUE") @default(autoincrement())
+  nome       String?    @db.VarChar(100)
+  idEstado   Int
+  tbl_estado tbl_estado @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblCidade_tblEstado1")
 
-// model {
-//   id Int @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updateAt DateTime @updatedAt
-// }
+  @@index([idEstado], map: "fk_tblCidade_tblEstado1_idx")
+}
 
-// model {
-//   id Int @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updateAt DateTime @updatedAt
-// }
+model tbl_comentario_principal {
+  idComentarioPricipal      Int                         @id @unique(map: "idtblComentarioPricipal_UNIQUE") @default(autoincrement())
+  comentario                String?                     @db.VarChar(300)
+  dataHora                  DateTime                    @db.DateTime(0)
+  idLogin                   Int
+  tbl_login                 tbl_login                   @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_principal_tbl_login1")
+  tbl_comentario_secundario tbl_comentario_secundario[]
+  tbl_post_comentario       tbl_post_comentario[]
+
+  @@index([idLogin], map: "fk_tbl_comentario_principal_tbl_login1_idx")
+}
+
+model tbl_comentario_secundario {
+  idComentarioSecundario   Int                      @id @unique(map: "idtbl_comentario_secundario_UNIQUE") @default(autoincrement())
+  text                     String?                  @db.VarChar(300)
+  dataHora                 DateTime                 @db.DateTime(0)
+  idComentarioPricipal     Int
+  idLogin                  Int
+  tbl_comentario_principal tbl_comentario_principal @relation(fields: [idComentarioPricipal], references: [idComentarioPricipal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_secundario_tbl_comentario_principal1")
+  tbl_login                tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_secundario_tbl_login1")
+
+  @@index([idComentarioPricipal], map: "fk_tbl_comentario_secundario_tbl_comentario_principal1_idx")
+  @@index([idLogin], map: "fk_tbl_comentario_secundario_tbl_login1_idx")
+}
+
+model tbl_contato {
+  idcontato Int     @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
+  numero    String? @db.VarChar(45)
+  email     String? @db.VarChar(80)
+  telefone  String? @db.VarChar(45)
+  idOng     Int
+  tbl_ong   tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblContato_tblOng1")
+
+  @@index([idOng], map: "fk_tblContato_tblOng1_idx")
+}
+
+model tbl_dados_bancarios {
+  idDadosBancario     Int                   @id @unique(map: "idDadosBancario_UNIQUE") @default(autoincrement())
+  banco               String                @db.VarChar(50)
+  agencia             String                @db.VarChar(10)
+  conta               String                @db.VarChar(20)
+  contaCorrente       Int                   @db.TinyInt
+  tbl_meios_de_doacao tbl_meios_de_doacao[]
+}
+
+model tbl_endereco {
+  idEndereco         Int                  @id @unique(map: "idEndereco_UNIQUE") @default(autoincrement())
+  bairro             String               @db.VarChar(150)
+  numero             Int
+  cep                String               @db.VarChar(80)
+  rua                String               @db.VarChar(80)
+  complemento        String?              @db.Text
+  idEstado           Int
+  tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
+  tbl_endereco_vagas tbl_endereco_vagas[]
+  tbl_eventos        tbl_eventos[]
+  tbl_login_endereco tbl_login_endereco[]
+
+  @@index([idEstado], map: "fk_tblEndereco_tblEstado1_idx")
+}
+
+model tbl_endereco_vagas {
+  idEnderecoVagas Int          @id @unique(map: "idtbl_endereco_vagas_UNIQUE") @default(autoincrement())
+  idEndereco      Int
+  idVagas         Int
+  tbl_endereco    tbl_endereco @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_endereco_vagas_tbl_endereco1")
+  tbl_vagas       tbl_vagas    @relation(fields: [idVagas], references: [idVagas], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_endereco_vagas_tbl_vagas1")
+
+  @@index([idEndereco], map: "fk_tbl_endereco_vagas_tbl_endereco1_idx")
+  @@index([idVagas], map: "fk_tbl_endereco_vagas_tbl_vagas1_idx")
+}
+
+model tbl_estado {
+  idEstado       Int              @id @unique(map: "idEstado_UNIQUE") @default(autoincrement())
+  nome           String?          @db.VarChar(100)
+  sigla          String?          @db.VarChar(10)
+  tbl_cidade     tbl_cidade[]
+  tbl_endereco   tbl_endereco[]
+  tbl_ong_estado tbl_ong_estado[]
+}
+
+model tbl_eventos {
+  idEventos           Int                  @id @unique(map: "idEventos_UNIQUE") @default(autoincrement())
+  titulo              String               @db.VarChar(200)
+  dataHora            DateTime             @db.DateTime(0)
+  objetivo            String               @db.Text
+  descricao           String               @db.Text
+  dataDeCriacao       DateTime             @db.Date
+  idEndereco          Int
+  idOng               Int
+  numeroParticipantes Int?
+  tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_endereco1")
+  tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_ong1")
+  tbl_foto            tbl_foto[]
+  tbl_usuario_evento  tbl_usuario_evento[]
+
+  @@index([idEndereco], map: "fk_tbl_eventos_tbl_endereco1_idx")
+  @@index([idOng], map: "fk_tbl_eventos_tbl_ong1_idx")
+}
+
+model tbl_favoritos {
+  idFavoritos Int         @id
+  idOng       Int
+  idUsuario   Int
+  favorito    Int?        @db.TinyInt
+  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_ong1")
+  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_usuario1")
+
+  @@index([idOng], map: "fk_tbl_favoritos_tbl_ong1_idx")
+  @@index([idUsuario], map: "fk_tbl_favoritos_tbl_usuario1_idx")
+}
+
+model tbl_foto {
+  idFoto                Int         @id @unique(map: "idtblFoto_UNIQUE") @default(autoincrement())
+  foto                  String?     @db.VarChar(100)
+  tbl_eventos_idEventos Int
+  tbl_eventos           tbl_eventos @relation(fields: [tbl_eventos_idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_foto_tbl_eventos1")
+
+  @@index([tbl_eventos_idEventos], map: "fk_tbl_foto_tbl_eventos1_idx")
+}
+
+model tbl_informacoes_de_contato {
+  idInformacoesDeContado Int         @id @unique(map: "idInformacoesDeContado_UNIQUE") @default(autoincrement())
+  numero                 String?     @db.VarChar(45)
+  email                  String      @db.VarChar(100)
+  telefone               String?     @db.VarChar(45)
+  idUsuario              Int
+  tbl_usuario            tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblInformacoesDeContado_tblUsuario1")
+
+  @@index([idUsuario], map: "fk_tblInformacoesDeContado_tblUsuario1_idx")
+}
+
+model tbl_login {
+  idLogin                   Int                         @id @unique(map: "idtbl_login_UNIQUE") @default(autoincrement())
+  email                     String                      @db.VarChar(80)
+  senha                     String                      @db.VarChar(80)
+  tbl_chat_login            tbl_chat_login[]
+  tbl_comentario_principal  tbl_comentario_principal[]
+  tbl_comentario_secundario tbl_comentario_secundario[]
+  tbl_login_endereco        tbl_login_endereco[]
+  tbl_login_reacao          tbl_login_reacao[]
+  tbl_ong                   tbl_ong[]
+  tbl_usuario               tbl_usuario[]
+}
+
+model tbl_login_endereco {
+  idLoginEndereco Int          @id @unique(map: "idtbl_login_endereco_UNIQUE") @default(autoincrement())
+  idEndereco      Int
+  idLogin         Int
+  tbl_endereco    tbl_endereco @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_endereco_tbl_endereco1")
+  tbl_login       tbl_login    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_endereco_tbl_login1")
+
+  @@index([idEndereco], map: "fk_tbl_login_endereco_tbl_endereco1_idx")
+  @@index([idLogin], map: "fk_tbl_login_endereco_tbl_login1_idx")
+}
+
+model tbl_login_reacao {
+  idLoginReacao Int        @id @unique(map: "idtbl_login_reacao_UNIQUE") @default(autoincrement())
+  idReacao      Int
+  idLogin       Int
+  tbl_login     tbl_login  @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_reacao_tbl_login1")
+  tbl_reacao    tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_reacao_tbl_reacao1")
+
+  @@index([idLogin], map: "fk_tbl_login_reacao_tbl_login1_idx")
+  @@index([idReacao], map: "fk_tbl_login_reacao_tbl_reacao1_idx")
+}
+
+model tbl_meios_de_doacao {
+  idmeiosDeDoacao         Int                       @id @unique(map: "idmeiosDeDoacao_UNIQUE") @default(autoincrement())
+  site                    String?                   @db.VarChar(150)
+  pix                     String?                   @db.VarChar(100)
+  idDadosBancario         Int
+  tbl_dados_bancarios     tbl_dados_bancarios       @relation(fields: [idDadosBancario], references: [idDadosBancario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblMeiosDeDoacao_tblDadosBancario")
+  tbl_ong_meios_de_doacao tbl_ong_meios_de_doacao[]
+
+  @@index([idDadosBancario], map: "fk_tblMeiosDeDoacao_tblDadosBancario_idx")
+}
+
+model tbl_ong {
+  idOng                   Int                       @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
+  nome                    String                    @db.VarChar(100)
+  senha                   String                    @db.VarChar(80)
+  descricacao             String?                   @db.Text
+  numeroDeSeguidores      Float?
+  dataDeCriacao           DateTime                  @db.Date
+  cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(25)
+  foto                    String?                   @db.VarChar(80)
+  banner                  String?                   @db.VarChar(80)
+  historia                String?                   @db.Text
+  qtdDeMembros            Int?
+  dataDeFundacao          DateTime?                 @db.Date
+  idLogin                 Int
+  tbl_login               tbl_login                 @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
+  tbl_contato             tbl_contato[]
+  tbl_eventos             tbl_eventos[]
+  tbl_favoritos           tbl_favoritos[]
+  tbl_ong_categoria       tbl_ong_categoria[]
+  tbl_ong_estado          tbl_ong_estado[]
+  tbl_ong_meios_de_doacao tbl_ong_meios_de_doacao[]
+  tbl_ong_patrocinadores  tbl_ong_patrocinadores[]
+  tbl_post                tbl_post[]
+  tbl_seguidor            tbl_seguidor[]
+  tbl_vagas               tbl_vagas[]
+
+  @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
+}
+
+model tbl_ong_categoria {
+  idOngCategoria Int            @id @unique(map: "idtbl-ong_categoria_UNIQUE") @default(autoincrement())
+  idOng          Int
+  idCategorias   Int
+  tbl_categorias tbl_categorias @relation(fields: [idCategorias], references: [idCategorias], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblong_categoria_tbl_categorias1")
+  tbl_ong        tbl_ong        @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblong_categoria_tbl_ong1")
+
+  @@index([idCategorias], map: "fk_tblong_categoria_tbl_categorias1_idx")
+  @@index([idOng], map: "fk_tblong_categoria_tbl_ong1_idx")
+}
+
+model tbl_ong_estado {
+  idOngRegiao Int        @id @unique(map: "idtblOngRegiao_UNIQUE") @default(autoincrement())
+  idOng       Int
+  idEstado    Int
+  tbl_estado  tbl_estado @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_estado_tbl_estado1")
+  tbl_ong     tbl_ong    @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngRegiao_tblOng1")
+
+  @@index([idOng], map: "fk_tblOngRegiao_tblOng1_idx")
+  @@index([idEstado], map: "fk_tbl_ong_estado_tbl_estado1_idx")
+}
+
+model tbl_ong_meios_de_doacao {
+  idOngMeiosDeDoacao  Int                 @id @unique(map: "idtblOngMeiosDeDoacao_UNIQUE") @default(autoincrement())
+  idmeiosDeDoacao     Int
+  idOng               Int
+  tbl_ong             tbl_ong             @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngMeiosDeDoacao_tblOng1")
+  tbl_meios_de_doacao tbl_meios_de_doacao @relation(fields: [idmeiosDeDoacao], references: [idmeiosDeDoacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngMeiosDeDoacao_tblMeiosDeDoacao1")
+
+  @@index([idmeiosDeDoacao], map: "fk_tblOngMeiosDeDoacao_tblMeiosDeDoacao1_idx")
+  @@index([idOng], map: "fk_tblOngMeiosDeDoacao_tblOng1_idx")
+}
+
+model tbl_ong_patrocinadores {
+  idOngPatrocinadores Int                @id @unique(map: "idtblOngPatrocinadores_UNIQUE") @default(autoincrement())
+  idOng               Int
+  idPatrocinadores    Int
+  tbl_ong             tbl_ong            @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngPatrocinadores_tblOng1")
+  tbl_patrocinadores  tbl_patrocinadores @relation(fields: [idPatrocinadores], references: [idPatrocinadores], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngPatrocinadores_tblPatrocinadores1")
+
+  @@index([idOng], map: "fk_tblOngPatrocinadores_tblOng1_idx")
+  @@index([idPatrocinadores], map: "fk_tblOngPatrocinadores_tblPatrocinadores1_idx")
+}
+
+model tbl_patrocinadores {
+  idPatrocinadores       Int                      @id @unique(map: "idtblPatrocinio_UNIQUE") @default(autoincrement())
+  nome                   String                   @db.VarChar(45)
+  foto                   String?                  @db.Text
+  link                   String?                  @db.VarChar(80)
+  tbl_ong_patrocinadores tbl_ong_patrocinadores[]
+}
+
+model tbl_post {
+  idPost              Int                   @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
+  descricao           String                @db.Text
+  dataHora            DateTime              @db.DateTime(0)
+  idOng               Int
+  tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_tbl_ong1")
+  tbl_post_comentario tbl_post_comentario[]
+  tbl_post_reacao     tbl_post_reacao[]
+  tbl_video           tbl_video[]
+
+  @@index([idOng], map: "fk_tbl_post_tbl_ong1_idx")
+}
+
+model tbl_post_comentario {
+  idPostComentario         Int                      @id @unique(map: "idtbl_post_comentario_UNIQUE") @default(autoincrement())
+  idComentarioPricipal     Int
+  idPost                   Int
+  tbl_comentario_principal tbl_comentario_principal @relation(fields: [idComentarioPricipal], references: [idComentarioPricipal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_comentario_tbl_comentario_principal1")
+  tbl_post                 tbl_post                 @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_comentario_tbl_post1")
+
+  @@index([idComentarioPricipal], map: "fk_tbl_post_comentario_tbl_comentario_principal1_idx")
+  @@index([idPost], map: "fk_tbl_post_comentario_tbl_post1_idx")
+}
+
+model tbl_post_reacao {
+  idPostReacao Int        @id @unique(map: "id_post_reacao_UNIQUE") @default(autoincrement())
+  idReacao     Int
+  idPost       Int
+  tbl_post     tbl_post   @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_reacao_tbl_post1")
+  tbl_reacao   tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_reacao_tbl_reacao1")
+
+  @@index([idPost], map: "fk_tbl_post_reacao_tbl_post1_idx")
+  @@index([idReacao], map: "fk_tbl_post_reacao_tbl_reacao1_idx")
+}
+
+model tbl_reacao {
+  idReacao         Int                @id @unique(map: "idtblCurtida_UNIQUE") @default(autoincrement())
+  emoji            String             @db.VarChar(20)
+  tbl_login_reacao tbl_login_reacao[]
+  tbl_post_reacao  tbl_post_reacao[]
+}
+
+model tbl_seguidor {
+  idSeguidor  Int         @id @unique(map: "idtblUsuarioOng_UNIQUE") @default(autoincrement())
+  idOng       Int
+  idUsuario   Int
+  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioOng_tblOng1")
+  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioOng_tblUsuario1")
+
+  @@index([idOng], map: "fk_tblUsuarioOng_tblOng1_idx")
+  @@index([idUsuario], map: "fk_tblUsuarioOng_tblUsuario1_idx")
+}
+
+model tbl_usuario {
+  idUsuario                  Int                          @id @unique(map: "idUsuario_UNIQUE") @default(autoincrement())
+  nome                       String                       @db.VarChar(150)
+  foto                       String?                      @db.VarChar(100)
+  senha                      String                       @db.VarChar(100)
+  dataDeNascimento           DateTime?                    @db.Date
+  curriculo                  String?                      @db.Text
+  dataConta                  DateTime                     @db.Date
+  banner                     String?                      @db.VarChar(100)
+  idLogin                    Int
+  tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_tbl_login1")
+  tbl_favoritos              tbl_favoritos[]
+  tbl_informacoes_de_contato tbl_informacoes_de_contato[]
+  tbl_seguidor               tbl_seguidor[]
+  tbl_usuario_evento         tbl_usuario_evento[]
+  tbl_vagas_usuario          tbl_vagas_usuario[]
+
+  @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
+}
+
+model tbl_usuario_evento {
+  id_usuario_evento Int         @id @unique(map: "idtbl_usuario_evento_UNIQUE") @default(autoincrement())
+  idUsuario         Int
+  idEventos         Int
+  tbl_eventos       tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_evento_tbl_eventos1")
+  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_evento_tbl_usuario1")
+
+  @@index([idEventos], map: "fk_tbl_usuario_evento_tbl_eventos1_idx")
+  @@index([idUsuario], map: "fk_tbl_usuario_evento_tbl_usuario1_idx")
+}
+
+model tbl_vagas {
+  idVagas            Int                  @id @unique(map: "idtbl_vagas_UNIQUE") @default(autoincrement())
+  titulo             String               @db.VarChar(200)
+  decricao           String               @db.Text
+  requisitos         String               @db.Text
+  dataDeCriacao      DateTime             @db.Date
+  cargaHoraria       DateTime?            @db.Time(0)
+  idOng              Int
+  tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
+  tbl_endereco_vagas tbl_endereco_vagas[]
+  tbl_vagas_usuario  tbl_vagas_usuario[]
+
+  @@index([idOng], map: "fk_tbl_vagas_tbl_ong1_idx")
+}
+
+model tbl_vagas_usuario {
+  idVagasUsuario Int         @id @unique(map: "idtblVagasUsuario_UNIQUE") @default(autoincrement())
+  idVagas        Int
+  idUsuario      Int
+  tbl_usuario    tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_usuario_tbl_usuario1")
+  tbl_vagas      tbl_vagas   @relation(fields: [idVagas], references: [idVagas], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_usuario_tbl_vagas1")
+
+  @@index([idUsuario], map: "fk_tbl_vagas_usuario_tbl_usuario1_idx")
+  @@index([idVagas], map: "fk_tbl_vagas_usuario_tbl_vagas1_idx")
+}
+
+model tbl_video {
+  idVideo  Int      @id @unique(map: "idtblVideo_UNIQUE") @default(autoincrement())
+  video    String?  @db.VarChar(100)
+  idPost   Int
+  tbl_post tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblVideo_tblPost1")
+
+  @@index([idPost], map: "fk_tblVideo_tblPost1_idx")
+}

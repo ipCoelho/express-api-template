@@ -1,31 +1,31 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class OngController {
   public async create(req: Request, res: Response): Promise<Response> {
-    const reqBody = req.body;
+    const request = req.body;
+    const response = await prisma..create({
+      data: {
 
-    const response = await prisma.ong.create({
-      data: {},
+      },
     });
 
     return res.json(response);
   }
 
   public async read(req: Request, res: Response): Promise<Response> {
-    const reqBody = req.body;
+    const request = req.body;
 
-    const response = await prisma.ong.create({
-      data: {},
-    });
+    const response = await prisma.ong.findMany();
+
 
     return res.json(response);
   }
 
   public async readID(req: Request, res: Response): Promise<Response> {
-    const reqBody = req.body;
+    const request = req.body;
 
     const response = await prisma.ong.create({
       data: {},
@@ -35,7 +35,7 @@ class OngController {
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    const reqBody = req.body;
+    const request = req.body;
 
     const response = await prisma.ong.create({
       data: {},
@@ -45,7 +45,7 @@ class OngController {
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
-    const reqBody = req.body;
+    const request = req.body;
 
     const response = await prisma.ong.create({
       data: {},
