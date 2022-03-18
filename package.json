@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Enviroment created to feed an API",
   "main": "index.js",
+  "type": "module",
   "license": "MIT",
   "scripts": {
+    "start": "node ./src/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/server.ts",
     "test": "jest",
     "migrate": "npx prisma migrate dev --name init",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "node prisma/seeds.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -28,6 +30,7 @@
     "@prisma/client": "^3.10.0",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",

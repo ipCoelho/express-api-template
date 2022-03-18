@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import routes from './router';
+import router from './router.js';
 
 const API = express();
-const port = process.env["API_PORT"] ?? 3030;
+const port = 3030;
 
 API.listen(port);
 console.log(`\n > The API is listening the port ${port}`);
 
-API.use(cors()).use(routes);
+API.use(cors()).use(router);
+  

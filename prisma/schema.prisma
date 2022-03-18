@@ -226,7 +226,7 @@ model tbl_ong {
   dataDeCriacao           DateTime                  @db.Date
   cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(25)
   foto                    String?                   @db.VarChar(80)
-  banner                  String?                   @db.VarChar(80)
+  banner                  String?                   @db.VarChar(500)
   historia                String?                   @db.Text
   qtdDeMembros            Int?
   dataDeFundacao          DateTime?                 @db.Date
