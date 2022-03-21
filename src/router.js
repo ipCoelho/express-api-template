@@ -1,22 +1,10 @@
-import { Router } from "express";
-import Prisma from '@prisma/client'
-const {PrismaClient} = Prisma;
+import OngController from "@controllers/OngController";
+import {request, response, Router} from "express";
 
-const prisma = new PrismaClient();
+const router = Router(); 
+const {read, readID, create, delete, update} = OngController(response, request);
 
-const router = Router();  
-
-// Ong Management
-router.get("/ong/search", (req, res) => {
-  const allOngs = prisma.tbl_ong.findMany({});
-  // console.log(`\nreq.body: ${body}\nreq: ${req}`);
-  return res.json({message: "hello"});
-});
-
-router.get("/ong/search?nomeOng", (req, res) => {
-  const nomeOng = req.
-  res.json({message: "ola"})
-});
+router.get("/ong", ongController.read(req, res));
+router.get("/ong/:id")
 
 export default router;
-

@@ -1,76 +1,52 @@
-// import {Router} from "express";
+import {Router} from "express";
+import {PrismaClient} from "@prisma/client";
 
-// const router = Router();
+const router = Router();
+const prisma = new PrismaClient();
 
-// router.get("")
+class OngController {
+  req;
+  res;
 
-// import { PrismaClient } from "@prisma/client";
-// const prisma = new PrismaClient();
+  constructor(req, res) {
+    this.req = req;
+    this.res =
+  }
 
-// class OngController {
-//    async create(request, response) {
-//     const req = request.body;
-//     // const response = await prisma.tbl_ong.create({
-//     //   data: {
-//     //   },
-//     // });
+   async create(req, res) {
+    const request = req.body;
 
-//     const res = {
-//       message: "Hello Wolrd",
-//       status: 200
-//     };
-//     return response.(response);
-//   }
+    res.status = 200;
+    res.json({message: `Request recieved.`});
+  }
 
-//    async read(req, res) {
-//     const request = req.body;
+   async read(req, res) {
+    const request = req.body;
 
-//     // const response = await prisma.tbl_ong.findMany();
+    res.status = 200;
+    res.json({message: `Request recieved.`});
+  }
 
-//     const response = {
-//       message: "Hello Wolrd",
-//       status: 200
-//     };
-//     return res.json(response);
-//   }
+   async readID(req, res) {
+    const request = req.body;
 
-//    async readID(req, res) {
-//     const request = req.body;
+    res.status = 200;
+    res.json({message: `Request recieved.`});
+  }
 
-// //     const response = await prisma.tbl_ong.create({
-// // });
-//     const response = {
-//       message: "Hello Wolrd",
-//       status: 200
-//     };
-//     return res.json(response);
-//   }
+   async update(req, res) {
+    const request = req.body;
 
-//    async update(req, res) {
-//     const request = req.body;
+    res.status = 200;
+    res.json({message: `Request recieved.`});
+  }
 
-//     // const response = await prisma.tbl_ong.create({
-//     //   data: {},
-//     // });
+   async delete(req, res) {
+    const request = req.body;
 
-//     const response = {
-//       message: "Hello Wolrd",
-//       status: 200
-//     };
-//     return res.json(response);
-//   }
+    res.status = 200;
+    res.json({message: `Request recieved.`});
+  }
+}
 
-//    async delete(req, res) {
-//     const request = req.body;
-
-//     // const response = await prisma.tbl_ong.create({});
-
-//     const response = {
-//       message: "Hello Wolrd",
-//       status: 200
-//     };
-//     return res.json(response);
-//   }
-// }
-
-// export default new OngController();
+export default new OngController();
