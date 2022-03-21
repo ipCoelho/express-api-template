@@ -50,12 +50,12 @@ async function main() {
       data: [
         {
           email: "aacd@email.com",
-          senha: "1"
+          senha: "1",
         },
         {
           email: "greenpeace@email.com",
-          senha: "2"
-        }          
+          senha: "2",
+        },
       ],
     });
   } catch (error) {
@@ -74,20 +74,30 @@ async function main() {
           idLogin: 1,
           senha: "1",
           descricacao: "Orgão que ajuda pessoas",
+          foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
           banner:
-            "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
+            "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+          historia:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
           cnpj: "54.421.484/0001-71",
-          dataDeCriacao: new Date().toISOString(),
+          // dataDeFundacao: "1920",
+          // dataDeCriacao: new Date().toISOString(),
+          qtdDeMembros: 234871287
         },
         {
           nome: "GreenPeace",
           idLogin: 2,
           senha: "1",
           descricacao: "Orgão que ajuda pessoas",
+          foto: "https://c8.alamy.com/comp/BHGNH5/greenpeace-banner-at-the-wave-the-biggest-ever-demonstration-on-climate-BHGNH5.jpg",
           banner:
-            "https://c8.alamy.com/comp/BHGNH5/greenpeace-banner-at-the-wave-the-biggest-ever-demonstration-on-climate-BHGNH5.jpg",
+            "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+          historia:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
           cnpj: "84.703.965/0001-30",
-          dataDeCriacao: new Date().toISOString(),
+          // dataDeCriacao: new Date().toISOString(),
+          // dataDeFundacao: "2018"
+          qtdDeMembros: 9
         },
       ],
     });

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `tbl_ong` MODIFY `dataDeFundacao` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3);

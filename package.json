@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "migrate": "npx prisma migrate dev --name init",
+    "migrate": "npx prisma migrate reset --name  init",
     "seed": "node prisma/seeds.js",
     "start": "nodemon --delay 500ms ./src/server.js"
   },
