@@ -1,31 +1,36 @@
-import {Router} from "express";
-import {PrismaClient} from "@prisma/client";
+// import {Request, Response} from "express";
+import Prisma from "@prisma/client";
+// import { rmSync } from "fs"
 
-const router = Router();
-const prisma = new PrismaClient();
+// const router = Router();
+// const req = new Request();
+
+
+const prisma = new Prisma.PrismaClient();
 
 class OngController {
-  req;
-  res;
-
-  constructor(req, res) {
-    this.req = req;
-    this.res =
-  }
-
    async create(req, res) {
-    const request = req.body;
+    // const request = req.body;
 
-    res.status = 200;
-    res.json({message: `Request recieved.`});
+    // res.statusMessage = "Your request has recieved";
+    // res.status(200);
+    // res.json({
+
+    // });
   }
 
    async read(req, res) {
-    const request = req.body;
+    const dbData = await prisma.tbl_ong.findMany({});
+    // const request = req.body;
+    console.log(dbData);
+    
 
-    res.status = 200;
-    res.json({message: `Request recieved.`});
+    res.statusMessage = "Your request has recieved";
+    res.status(200);
+    res.json(dbData);
   }
+
+
 
    async readID(req, res) {
     const request = req.body;
@@ -41,7 +46,7 @@ class OngController {
     res.json({message: `Request recieved.`});
   }
 
-   async delete(req, res) {
+   async remove(req, res) {
     const request = req.body;
 
     res.status = 200;
@@ -49,4 +54,4 @@ class OngController {
   }
 }
 
-export default new OngController();
+export default OngController;

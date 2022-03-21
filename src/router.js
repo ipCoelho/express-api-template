@@ -1,10 +1,16 @@
-import OngController from "@controllers/OngController";
-import {request, response, Router} from "express";
+import OngController from "../src/controllers/OngController.js";
+import {Router} from "express";
 
 const router = Router(); 
-const {read, readID, create, delete, update} = OngController(response, request);
+const ongController = new OngController();
 
-router.get("/ong", ongController.read(req, res));
-router.get("/ong/:id")
+router.get("/ong/all", (req, res) => ongController.read(req, res));
+router.get("/ong/:id", (req, res) => ongController.read(req, res));
+router.get("/ong/:name", (req, res) => ongController.read(req, res));
+// rota para filtrar por categorias (não relacionado ainda!)
+// rota para filtrar por estado! (já relaciado!)
+router.post("/ong/create", (req, res) => ongController.create(req, res));
+router.put("/ong/update/:id", (req, res) => ongController.update(req, res));
+router.put("/ong/remove/:id", (req, res) => ongController.remove(req, res));
 
 export default router;
