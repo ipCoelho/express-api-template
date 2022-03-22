@@ -4,38 +4,42 @@ import Prisma from "@prisma/client";
 const prisma = new Prisma.PrismaClient();
 
 class OngController {
-   async create(req, res) {
+  async read(req, res) {
     const requestData = req.body;
-    const dbData = await prisma.tbl_ong.findMany({});
-
-    console.log(`\n requestData -> ${req}`);
-
+    const databaseData = await prisma.tbl_ong.findMany({});
+    
     res.status(200);
     res.json({
-      Request: requestData,
-      DatabaseResponse: dbData,
-      
+      RequestData: requestData,
+      DatabaseResponse: databaseData,
     });
   }
 
-   async read(req, res) {
-    const dbData = await prisma.tbl_ong.findMany({});
-    // const request = req.body;
-    console.log(dbData);
-    
+  async readID(req, res) {
+    const data = req.params.id;
+    const databaseData = await prisma.tbl_ong.findUnique({where: {idOng: parseInt(data)} });
 
     res.status(200);
-    res.json(dbData);
+    res.json({
+      id: data,
+      DatabaseResponse: databaseData,
+    });
   }
+  
+  async create(req, res) {
+    const data = req.body;
+    console.log(data);
 
+    // const databaseData = await prisma.tbl_ong.create({
+      // data: {...data}
+    // });
 
-
-   async readID(req, res) {
-    const request = req.body;
-
-    res.status = 200;
-    res.json({message: `Request recieved.`});
-  }
+    res.status(200);
+    res.json({
+      RequestData: data,
+      // DatabaseResponse: databaseData,
+    });
+ }
 
    async update(req, res) {
     const request = req.body;
