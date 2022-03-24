@@ -221,15 +221,15 @@ model tbl_ong {
   idOng                   Int                       @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
   nome                    String                    @db.VarChar(100)
   senha                   String                    @db.VarChar(80)
-  descricacao             String?                   @db.Text
+  descricao               String?                   @db.Text
   numeroDeSeguidores      Float?
-  dataDeCriacao           DateTime                  @db.Date
-  cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(25)
-  foto                    String?                   @db.VarChar(80)
-  banner                  String?                   @db.VarChar(80)
+  dataDeCriacao           DateTime                  @default(now())
+  cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(50)
+  foto                    String?                   @db.VarChar(500)
+  banner                  String?                   @db.VarChar(500)
   historia                String?                   @db.Text
   qtdDeMembros            Int?
-  dataDeFundacao          DateTime?                 @db.Date
+  dataDeFundacao          DateTime?                 @default(now())
   idLogin                 Int
   tbl_login               tbl_login                 @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
   tbl_contato             tbl_contato[]
