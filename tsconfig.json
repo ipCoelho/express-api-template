@@ -5,7 +5,6 @@
     "experimentalDecorators": true,                   
     "emitDecoratorMetadata": true,                    
     "module": "commonjs",                                
-    // "rootDir": "./src",                                  
     "rootDir": "./",
     "typeRoots": [ 
       "./node_modules/@types", 
@@ -21,6 +20,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@prisma/*": ["./prisma/*"],
       "@controllers/*": ["./src/controllers/*"],
       "@models/*": ["src/mongo-models/*"],
       "@config/*": ["./src/config/*"],
