@@ -9,3 +9,5 @@ API.listen(port);
 console.log(`\n > The API is listening the port ${port}`);
 
 API.use(cors()).use(routes);
+console.log();
+
