@@ -4,11 +4,12 @@
   "description": "Enviroment created to feed an API",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify ./src/server.ts",
     "migrate": "npx prisma migrate dev --name init",
     "clean-migrate": "npx prisma migrate reset init", 
-    "seed": "node prisma/seed.js",
+    "seed": "ts-node-dev ./src/seeds.ts",
     "test": "jest",
     "build": "tsc --preserveWatchOutput ./src/"
 
