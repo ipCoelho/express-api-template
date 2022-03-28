@@ -19,6 +19,7 @@ router.post("/ong/create", (req, res) => ongController.create(req, res));
 router.put("/ong/update/:id", (req, res) => ongController.update(req, res));
 router.delete("/ong/remove/:id", (req, res) => ongController.remove(req, res));
 
+router.post("/user/pre-register", (req, res) => userController.preRegister(req, res));
 router.get("/user/all", (req, res) => userController.read(req, res));
 router.get("/user/:id", (req, res) => userController.readID(req, res));
 router.post("/user/create", (req, res) => userController.create(req, res));
