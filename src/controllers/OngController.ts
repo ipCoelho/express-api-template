@@ -23,7 +23,6 @@ class OngController {
          idLogin: idLogin,
          cnpj: cnpj,
          nome: nome,
-         senha: senha,
          dataDeCriacao: new Date().toISOString(),
        }
      });

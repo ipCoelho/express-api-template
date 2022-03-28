@@ -112,7 +112,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Veum, Casper and Koepp",
      "idLogin": 1,
-     "senha": "1"
     },
     {
      "descricao": "commodi consequuntur ut",
@@ -123,9 +122,8 @@ async function main() {
      "qtdDeMembros": 234871287,
      "dataDeFundacao": "2008-12-31 18:20:00",
      "dataDeCriacao": "2008-12-31 18:20:00",
-     "nome": "Price - Bailey",
+     "nome": "Veum, Casper and Koepp",
      "idLogin": 2,
-     "senha": "1"
     },
     {
      "descricao": "pariatur quam vitae",
@@ -138,7 +136,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Nolan - Kozey",
      "idLogin": 3,
-     "senha": "1"
     },
     {
      "descricao": "incidunt dignissimos vel",
@@ -151,7 +148,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Schaden - Jakubowski",
      "idLogin": 4,
-     "senha": "1"
     },
     {
      "descricao": "et labore voluptas",
@@ -164,7 +160,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Cummings - Cassin",
      "idLogin": 5,
-     "senha": "1"
     },
     {
      "descricao": "eligendi velit quia",
@@ -177,7 +172,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Bartell LLC",
      "idLogin": 6,
-     "senha": "1"
     },
     {
      "descricao": "sunt fugit autem",
@@ -190,7 +184,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Schaden - Bergnaum",
      "idLogin": 7,
-     "senha": "1"
     },
     {
      "descricao": "magni accusamus consectetur",
@@ -203,7 +196,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "D'Amore Group",
      "idLogin": 8,
-     "senha": "1"
     },
     {
      "descricao": "voluptas sint placeat",
@@ -216,7 +208,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Emard - Rohan",
      "idLogin": 9,
-     "senha": "1"
     },
     {
      "descricao": "quia est cumque",
@@ -229,7 +220,6 @@ async function main() {
      "dataDeCriacao": "2008-12-31 18:20:00",
      "nome": "Dare, Gerhold and Towne",
      "idLogin": 10,
-     "senha": "1"
     },
    ];
 
