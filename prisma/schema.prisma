@@ -220,7 +220,6 @@ model tbl_meios_de_doacao {
 model tbl_ong {
   idOng                   Int                       @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
   nome                    String                    @db.VarChar(100)
-  senha                   String                    @db.VarChar(80)
   descricao               String?                   @db.Text
   numeroDeSeguidores      Float?
   dataDeCriacao           DateTime                  @default(now())

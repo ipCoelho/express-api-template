@@ -4,6 +4,37 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
 class OngController {
+ async preRegister(req: Request, res: Response) {
+   try {
+     const {cnpj, nome, email, senha} = req.body;
+     const preCadastroLogin = await prisma.tbl_login.create({ 
+       data: {
+         email: email,
+         senha: senha 
+       }
+     });
+
+     const {idLogin} = await prisma.tbl_login.findFirst({
+       where: {email: email, senha: senha}
+     });
+  
+     const preCadastroOng = await prisma.tbl_ong.create({
+       data: {
+         idLogin: idLogin,
+         cnpj: cnpj,
+         nome: nome,
+         senha: senha,
+         dataDeCriacao: new Date().toISOString(),
+       }
+     });
+     res.status(200);
+     res.json({ ResquestData: req.body, DatabaseResponse: preCadastroOng });
+   } catch (error) {
+     res.status(500);
+     res.json({ RequestData: req.body, DatabaseResponse: error });
+   }
+ }
+
   async read(req: Request, res: Response) {
     const requestData = req.body;
     const databaseData = await prisma.tbl_ong.findMany({});
