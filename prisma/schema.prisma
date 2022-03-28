@@ -354,10 +354,9 @@ model tbl_usuario {
   idUsuario                  Int                          @id @unique(map: "idUsuario_UNIQUE") @default(autoincrement())
   nome                       String                       @db.VarChar(150)
   foto                       String?                      @db.VarChar(100)
-  senha                      String                       @db.VarChar(100)
   dataDeNascimento           DateTime?                    @db.Date
   curriculo                  String?                      @db.Text
-  dataConta                  DateTime                     @db.Date
+  dataDeCriacao           DateTime                  @default(now())
   banner                     String?                      @db.VarChar(100)
   idLogin                    Int
   tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_tbl_login1")
