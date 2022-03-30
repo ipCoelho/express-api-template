@@ -67,7 +67,7 @@ model tbl_comentario_secundario {
 model tbl_contato {
   idcontato Int     @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
   numero    String? @db.VarChar(45)
-  email     String? @db.VarChar(80)
+  email     String? @db.VarChar(80) @unique(map: "email_UNIQUE")
   telefone  String? @db.VarChar(45)
   idOng     Int
   tbl_ong   tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblContato_tblOng1")
@@ -163,7 +163,7 @@ model tbl_foto {
 model tbl_informacoes_de_contato {
   idInformacoesDeContado Int         @id @unique(map: "idInformacoesDeContado_UNIQUE") @default(autoincrement())
   numero                 String?     @db.VarChar(45)
-  email                  String      @db.VarChar(100)
+  email                  String      @db.VarChar(100) @unique(map: "email_UNIQUE")
   telefone               String?     @db.VarChar(45)
   idUsuario              Int
   tbl_usuario            tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblInformacoesDeContado_tblUsuario1")
@@ -173,7 +173,7 @@ model tbl_informacoes_de_contato {
 
 model tbl_login {
   idLogin                   Int                         @id @unique(map: "idtbl_login_UNIQUE") @default(autoincrement())
-  email                     String                      @db.VarChar(80)
+  email                     String                      @db.VarChar(80) @unique(map: "email_UNIQUE")
   senha                     String                      @db.VarChar(80)
   tbl_chat_login            tbl_chat_login[]
   tbl_comentario_principal  tbl_comentario_principal[]
