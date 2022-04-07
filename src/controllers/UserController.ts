@@ -64,7 +64,7 @@ class UserController {
     }
   }
   
-  async read(req: Request, res: Response) {uir
+  async read(req: Request, res: Response) {
     const requestData = req.body;
 
     try {
