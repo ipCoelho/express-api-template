@@ -1,3 +1,4 @@
+import { data } from './../seeds/data';
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
@@ -7,7 +8,13 @@ class OngController {
   async preRegister(req: Request, res: Response) {
     try {
       const { cnpj, nome, email, senha } = req.body;
-      const preCadastroLogin = await prisma.tbl_login.create({
+
+      const emailVerification = await prisma.tbl_login.findUnique({
+        where: { email: email }, 
+      });
+      emailVerification? res.status(400).json({message: "This e-mail is already been used."}) : "";
+
+     prisma.tbl_login.create({
         data: {
           email: email,
           senha: senha,
@@ -30,7 +37,7 @@ class OngController {
       res.json({ ResquestData: req.body, DatabaseResponse: preCadastroOng });
     } catch (error) {
       res.status(500);
-      res.json({ RequestData: req.body, DatabaseResponse: error });
+      res.json({ RequestData: req.body, Error: error });
     }
   }
 

@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify ./src/server.ts",
     "migrate": "npx prisma migrate dev --name init",
+    "seeds": "ts-node-dev ./src/seeds/Seeds.ts",
     "clean-migrate": "npx prisma migrate reset init",
     "build": "tsc --preserveWatchOutput ./src/"
   },

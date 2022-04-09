@@ -6,6 +6,7 @@ const router = Router();
 const ongController = new OngController();
 const userController = new UserController();
 
+router.get("/", (req, res) => res.json({message: "API working."}));
 router.post("/ong/pre-register", (req, res) => ongController.preRegister(req, res));
 router.get("/ong/login/:id?", (req, res) => ongController.login(req, res));
 router.get("/ong/login/all", (req, res) => ongController.read(req, res));

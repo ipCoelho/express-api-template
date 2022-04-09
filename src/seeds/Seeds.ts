@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { data } from "./data";
 const prisma = new PrismaClient();
 
 
@@ -35,3 +36,8 @@ export class Seeds {
     }
   }
 }
+
+const seeds = new Seeds();
+seeds.tableEstado(data.estado);
+seeds.tableLogin(data.login);
+seeds.tableOng(data.ong);
