@@ -7,15 +7,25 @@ class UserController {
   async preRegister(req: Request, res: Response) {
     try {
       const {nome, email, senha} = req.body;
-      const preCadastroLogin = await prisma.tbl_login.create({ 
+
+      const emailVerification = await prisma.tbl_login.findUnique({
+        where: { email: email }, 
+      });
+
+      if (emailVerification) {
+        res.status(400).json({ message: `The e-mail ${email} has already been registered.` });
+        return;
+      }
+
+      await prisma.tbl_login.create({ 
         data: {
           email: email,
           senha: senha 
         }
       });
  
-      const {idLogin} = await prisma.tbl_login.findFirst({
-        where: {email: email, senha: senha}
+      const {idLogin} = await prisma.tbl_login.findUnique({
+        where: { email: email }
       });
    
       const preCadastroUsuario = await prisma.tbl_usuario.create({
