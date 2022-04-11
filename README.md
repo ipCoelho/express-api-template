@@ -26,6 +26,8 @@
 
 #### **`$ yarn clean-migrate --y`**
 
+#### **`$ yarn seeds`**
+
 ### 4. Em seguida iniciar o servidor da API.
 
 #### **`$ yarn dev`**
