@@ -37,7 +37,7 @@ class OngController {
         },
       });
       res.status(200);
-      res.json({ ResquestData: req.body, DatabaseResponse: preCadastroOng });
+      res.json({ ResquestData: req.body, data: preCadastroOng });
     } catch (error) {
       res.status(500);
       res.json({ RequestData: req.body, Error: error });
@@ -59,30 +59,28 @@ class OngController {
         res.json({
           message: "E-mail and password matched.",
           RequestData: req.body,
-          DatabaseResponse: ongData,
+          data: ongData,
         });
       } else {
         res.status(400);
         res.json({
           message: "E-mail and password not matched.",
           RequestData: req.body,
-          DatabaseResponse: {},
+          data: {},
         });
       }
     } catch (error) {
       res.status(500);
-      res.json({ RequestData: req.body, DatabaseResponse: error });
+      res.json({ RequestData: req.body, data: error });
     }
   }
 
-  async read(req: Request, res: Response) {
-    const requestData = req.body;
+  async getAll(req: Request, res: Response) {
     const databaseData = await prisma.tbl_ong.findMany({});
 
     res.status(200);
     res.json({
-      RequestData: requestData,
-      DatabaseResponse: databaseData,
+      data: databaseData,
     });
   }
 
@@ -93,7 +91,7 @@ class OngController {
     });
 
     res.status(200);
-    res.json({ id: data, DatabaseResponse: databaseData });
+    res.json({ id: data, data: databaseData });
   }
 
   async create(req: Request, res: Response) {
@@ -104,7 +102,7 @@ class OngController {
     });
 
     res.status(200);
-    res.json({ RequestData: data, DatabaseResponse: databaseData });
+    res.json({ RequestData: data, data: databaseData });
   }
 
   async update(req: Request, res: Response) {
@@ -117,7 +115,7 @@ class OngController {
     });
 
     res.status(200);
-    res.json({ RequestData: data, DatabaseResponse: databaseData });
+    res.json({ RequestData: data, data: databaseData });
   }
 
   async remove(req: Request, res: Response) {
@@ -128,7 +126,7 @@ class OngController {
     });
 
     res.status(200);
-    res.json({ RequestData: data, DatabaseResponse: databaseData });
+    res.json({ RequestData: data, data: databaseData });
   }
 }
 
