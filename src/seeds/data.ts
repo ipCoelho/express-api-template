@@ -28,58 +28,58 @@ export const data = {
     { nome: "Sergipe", sigla: "SE" },
     { nome: "Tocantins", sigla: "TO" },
   ],
-  login: [
-    {
-      email: "Ruthie_Berge@gmail.com",
-      senha: "3pdmkkzVVikKxZu",
-      idLogin: 1,
-    },
-    {
-      email: "Lucas33@gmail.com",
-      senha: "8nu9awOSaO8ynCf",
-      idLogin: 2,
-    },
-    {
-      email: "Nels.Hills@gmail.com",
-      senha: "Q6WLiNY46d1rwik",
-      idLogin: 3,
-    },
-    {
-      email: "Letha_Paucek52@yahoo.com",
-      senha: "1iDe7ZFnDYGgcyQ",
-      idLogin: 4,
-    },
-    {
-      email: "Tyrel71@hotmail.com",
-      senha: "e3CxRBCzc2KsGXI",
-      idLogin: 5,
-    },
-    {
-      email: "Frieda.Blick27@hotmail.com",
-      senha: "8W8uZmkTnvcQyIa",
-      idLogin: 6,
-    },
-    {
-      email: "Jordon.Hodkiewicz@gmail.com",
-      senha: "CU751ep_TKda5Kd",
-      idLogin: 7,
-    },
-    {
-      email: "Mabel.Ritchie@yahoo.com",
-      senha: "77DJURfsObWicRI",
-      idLogin: 8,
-    },
-    {
-      email: "Lavinia85@yahoo.com",
-      senha: "i092oFRhDoMMTIE",
-      idLogin: 9,
-    },
-    {
-      email: "Tianna1@gmail.com",
-      senha: "t3_vF2aDPbt4hl4",
-      idLogin: 10,
-    },
-  ],
+  // loginMock: [
+  //   {
+  //     email: "Ruthie_Berge@gmail.com",
+  //     senha: "3pdmkkzVVikKxZu",
+  //     idLogin: 1,
+  //   },
+  //   {
+  //     email: "Lucas33@gmail.com",
+  //     senha: "8nu9awOSaO8ynCf",
+  //     idLogin: 2,
+  //   },
+  //   {
+  //     email: "Nels.Hills@gmail.com",
+  //     senha: "Q6WLiNY46d1rwik",
+  //     idLogin: 3,
+  //   },
+  //   {
+  //     email: "Letha_Paucek52@yahoo.com",
+  //     senha: "1iDe7ZFnDYGgcyQ",
+  //     idLogin: 4,
+  //   },
+  //   {
+  //     email: "Tyrel71@hotmail.com",
+  //     senha: "e3CxRBCzc2KsGXI",
+  //     idLogin: 5,
+  //   },
+  //   {
+  //     email: "Frieda.Blick27@hotmail.com",
+  //     senha: "8W8uZmkTnvcQyIa",
+  //     idLogin: 6,
+  //   },
+  //   {
+  //     email: "Jordon.Hodkiewicz@gmail.com",
+  //     senha: "CU751ep_TKda5Kd",
+  //     idLogin: 7,
+  //   },
+  //   {
+  //     email: "Mabel.Ritchie@yahoo.com",
+  //     senha: "77DJURfsObWicRI",
+  //     idLogin: 8,
+  //   },
+  //   {
+  //     email: "Lavinia85@yahoo.com",
+  //     senha: "i092oFRhDoMMTIE",
+  //     idLogin: 9,
+  //   },
+  //   {
+  //     email: "Tianna1@gmail.com",
+  //     senha: "t3_vF2aDPbt4hl4",
+  //     idLogin: 10,
+  //   },
+  // ],
   // ongMock: [
   //   {
   //     descricao: "vitae provident nisi",
@@ -222,11 +222,10 @@ export const data = {
   //     idLogin: 10,
   //   },
   // ],
-  ongReal: [
+  ong: [
     {
       nome: "AACD",
       idLogin: 1,
-      senha: "1",
       descricacao: "Orgão que ajuda pessoas",
       foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
       banner:
@@ -241,7 +240,6 @@ export const data = {
     {
       nome: "GreenPeace",
       idLogin: 2,
-      senha: "1",
       descricacao: "Orgão que ajuda pessoas",
       foto: "https://c8.alamy.com/comp/BHGNH5/greenpeace-banner-at-the-wave-the-biggest-ever-demonstration-on-climate-BHGNH5.jpg",
       banner:
@@ -256,7 +254,6 @@ export const data = {
     {
       nome: "Viva Rio",
       idLogin: 3,
-      senha: "1",
       descricacao: "Viva Rio, a nongovernmental organization based in Rio de Janeiro, Brazil, was founded in December 1993 to combat the growing violence in the city.",
       foto: "https://publisher-publish.s3.eu-central-1.amazonaws.com/pb-brasil247/swp/jtjeq9/media/20190521000512_bd7c8eaf73f435b6960ff07e09d2364cd1fc31617877533ef6fe6003868f2df6.jpeg",
       banner:
@@ -271,7 +268,6 @@ export const data = {
     {
       nome: "Fundação SOS Mata Atlântica",
       idLogin: 4,
-      senha: "1",
       descricacao: "Orgão que ajuda pessoas",
       foto: "https://www.infoescola.com/wp-content/uploads/2010/01/sos-mata-atlantica.jpg",
       banner:
@@ -282,6 +278,28 @@ export const data = {
       dataDeFundacao: "1986",
       dataDeCriacao: new Date().toISOString(),
       qtdDeMembros: 43215,
+    },
+  ],
+  login: [
+    {
+      idOng: 1,
+      email: "aacd@email.com",
+      senha: "1",
+    },
+    {
+      idOng: 2,
+      email: "greenpeace@email.com",
+      senha: "1",
+    },
+    {
+      idOng: 3,
+      email: "vivario@email.com",
+      senha: "1",
+    },
+    {
+      idOng: 4,
+      email: "sosmataatlantica@email.com",
+      senha: "1",
     },
   ],
   contato: [

@@ -58,6 +58,6 @@ export class Seeds {
 const seeds = new Seeds();
 seeds.tableEstado(data.estado);
 seeds.tableLogin(data.login);
-seeds.tableOng(data.ongReal);
+seeds.tableOng(data.ong);
 seeds.tableContato(data.contato);
 seeds.tablePatrocinadores(data.patrocinadores);
