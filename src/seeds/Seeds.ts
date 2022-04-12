@@ -6,8 +6,9 @@ const prisma = new PrismaClient();
 export class Seeds {
   async tableEstado(dataEstado) {
     try {
-      await prisma.tbl_estado.createMany({data: dataEstado});
+      const result = await prisma.tbl_estado.createMany({data: dataEstado, skipDuplicates: true});
       console.log("> tbl_estado seeded.");
+      return result;
     } catch (error) {
       console.log(`> tbl_estado `, `WAS NOT SEEDED\n`, error);
     }
@@ -15,31 +16,45 @@ export class Seeds {
 
   async tableLogin(loginData) {
     try {
-      await prisma.tbl_login.createMany({data: loginData});
+      const result = await prisma.tbl_login.createMany({data: loginData, skipDuplicates: true});
       console.log("> tbl_login seeded.")
+      return result;
     } catch (error) {
       console.log(`> tbl_login `, `WAS NOT SEEDED\n`, error);
     }
   }
 
   async tableOng(ongData) {
+    try {
     ongData.map((ong) => {
       ong.dataDeCriacao = new Date().toISOString();
       ong.dataDeFundacao = new Date().toISOString();
     });
   
-    try {
-      await prisma.tbl_ong.createMany({data: ongData});
+    const result = await prisma.tbl_ong.createMany({data: ongData, skipDuplicates: true});
       console.log("> tbl_ong seeded.")
+    return result;
     } catch (error) {
       console.log(`> tbl_ong `, `WAS NOT SEEDED\n`, error);
     }
   }
 
   async tableContato(contatoData) {
+    console.log(contatoData);
+    
     try {
-      await prisma.tbl_contato.createMany({data: contatoData});
-      console.log("> tbl_contato seeded.")
+      const result = await prisma.tbl_contato.createMany({
+        data: contatoData
+          // idOng: 1 ?? contatoData.idOng,
+          // email: contatoData.email,
+          // numero: contatoData.numero,
+          // telefone: contatoData.telefone,
+
+        ,
+        // skipDuplicates: true
+      });
+      console.log("> tbl_contato seeded.");
+      return result;
     } catch (error) {
       console.log(`> tbl_contato `, `WAS NOT SEEDED\n`, error);
     }
@@ -47,17 +62,34 @@ export class Seeds {
 
   async tablePatrocinadores(patrocinadorData) {
     try {
-      await prisma.tbl_patrocinadores.createMany({data: patrocinadorData});
-      console.log("> tbl_patrocinadores seeded.")
+      const result = await prisma.tbl_patrocinadores.createMany({data: patrocinadorData, skipDuplicates: true});
+      console.log("> tbl_patrocinadores seeded.");
+      return result;
     } catch (error) {
       console.log(`> tbl_patrocinadores `, `WAS NOT SEEDED\n`, error);
     }
   }
 }
 
-const seeds = new Seeds();
-seeds.tableEstado(data.estado);
-seeds.tableLogin(data.login);
-seeds.tableOng(data.ong);
-seeds.tableContato(data.contato);
-seeds.tablePatrocinadores(data.patrocinadores);
+async function ExecSeeds() {
+  const seeds = new Seeds();
+  try {
+    seeds.tableLogin(data.login);
+    seeds.tableOng(data.ong);
+    seeds.tableEstado(data.estado);
+    seeds.tablePatrocinadores(data.patrocinadores);
+
+    const contatos = await prisma.tbl_contato.findMany();
+    if (contatos.length === 0) {
+      seeds.tableContato(data.contato);  
+    }
+
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+ExecSeeds();
+
+
+

@@ -226,7 +226,7 @@ export const data = {
     {
       nome: "AACD",
       idLogin: 1,
-      descricacao: "Orgão que ajuda pessoas",
+      descricao: "Orgão que ajuda pessoas",
       foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
       banner:
         "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
@@ -240,7 +240,7 @@ export const data = {
     {
       nome: "GreenPeace",
       idLogin: 2,
-      descricacao: "Orgão que ajuda pessoas",
+      descricao: "Orgão que ajuda pessoas",
       foto: "https://c8.alamy.com/comp/BHGNH5/greenpeace-banner-at-the-wave-the-biggest-ever-demonstration-on-climate-BHGNH5.jpg",
       banner:
         "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
@@ -254,7 +254,7 @@ export const data = {
     {
       nome: "Viva Rio",
       idLogin: 3,
-      descricacao: "Viva Rio, a nongovernmental organization based in Rio de Janeiro, Brazil, was founded in December 1993 to combat the growing violence in the city.",
+      descricao: "Viva Rio, a nongovernmental organization based in Rio de Janeiro, Brazil, was founded in December 1993 to combat the growing violence in the city.",
       foto: "https://publisher-publish.s3.eu-central-1.amazonaws.com/pb-brasil247/swp/jtjeq9/media/20190521000512_bd7c8eaf73f435b6960ff07e09d2364cd1fc31617877533ef6fe6003868f2df6.jpeg",
       banner:
         "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
@@ -268,13 +268,13 @@ export const data = {
     {
       nome: "Fundação SOS Mata Atlântica",
       idLogin: 4,
-      descricacao: "Orgão que ajuda pessoas",
+      descricao: "Orgão que ajuda pessoas",
       foto: "https://www.infoescola.com/wp-content/uploads/2010/01/sos-mata-atlantica.jpg",
       banner:
         "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
       historia:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "54.421.484/0001-71",
+      cnpj: "99.686.224/0001-66",
       dataDeFundacao: "1986",
       dataDeCriacao: new Date().toISOString(),
       qtdDeMembros: 43215,
@@ -282,50 +282,46 @@ export const data = {
   ],
   login: [
     {
-      idOng: 1,
       email: "aacd@email.com",
       senha: "1",
     },
     {
-      idOng: 2,
       email: "greenpeace@email.com",
       senha: "1",
     },
     {
-      idOng: 3,
       email: "vivario@email.com",
       senha: "1",
     },
     {
-      idOng: 4,
       email: "sosmataatlantica@email.com",
       senha: "1",
     },
   ],
   contato: [
     {
+      idOng: 1,
       numero: "(11) 9000-0001",
       email: "aacd@email.com",
       telefone: "0800 000 0001",
-      idOng: 1,
     },
     {
+      idOng: 2,
       numero: "(11) 9000-0002",
       email: "greenpeace@email.com",
       telefone: "0800 000 0002",
-      idOng: 2,
     },
     {
+      idOng: 3,
       numero: "(11) 9000-0003",
       email: "vivario@email.com",
       telefone: "0800 000 0003",
-      idOng: 3,
     },
     {
+      idOng: 4,
       numero: "(11) 9000-0004",
       email: "sosmataatlantica@email.com",
       telefone: "0800 000 0004",
-      idOng: 4,
     },
   ],
   patrocinadores: [
