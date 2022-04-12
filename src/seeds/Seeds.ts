@@ -35,9 +35,29 @@ export class Seeds {
       console.log(`> tbl_ong `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableContato(contatoData) {
+    try {
+      await prisma.tbl_contato.createMany({data: contatoData});
+      console.log("> tbl_contato seeded.")
+    } catch (error) {
+      console.log(`> tbl_contato `, `WAS NOT SEEDED\n`, error);
+    }
+  }
+
+  async tablePatrocinadores(patrocinadorData) {
+    try {
+      await prisma.tbl_patrocinadores.createMany({data: patrocinadorData});
+      console.log("> tbl_patrocinadores seeded.")
+    } catch (error) {
+      console.log(`> tbl_patrocinadores `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 const seeds = new Seeds();
 seeds.tableEstado(data.estado);
 seeds.tableLogin(data.login);
-seeds.tableOng(data.ong);
+seeds.tableOng(data.ongReal);
+seeds.tableContato(data.contato);
+seeds.tablePatrocinadores(data.patrocinadores);
