@@ -74,7 +74,8 @@ export class Seeds {
     try {
       const result = await prisma.tbl_favoritos.createMany({
         data: {
-          ...favoritoData
+          idUsuario: 1,
+          idOng: 1,
         },
         skipDuplicates: true
       });

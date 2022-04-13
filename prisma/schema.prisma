@@ -140,7 +140,7 @@ model tbl_eventos {
 }
 
 model tbl_favoritos {
-  idFavoritos Int         @id
+  idFavoritos Int         @id @unique(map: "idFavoritos_UNIQUE") @default(autoincrement())
   idOng       Int
   idUsuario   Int
   favorito    Int?        @db.TinyInt
