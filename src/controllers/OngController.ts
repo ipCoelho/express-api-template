@@ -46,12 +46,16 @@ class OngController {
 
   async login(req: Request, res: Response) {
     try {
-      const ong = req.body;
-      const { idLogin, ...database } = await prisma.tbl_login.findUnique({
+      const ong = {
+        email: req.query.email.toString(),
+        senha: req.query.senha.toString(),
+      }
+
+      const database = await prisma.tbl_login.findUnique({
         where: { email: ong.email },
       });
 
-      if (!idLogin) {
+      if (database === null) {
         return res.status(404).json({ 
           message: "E-mail not registered.",
           status: false
@@ -60,7 +64,7 @@ class OngController {
 
       if (database.senha === ong.senha) {
         const tblOng = await prisma.tbl_ong.findMany({
-          where: { idLogin: idLogin },
+          where: { idLogin: database.idLogin },
         });
         if (tblOng.length > 0 && tblOng.length <= 1) {
           return res.status(200).json({
