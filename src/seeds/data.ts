@@ -353,8 +353,34 @@ export const data = {
   ],
   favoritos: [
     {
+      idUsuario: 1,
       idOng: 1,
-      idLogin: 1,
+      favorito: "favoritou",
+    },
+    {
+      idUsuario: 1,
+      idOng: 2,
+      favorito: "true",
+    },
+    {
+      idUsuario: 1,
+      idOng: 3,
+      favorito: 1,
+    },
+    {
+      idUsuario: 2,
+      idOng: 1,
+      favorito: 1,
+    },
+    {
+      idUsuario: 2,
+      idOng: 2,
+      favorito: 1,
+    },
+    {
+      idUsuario: 2,
+      idOng: 3,
+      favorito: 1,
     },
   ],
 };

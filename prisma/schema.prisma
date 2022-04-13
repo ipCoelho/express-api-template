@@ -143,7 +143,9 @@ model tbl_favoritos {
   idFavoritos Int         @id @unique(map: "idFavoritos_UNIQUE") @default(autoincrement())
   idOng       Int
   idUsuario   Int
-  favorito    Int?        @db.TinyInt
+  usuario     String      @db.VarChar(100)
+  ong         String      @db.VarChar(100)
+  favorito    String      @db.VarChar(40)
   tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_ong1")
   tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_usuario1")
 

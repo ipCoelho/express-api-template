@@ -70,19 +70,16 @@ export class Seeds {
     }
   }
 
-  async tableFavorito(favoritoData) {
+  async tableFavoritos(favoritosData) {
     try {
       const result = await prisma.tbl_favoritos.createMany({
-        data: {
-          idUsuario: 1,
-          idOng: 1,
-        },
+        data: favoritosData,
         skipDuplicates: true
       });
-      console.log("> tbl_favorito seeded.")
+      console.log("> tbl_favoritos seeded.")
       return result;
     } catch (error) {
-      console.log(`> tbl_favorito `, `WAS NOT SEEDED\n`, error);
+      console.log(`> tbl_favoritos `, `WAS NOT SEEDED\n`, error);
     }
   }
 }
@@ -100,6 +97,8 @@ async function ExecSeeds() {
       seeds.tableContato(data.contato);  
     }
 
+    seeds.tableFavoritos(data.favoritos);
+    
   } catch (error) {
     throw new Error(error);
   }
