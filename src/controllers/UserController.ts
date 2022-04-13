@@ -45,12 +45,16 @@ class UserController {
 
   async login(req: Request, res: Response) {
     try {
-      const user = req.body;
-      const { idLogin, ...database } = await prisma.tbl_login.findUnique({
+      const user = {
+        email: req.query.email.toString(),
+        senha: req.query.senha.toString(),
+      };
+
+      const database = await prisma.tbl_login.findUnique({
         where: { email: user.email },
       });
 
-      if (!idLogin) {
+      if (database === null) {
         return res.status(404).json({ 
           message: "E-mail not registered.",
           status: false
@@ -59,7 +63,7 @@ class UserController {
 
       if (database.senha === user.senha) {
         const tblUser = await prisma.tbl_usuario.findMany({
-          where: { idLogin: idLogin },
+          where: { idLogin: database.idLogin },
         });
         if (tblUser.length > 0 && tblUser.length <= 1) {
           return res.status(200).json({
