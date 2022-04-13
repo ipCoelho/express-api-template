@@ -45,32 +45,37 @@ class UserController {
 
   async login(req: Request, res: Response) {
     try {
-      const { email, senha } = req.body;
-      const { idLogin, ...loginData } = await prisma.tbl_login.findUnique({
-        where: { email: email },
+      const user = req.body;
+      const { idLogin, ...database } = await prisma.tbl_login.findUnique({
+        where: { email: user.email },
       });
 
-      if (loginData.senha === senha) {
-        const ongData = await prisma.tbl_ong.findFirst({
+      if (!idLogin) {
+        return res.status(404).json({ 
+          message: "E-mail not registered.",
+          status: false
+        });
+      }
+
+      if (database.senha === user.senha) {
+        const tblUser = await prisma.tbl_usuario.findMany({
           where: { idLogin: idLogin },
         });
-        res.status(200);
-        res.json({
-          message: "E-mail and password matched.",
-          RequestData: req.body,
-          DatabaseResponse: ongData,
-        });
+        if (tblUser.length > 0 && tblUser.length <= 1) {
+          return res.status(200).json({
+            message: "E-mail and password matched.",
+            status: true,
+            data: tblUser
+          });
+        }
       } else {
-        res.status(400);
-        res.json({
-          message: "E-mail and password not matched.",
-          RequestData: req.body,
-          DatabaseResponse: {},
+        return res.status(400).json({
+          message: "Password did not match.",
+          status: false
         });
       }
     } catch (error) {
-      res.status(500);
-      res.json({ RequestData: req.body, DatabaseResponse: error });
+      console.log("Error: ", error);
     }
   }
   
