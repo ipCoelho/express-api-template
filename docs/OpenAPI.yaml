@@ -1,0 +1,231 @@
+openapi: 3.0.1
+info:
+  title: API - HelpOngs
+  description: 'API para sustentar o serviço de Frontend Web e Mobile.'
+  version: 1.0.0
+
+tags:
+  - name: ong
+    description: Gestão de ong.
+
+paths:
+  /ong:
+    delete:
+      summary: Delete a file
+      operationId: deleteFile
+      parameters:
+      - name: fileName
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        200:
+          description: file deleted successfully
+          content: {}
+        404:
+          description: File not found
+          content: {}
+    get:
+      summary: Find the file by name
+      description: returns the content of a file
+      operationId: openFilebyName
+      parameters:
+      - name: fileName
+        in: path
+        description: Name of file to return
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        404:
+          description: File not found
+          content:
+            application/json: {}
+    put:
+      summary: Updating the content of an existing text file
+      parameters:
+        - name: fileName
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New content that will replace the existing content
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+        required: true
+      responses:
+        200:
+          description: successfully changed!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        404:
+          description: check the file name!
+          content: {}
+    patch:
+      summary: Change the contents of file lines
+      operationId: writeInLine
+      parameters:
+        - name: fileName
+          in: path
+          description: File name with extension
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/EditFileLineRequest"
+      responses:
+        200:
+          description: Sucessfully operation. All or some lines have been changed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Sucesso! 2 linhas foram alteradas (5,6)."
+        400:
+          description: Operation failed. Could not change any lines in the file.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Error! No lines have been changed."
+        404:
+          description: File not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Esse arquivo não existe."
+    post:
+      summary: Create new file in your workspace
+      operationId: updatePetWithForm
+      parameters:
+      - name: fileName
+        in: path
+        description: Name of the file you want to create.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/File"
+      responses:
+        201:
+          description: Create successful
+          content: {}
+        400:
+          description: This filename already exists
+          content: {}
+  /:
+    get:
+      summary: List all file
+      operationId: listAll
+      responses:
+        200:
+          description: If the request is correct or if there is at least one file in the directory, it will return a json listing what is inside the directory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /delete/many:
+    delete:
+      operationId: deleteManyId
+      requestBody:
+        description: Endpoint that will be used to delete many files
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Delete-Many-request'
+      responses:
+        200:
+          description: If the files names do exist locally, they will be deleted and status 200 will be returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-Many-response'
+        404:
+          description: This status is returned whenever a file name is sent, but it does not exist locally.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-Many-response'
+        400:
+          description: This status is sent whenever the SDK.delete return false during a file deletion.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-Many-response'
+
+
+
+components:
+  schemas:
+    File:
+      required:
+        - contents
+      properties:
+        contents:
+          type: string
+          description: new content of the file being edited
+      example:
+        contents: Rafa's doggo is called Fidel
+
+    EditFileLineRequest:
+      required:
+        - line
+      type: object
+      properties:
+        line:
+          type: integer
+          format: int64
+        content:
+          type: string
+      example:
+        line: 256
+        content: "Esse é o novo conteúdo da linha 256."
+
+    Delete-Many-request:
+      type: array
+      items:
+        type: string
+      example:
+        [file.txt, file2.txt, file3.txt]
+    Delete-Many-response:
+      type: object
+      properties:
+        message:
+          type: string
