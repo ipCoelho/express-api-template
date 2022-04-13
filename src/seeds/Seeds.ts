@@ -69,6 +69,21 @@ export class Seeds {
       console.log(`> tbl_patrocinadores `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableFavorito(favoritoData) {
+    try {
+      const result = await prisma.tbl_favoritos.createMany({
+        data: {
+          ...favoritoData
+        },
+        skipDuplicates: true
+      });
+      console.log("> tbl_favorito seeded.")
+      return result;
+    } catch (error) {
+      console.log(`> tbl_favorito `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 async function ExecSeeds() {

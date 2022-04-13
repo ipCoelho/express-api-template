@@ -350,5 +350,11 @@ export const data = {
       foto: "https://static-images.ifood.com.br/image/upload/t_high/logosgde/15def965-6971-41c7-9aa1-25f71d40f45f_CAFET_SASCO.png",
       link: "https://www.ifood.com.br/",
     },
-  ]
+  ],
+  favoritos: [
+    {
+      idOng: 1,
+      idLogin: 1,
+    },
+  ],
 };
