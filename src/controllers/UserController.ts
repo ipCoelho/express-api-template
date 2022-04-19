@@ -6,6 +6,33 @@ const prisma = new PrismaClient();
 class UserController {
   async preRegister(req: Request, res: Response) {
     try {
+      if (
+        req.body.nome == null ||
+        req.body.email == null ||
+        req.body.senha == null
+      ) {
+        console.info(`> Returned:
+          {
+            message: "Os dados enviados são nulos ou inválidos.",
+            status: 400,
+            expected: {
+              nome: "string",
+              email: "string",
+              senha: "string",
+            }
+          }`);
+
+        return res.status(400).json({
+          message: "Os dados enviados são nulos ou inválidos.",
+          status: 400,
+          expected: {
+            nome: "string",
+            email: "string",
+            senha: "string",
+          },
+        });
+      }
+
       const { nome, email, senha } = req.body;
 
       const emailVerification = await prisma.tbl_login.findUnique({
@@ -13,6 +40,12 @@ class UserController {
       });
 
       if (emailVerification) {
+        console.info(`> Returned:
+          {
+            message: "Email já cadastrado.",
+            status: 400
+          }`);
+
         return res.status(400).json({
           message: `O email '${email}' já foi cadastrado.`,
           status: 400,
@@ -39,6 +72,12 @@ class UserController {
       });
 
       if (preCadastroUsuario) {
+        console.info(`> Returned:
+          {
+            message: "Usuário cadastrado com sucesso.",
+            status: 200
+          }`);
+
         return res.status(200).json({
           message: "Usuário cadastrado com sucesso.",
           status: 200,
@@ -46,26 +85,50 @@ class UserController {
         });
       }
     } catch (error) {
+      console.log("Error: ", error);
       res.status(500).json({
         message: process.env.ERRO_500 ?? "Erro no servidor.",
         status: 500,
-        error: error,
       });
     }
   }
 
   async login(req: Request, res: Response) {
     try {
-      const user = {
-        email: req.query.email.toString(),
-        senha: req.query.senha.toString(),
-      };
+      const user = req.body;
+
+      if (req.body.email == null || req.body.senha == null) {
+        console.info(`> Returned:
+          {
+            message: "Os dados enviados são nulos ou inválidos.",
+            status: 400,
+            expected: {
+              email: "string",
+              senha: "string",
+            }
+          }`);
+
+        return res.status(400).json({
+          message: "Os dados enviados são nulos ou inválidos.",
+          status: 400,
+          expected: {
+            email: "string",
+            senha: "string",
+          },
+        });
+      }
 
       const tblLogin = await prisma.tbl_login.findUnique({
         where: { email: user.email },
       });
 
-      if (tblLogin === null) {
+      if (tblLogin == null) {
+        console.info(`> Returned:
+          {
+            message: "Email '${user.email}' não encontrado.",
+            status: 400
+          }`);
+
         return res.status(404).json({
           message: `Email '${user.email}' não encontrado.`,
           status: 404,
@@ -76,6 +139,13 @@ class UserController {
         });
 
         if (tblUser.length > 0 && tblUser.length <= 1) {
+          console.info(`> Returned:
+            {
+              message: "Login realizado com sucesso.",
+              status: 200,
+              data: ${JSON.stringify(tblUser[0])}
+            }`);
+
           return res.status(200).json({
             message: "Login realizado com sucesso.",
             status: 200,
@@ -83,6 +153,12 @@ class UserController {
           });
         }
       } else {
+        console.info(`> Returned:
+          {
+            message: "Senha incorreta.",
+            status: 400
+          }`);
+
         return res.status(400).json({
           message: `Senha incorreta.`,
           status: 400,
@@ -97,42 +173,67 @@ class UserController {
     try {
       const databaseData = await prisma.tbl_usuario.findMany();
 
+      console.info(`> Returned:
+        {
+          message: "Lista de usuários retornada com sucesso.",
+          status: 200,
+          data: ${JSON.stringify(databaseData)}
+        }`);
+
       return res.status(200).json({
         message: "Lista de usuários retornada com sucesso.",
         status: 200,
         data: databaseData,
       });
     } catch (error) {
+      console.log("Error: ", error);
       res.status(500);
       res.json({
         message: process.env.ERRO_500 ?? "Erro no servidor.",
         status: 500,
-        error: error,
       });
     }
   }
 
   async readID(req: Request, res: Response) {
     try {
-      const data = req.params.id || req.query.id.toString();
-  
+      const id = req.params.id;
+
       const databaseData = await prisma.tbl_usuario.findUnique({
-        where: { idUsuario: parseInt(data) },
+        where: { idUsuario: Number(id) },
       });
 
       if (databaseData) {
+        console.info(`> Returned:
+          {
+            message: "Usuário encontrado com sucesso.",
+            status: 200,
+            data: ${databaseData}
+          }`);
+
         return res.status(200).json({
           message: "Usuário retornado com sucesso.",
           status: 200,
           data: databaseData,
         });
+      } else {
+        console.info(`> Returned:
+          {
+            message: "Usuário não encontrado.",
+            status: 404
+          }`);
+
+        return res.status(404).json({
+          message: `Usuário com id '${id}' não encontrado.`,
+          status: 404,
+        });
       }
     } catch (error) {
+      console.log("Error: ", error);
       res.status(500);
       res.json({
         message: process.env.ERRO_500 ?? "Erro no servidor.",
         status: 500,
-        error: error,
       });
     }
   }
@@ -154,10 +255,39 @@ class UserController {
   }
 
   async update(req: Request, res: Response) {
-    const id = req.params.id ?? req.query.id.toString();
-    const user = req.body;
+    if (req.params.id == null) {
+      console.info(`> Returned:
+        {
+          message: "ID nulo ou inválido.",
+          status: 400
+        }`);
 
-    if (!req.body) {
+      return res.status(400).json({
+        message: "ID nulo ou inválido.",
+        status: 400,
+      });
+    } else if (
+      req.body.nome == null &&
+      req.body.banner == null &&
+      req.body.curriculo == null &&
+      req.body.foto == null &&
+      req.body.email == null &&
+      req.body.senha == null
+    ) {
+      console.info(`> Returned:
+      {
+        message: "Nenhum dado foi enviado.",
+          status: 400,
+          expected: {
+            nome: "string?",
+            banner: "string?",
+            curriculo: "string?",
+            foto: "string?",
+            email: "string?",
+            senha: "string?"
+          }
+        }`);
+
       return res.status(400).json({
         message: "Nenhum dado foi enviado.",
         status: 400,
@@ -168,31 +298,99 @@ class UserController {
           curriculo: "string?",
           foto: "string?",
           dataDeNascimento: "date?",
-        }
+        },
+      });
+    }
+
+    const { id } = req.params;
+    const user = req.body;
+
+    const IDverify = await prisma.tbl_usuario.findUnique({
+      where: {
+        idUsuario: Number(id),
+      },
+    });
+
+    if (IDverify == null) {
+      console.info(`> Returned:
+      {
+        message: "ID não encontrado.",
+        status: 404
+      }`);
+
+      return res.status(404).json({
+        message: "ID não encontrado.",
+        status: 404,
       });
     }
 
     const databaseData = await prisma.tbl_usuario.update({
-      where: { 
-        idUsuario: parseInt(id) 
+      where: {
+        idUsuario: Number(id),
       },
       data: {
         ...user,
       },
     });
 
-    
+    if (databaseData) {
+      console.info(`> Returned:
+        {
+          message: "Usuário atualizado com sucesso.",
+          status: 200,
+          data: ${JSON.stringify(databaseData)}
+        }`);
+
+      return res.status(200).json({
+        message: "Usuário atualizado com sucesso.",
+        status: 200,
+        data: databaseData,
+      });
+    } else {
+      throw new Error(`Error: ${databaseData}`);
+    }
   }
 
   async remove(req: Request, res: Response) {
-    const data = req.params.id || req.params.idOng;
+    const id = req.params.id;
 
-    const databaseData = await prisma.tbl_usuario.delete({
-      where: { idUsuario: parseInt(data) },
+    const IDverify = await prisma.tbl_usuario.findUnique({
+      where: {
+        idUsuario: Number(id),
+      },
     });
 
-    res.status(200);
-    res.json({ RequestData: data, DatabaseResponse: databaseData });
+    if (IDverify == null) {
+      console.info(`> Returned:
+      {
+        message: "ID '${id}' não encontrado.",
+        status: 404
+      }`);
+
+      return res.status(404).json({
+        message: `ID '${id}' não encontrado.`,
+        status: 404,
+      });
+    }
+
+    const databaseData = await prisma.tbl_usuario.delete({
+      where: { idUsuario: Number(id) },
+    });
+
+    if (databaseData) {
+      console.info(`> Returned:
+        {
+          message: "Usuário (nome:'${IDverify.nome}', id:${id}) excluído com sucesso.",
+          status: 200,
+          data: ${JSON.stringify(databaseData)}
+        }`);
+
+      return res.status(200).json({
+        message: `Usuário (nome:'${IDverify.nome}', id:${id}) excluído com sucesso.`,
+        status: 200,
+        data: databaseData,
+      });
+    }
   }
 }
 
