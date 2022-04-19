@@ -122,14 +122,12 @@ class OngController {
     if (databaseData) {
       res.status(200).json({ status: 200, id: data, data: databaseData });
     } else {
-      res
-        .status(404)
-        .json({
-          message: `Não foi encontrado nenhum registro pelo id ${data}.`,
-          status: 404,
-          id: data,
-          data: databaseData,
-        });
+      res.status(404).json({
+        message: `Não foi encontrado nenhum registro pelo id ${data}.`,
+        status: 404,
+        id: data,
+        data: databaseData,
+      });
     }
   }
 
