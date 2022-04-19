@@ -6,40 +6,51 @@ const prisma = new PrismaClient();
 class UserController {
   async preRegister(req: Request, res: Response) {
     try {
-      const {nome, email, senha} = req.body;
+      const { nome, email, senha } = req.body;
 
       const emailVerification = await prisma.tbl_login.findUnique({
-        where: { email: email }, 
+        where: { email: email },
       });
 
       if (emailVerification) {
-        res.status(400).json({ message: `The e-mail ${email} has already been registered.` });
-        return;
+        return res.status(400).json({
+          message: `O email '${email}' já foi cadastrado.`,
+          status: 400,
+        });
       }
 
-      await prisma.tbl_login.create({ 
+      await prisma.tbl_login.create({
         data: {
           email: email,
-          senha: senha 
-        }
+          senha: senha,
+        },
       });
- 
-      const {idLogin} = await prisma.tbl_login.findUnique({
-        where: { email: email }
+
+      const { idLogin } = await prisma.tbl_login.findUnique({
+        where: { email: email },
       });
-   
+
       const preCadastroUsuario = await prisma.tbl_usuario.create({
         data: {
           idLogin: idLogin,
           nome: nome,
           dataDeCriacao: new Date().toISOString(),
-        }
+        },
       });
-      res.status(200);
-      res.json({ ResquestData: req.body, DatabaseResponse: preCadastroUsuario });
+
+      if (preCadastroUsuario) {
+        return res.status(200).json({
+          message: "Usuário cadastrado com sucesso.",
+          status: 200,
+          data: preCadastroUsuario,
+        });
+      }
     } catch (error) {
-      res.status(500);
-      res.json({ RequestData: req.body, DatabaseResponse: error });
+      res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+        error: error,
+      });
     }
   }
 
@@ -50,61 +61,80 @@ class UserController {
         senha: req.query.senha.toString(),
       };
 
-      const database = await prisma.tbl_login.findUnique({
+      const tblLogin = await prisma.tbl_login.findUnique({
         where: { email: user.email },
       });
 
-      if (database === null) {
-        return res.status(404).json({ 
-          message: "E-mail not registered.",
-          status: false
+      if (tblLogin === null) {
+        return res.status(404).json({
+          message: `Email '${user.email}' não encontrado.`,
+          status: 404,
         });
-      }
-
-      if (database.senha === user.senha) {
+      } else if (tblLogin.senha === user.senha) {
         const tblUser = await prisma.tbl_usuario.findMany({
-          where: { idLogin: database.idLogin },
+          where: { idLogin: tblLogin.idLogin },
         });
+
         if (tblUser.length > 0 && tblUser.length <= 1) {
           return res.status(200).json({
-            message: "E-mail and password matched.",
-            status: true,
-            data: tblUser
+            message: "Login realizado com sucesso.",
+            status: 200,
+            usuario: tblUser[0],
           });
         }
       } else {
         return res.status(400).json({
-          message: "Password did not match.",
-          status: false
+          message: `Senha incorreta.`,
+          status: 400,
         });
       }
     } catch (error) {
       console.log("Error: ", error);
     }
   }
-  
-  async read(req: Request, res: Response) {
-    const requestData = req.body;
 
+  async read(req: Request, res: Response) {
     try {
-      const databaseData = await prisma.tbl_usuario.findMany({});
-      res
-        .status(200)
-        .json({ RequestData: requestData, DatabaseResponse: databaseData });
+      const databaseData = await prisma.tbl_usuario.findMany();
+
+      return res.status(200).json({
+        message: "Lista de usuários retornada com sucesso.",
+        status: 200,
+        data: databaseData,
+      });
     } catch (error) {
       res.status(500);
-      res.json({ RequestData: requestData, DatabaseResponse: error });
+      res.json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+        error: error,
+      });
     }
   }
 
   async readID(req: Request, res: Response) {
-    const data = req.params.id || req.params.idOng;
-    const databaseData = await prisma.tbl_usuario.findUnique({
-      where: { idUsuario: parseInt(data) },
-    });
+    try {
+      const data = req.params.id || req.query.id.toString();
+  
+      const databaseData = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: parseInt(data) },
+      });
 
-    res.status(200);
-    res.json({ id: data, DatabaseResponse: databaseData });
+      if (databaseData) {
+        return res.status(200).json({
+          message: "Usuário retornado com sucesso.",
+          status: 200,
+          data: databaseData,
+        });
+      }
+    } catch (error) {
+      res.status(500);
+      res.json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+        error: error,
+      });
+    }
   }
 
   async create(req: Request, res: Response) {
@@ -115,25 +145,43 @@ class UserController {
         data: { ...data },
       });
       res
-      .status(200)
-      .json({ RequestData: data, DatabaseResponse: databaseData });
-  } catch (error) {
-    res.status(500);
-    res.json({ RequestData: data, DatabaseResponse: error });
-  }
+        .status(200)
+        .json({ RequestData: data, DatabaseResponse: databaseData });
+    } catch (error) {
+      res.status(500);
+      res.json({ RequestData: data, DatabaseResponse: error });
+    }
   }
 
   async update(req: Request, res: Response) {
-    const id = req.params.id || req.params.idOng;
-    const data = req.body;
+    const id = req.params.id ?? req.query.id.toString();
+    const user = req.body;
+
+    if (!req.body) {
+      return res.status(400).json({
+        message: "Nenhum dado foi enviado.",
+        status: 400,
+        expected: {
+          nome: "string?",
+          senha: "string?",
+          banner: "string?",
+          curriculo: "string?",
+          foto: "string?",
+          dataDeNascimento: "date?",
+        }
+      });
+    }
 
     const databaseData = await prisma.tbl_usuario.update({
-      where: { idUsuario: parseInt(id) },
-      data: { ...data },
+      where: { 
+        idUsuario: parseInt(id) 
+      },
+      data: {
+        ...user,
+      },
     });
 
-    res.status(200);
-    res.json({ RequestData: data, DatabaseResponse: databaseData });
+    
   }
 
   async remove(req: Request, res: Response) {
