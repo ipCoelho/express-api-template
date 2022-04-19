@@ -231,7 +231,7 @@ model tbl_ong {
   historia                String?                   @db.Text
   qtdDeMembros            Int?
   dataDeFundacao          DateTime?                 @default(now())
-  idLogin                 Int
+  idLogin                 Int                       @unique
   tbl_login               tbl_login                 @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
   tbl_contato             tbl_contato[]
   tbl_eventos             tbl_eventos[]
