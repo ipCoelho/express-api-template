@@ -67,7 +67,7 @@ model tbl_comentario_secundario {
 model tbl_contato {
   idcontato Int     @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
   numero    String? @db.VarChar(45)
-  email     String? @db.VarChar(80) @unique(map: "email_UNIQUE")
+  email     String? @unique(map: "email_UNIQUE") @db.VarChar(80)
   telefone  String? @db.VarChar(45)
   idOng     Int
   tbl_ong   tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblContato_tblOng1")
@@ -143,9 +143,9 @@ model tbl_favoritos {
   idFavoritos Int         @id @unique(map: "idFavoritos_UNIQUE") @default(autoincrement())
   idOng       Int
   idUsuario   Int
-  usuario     String      @db.VarChar(100)
-  ong         String      @db.VarChar(100)
-  favorito    String      @db.VarChar(40)
+  usuario     String?     @db.VarChar(100)
+  ong         String?     @db.VarChar(100)
+  favoritado  Boolean     @db.TinyInt
   tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_ong1")
   tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_usuario1")
 
@@ -165,7 +165,7 @@ model tbl_foto {
 model tbl_informacoes_de_contato {
   idInformacoesDeContado Int         @id @unique(map: "idInformacoesDeContado_UNIQUE") @default(autoincrement())
   numero                 String?     @db.VarChar(45)
-  email                  String      @db.VarChar(100) @unique(map: "email_UNIQUE")
+  email                  String      @unique(map: "email_UNIQUE") @db.VarChar(100)
   telefone               String?     @db.VarChar(45)
   idUsuario              Int
   tbl_usuario            tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblInformacoesDeContado_tblUsuario1")
@@ -175,7 +175,7 @@ model tbl_informacoes_de_contato {
 
 model tbl_login {
   idLogin                   Int                         @id @unique(map: "idtbl_login_UNIQUE") @default(autoincrement())
-  email                     String                      @db.VarChar(80) @unique(map: "email_UNIQUE")
+  email                     String                      @unique(map: "email_UNIQUE") @db.VarChar(80)
   senha                     String                      @db.VarChar(80)
   tbl_chat_login            tbl_chat_login[]
   tbl_comentario_principal  tbl_comentario_principal[]
@@ -358,7 +358,7 @@ model tbl_usuario {
   foto                       String?                      @db.VarChar(100)
   dataDeNascimento           DateTime?                    @db.Date
   curriculo                  String?                      @db.Text
-  dataDeCriacao           DateTime                  @default(now())
+  dataDeCriacao              DateTime                     @default(now())
   banner                     String?                      @db.VarChar(100)
   idLogin                    Int
   tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_tbl_login1")
