@@ -293,7 +293,7 @@ model tbl_ong_patrocinadores {
 
 model tbl_patrocinadores {
   idPatrocinadores       Int                      @id @unique(map: "idtblPatrocinio_UNIQUE") @default(autoincrement())
-  nome                   String                   @db.VarChar(45)
+  nome                   String                   @db.VarChar(45) @unique
   foto                   String?                  @db.Text
   link                   String?                  @db.VarChar(80)
   tbl_ong_patrocinadores tbl_ong_patrocinadores[]
