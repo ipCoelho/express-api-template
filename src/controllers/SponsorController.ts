@@ -169,13 +169,13 @@ class SponsorController {
         });
         console.info(`> Returned:
           {
-            message: "Patrocinador com (nome: ${sponsor.nome}, id: '${id}') deletado com sucesso.",
+            message: "Patrocinador com (nome: '${sponsor.nome}', id: '${id}') deletado com sucesso.",
             status: 200,
             data: ${JSON.stringify(deleted)},
             }`);
 
         return res.status(200).json({
-          message: `Patrocinador (nome: '${sponsor.nome}, id: '${id}') deletado com sucesso.`,
+          message: `Patrocinador (nome: '${sponsor.nome}', id: '${id}') deletado com sucesso.`,
           status: 200,
           data: deleted,
         });
