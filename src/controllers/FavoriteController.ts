@@ -180,6 +180,84 @@ class FavoriteController {
 
     async find(req: Request, res: Response) {
         try {
+            const allFav = await prisma.tbl_favoritos.findMany();
+
+            console.info(`> Returned:
+                {
+                    message: 'Todos os favoritos retornado com sucesso.',
+                    favorites: ${JSON.stringify(allFav)},
+                    status: 200,
+                }`
+            );
+
+            return res.status(200).json({
+                message: 'Todos os favoritos retornado com sucesso.',
+                data: allFav,
+                status: 200,
+            });
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(500).json({
+                message: process.env.ERRO_500 ?? 'Erro no servidor.',
+                status: 500,
+            });
+        }
+    }
+
+    async findUser(req: Request, res: Response) {
+        try {
+            const { idUsuario } = req.params;
+
+            const IdUserVerify = await prisma.tbl_usuario.findUnique({
+                where: {
+                    idUsuario: Number(idUsuario),
+                },
+            });
+
+            if (!IdUserVerify) {
+                console.info(`> Returned:
+                    {
+                        message: "Usuário com ID '${idUsuario}' NÃO encontrado.",
+                        status: 404
+                    }`
+                );
+
+                return res.status(404).json({
+                    message: `Usuário com ID '${idUsuario}' NÃO encontrado.`,
+                    status: 404
+                });
+            }
+
+            const allFavUser = await prisma.tbl_favoritos.findMany({
+                where: {
+                    idUsuario: Number(idUsuario),
+                },
+            });
+
+            console.info(`> Returned:
+                {
+                    message: 'Todos os favoritos do usuário '${idUsuario}' retornado com sucesso.',
+                    favorites: ${JSON.stringify(allFavUser)},
+                    status: 200,
+                }`
+            );
+
+            return res.status(200).json({
+                message: `Todos os favoritos do usuário '${idUsuario}' retornado com sucesso.`,
+                data: allFavUser,
+                status: 200,
+            });
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(500).json({
+                message: process.env.ERRO_500 ?? 'Erro no servidor.',
+                status: 500,
+            });
+        }
+    }
+
+    async findUserAndOng(req: Request, res: Response) {
+        try {
             if (!req.params.usuario) {
                 const allFavs = await prisma.tbl_favoritos.findMany();
 
