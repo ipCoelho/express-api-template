@@ -320,7 +320,6 @@ export const data = {
       dataDeNascimento: new Date("2006-06-09"),
     },
   ],
-
   ong: [
     {
       nome: "AACD",
@@ -479,5 +478,7 @@ export const data = {
       idUsuario: 5,
       favoritado: true,
     },
+  ],
+  categorias: [
   ],
 };
