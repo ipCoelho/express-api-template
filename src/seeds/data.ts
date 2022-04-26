@@ -263,6 +263,22 @@ export const data = {
       email: "filipi@email.com",
       senha: "1",
     },
+    {
+      email: "amada@ong.com",
+      senha: "1",
+    },
+    {
+      email: "pas@ong.com",
+      senha: "1",
+    },
+    {
+      email: "sbsc@ong.com",
+      senha: "1",
+    },
+    {
+      email: "lbv@ong.com",
+      senha: "1",
+    },
   ],
   usuario: [
     {
@@ -377,6 +393,63 @@ export const data = {
       dataDeFundacao: "1986",
       dataDeCriacao: new Date().toISOString(),
       qtdDeMembros: 43215,
+    },
+    {
+      nome: "AMADA",
+      idLogin: 11,
+      descricao: "Orgão que ajuda pessoas",
+      foto: "https://amada-helena.org/wp-content/uploads/2019/05/logo150.png",
+      banner:
+        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+      historia:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
+      cnpj: "51.893.161/0001-92",
+      dataDeFundacao: "2018",
+      dataDeCriacao: new Date().toISOString(),
+      qtdDeMembros: 34244,
+      numeroDeSeguidores: 12,
+    },
+    {
+      nome: "PAS",
+      idLogin: 12,
+      descricao: "Orgão que ajuda pessoas",
+      foto: "https://static.wixstatic.com/media/b1c9ff_9528c93b82a14f3e9803c4980e7e25dd.gif",
+      banner:
+        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+      historia:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
+      cnpj: "55.148.075/0001-06",
+      dataDeFundacao: "2013",
+      dataDeCriacao: new Date().toISOString(),
+      qtdDeMembros: 123,
+    },
+    {
+      nome: "Sociedade Benificente de São Camilo", 
+      idLogin: 13,
+      descricao: "Orgão que ajuda pessoas",
+      foto: "https://www.hospitalsaocamilosp.org.br/static/media/logodefault.d6ca4751.png",
+      banner:
+        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+      historia:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
+      cnpj: "23.850.342/0001-04",
+      dataDeFundacao: "1979",
+      dataDeCriacao: new Date().toISOString(),
+      qtdDeMembros: 5675673,
+    },
+    {
+      nome: "Legião Boa Vontade",
+      idLogin: 14,
+      descricao: "Orgão que ajuda pessoas",
+      foto: "https://www.lbv.org/sites/all/themes/lbv/img/logo/lbv_1_Brasil_3.png",
+      banner:
+        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
+      historia:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
+      cnpj: "78.574.729/0001-69",
+      dataDeFundacao: "1950",
+      dataDeCriacao: new Date().toISOString(),
+      qtdDeMembros: 12348,
     },
   ],
   contato: [

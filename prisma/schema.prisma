@@ -223,7 +223,7 @@ model tbl_ong {
   idOng                   Int                       @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
   nome                    String                    @db.VarChar(100)
   descricao               String?                   @db.Text
-  numeroDeSeguidores      Float?
+  numeroDeSeguidores      Int                       @default(0)
   dataDeCriacao           DateTime                  @default(now())
   cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(50)
   foto                    String?                   @db.VarChar(500)
