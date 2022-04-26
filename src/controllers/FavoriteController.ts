@@ -260,6 +260,46 @@ class FavoriteController {
         });
       }
 
+      const userVerify = await prisma.tbl_usuario.findUnique({
+        where: {
+          idUsuario: Number(req.body.idUsuario),
+        },
+      });
+
+      if (!userVerify) {
+        console.info(`> Returned:
+          {
+            message: 'Usuário com ID '${req.body.idUsuario}' NÃO encontrado.',
+            status: 404,
+          }`
+        );
+
+        return res.status(404).json({
+          message: `Usuário com ID '${req.body.idUsuario}' NÃO encontrado.`,
+          status: 404,
+        });
+      }
+
+      const ongVerify = await prisma.tbl_ong.findUnique({
+        where: {
+          idOng: Number(req.body.idOng),
+        },
+      });
+
+      if (!ongVerify) {
+        console.info(`> Returned:
+          {
+            message: 'ONG com ID '${req.body.idOng}' NÃO encontrada.',
+            status: 404,
+          }`
+        );
+
+        return res.status(404).json({
+          message: `ONG com ID '${req.body.idOng}' NÃO encontrada.`,
+          status: 404,
+        });
+      }
+
       const { idUsuario, idOng } = req.body;
 
       const IdUserVerify = await prisma.tbl_favoritos.findMany({
