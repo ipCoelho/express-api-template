@@ -480,5 +480,35 @@ export const data = {
     },
   ],
   categorias: [
+    {
+      nome: "Animais",
+    },
+    {
+      nome: "Meio-Ambiente",
+    },
+    {
+      nome: "Educação",
+    },
+    {
+      nome: "Saúde",
+    },
+    {
+      nome: "Arte",
+    },
+    {
+      nome: "Cultura",
+    },
+    {
+      nome: "Caridade",
+    },
+    {
+      nome: "Crianças",
+    },
+    {
+      nome: "Jovens",
+    },
+    {
+      nome: "Idosos",
+    },
   ],
 };

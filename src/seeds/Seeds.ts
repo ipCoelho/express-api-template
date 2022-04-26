@@ -97,6 +97,19 @@ export class Seeds {
       console.log(`> tbl_favoritos `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableCategoria(categoriaData) {
+    try {
+      const result = await prisma.tbl_categorias.createMany({
+        data: categoriaData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_categoria seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_categoria `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -109,6 +122,7 @@ async function ExecSeeds() {
     await seeds.tablePatrocinadores(data.patrocinadores);
     await seeds.tableContato(data.contato);
     await seeds.tableFavoritos(data.favoritos);
+    await seeds.tableCategoria(data.categorias);
   } catch (error) {
     throw new Error(error);
   }
