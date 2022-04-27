@@ -69,7 +69,7 @@ model tbl_contato {
   numero    String? @db.VarChar(45)
   email     String? @unique(map: "email_UNIQUE") @db.VarChar(80)
   telefone  String? @db.VarChar(45)
-  idOng     Int
+  idOng     Int     @unique
   tbl_ong   tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblContato_tblOng1")
 
   @@index([idOng], map: "fk_tblContato_tblOng1_idx")
@@ -293,7 +293,7 @@ model tbl_ong_patrocinadores {
 
 model tbl_patrocinadores {
   idPatrocinadores       Int                      @id @unique(map: "idtblPatrocinio_UNIQUE") @default(autoincrement())
-  nome                   String                   @db.VarChar(45) @unique(map: "nometblPatrocinadores_UNIQUE")
+  nome                   String                   @unique(map: "nometblPatrocinadores_UNIQUE") @db.VarChar(45)
   foto                   String?                  @db.Text
   link                   String?                  @db.VarChar(80)
   tbl_ong_patrocinadores tbl_ong_patrocinadores[]
