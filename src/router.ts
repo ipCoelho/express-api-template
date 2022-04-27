@@ -3,7 +3,8 @@ import userRouter from "./routes/userRouter";
 import sponsorRouter from "./routes/sponsorRouter";
 import favRouter from "./routes/favoriteRouter";
 import ufRouter from "./routes/ufRouter";
-import categoryController from "./routes/categoryRouter";
+import categoryRouter from "./routes/categoryRouter";
+import contactRouter from "./routes/contactRouter";
 
 import { Router } from "express";
 
@@ -15,6 +16,7 @@ router.use("/", userRouter);
 router.use("/", sponsorRouter);
 router.use("/", favRouter);
 router.use("/", ufRouter);
-router.use("/", categoryController);
+router.use("/", categoryRouter);
+router.use("/", contactRouter);
 
 export default router;
