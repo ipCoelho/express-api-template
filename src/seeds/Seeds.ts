@@ -51,6 +51,10 @@ export class Seeds {
     try {
       const result = await prisma.tbl_contato.createMany({
         data: contatoData,
+        skipDuplicates: true,
+
+
+        
       });
       console.log("> tbl_contato seeded.");
       return result;
@@ -110,6 +114,19 @@ export class Seeds {
       console.log(`> tbl_categoria `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableOngCategoria(categoriaOngData) {
+    try {
+      const result = await prisma.tbl_ong_categoria.createMany({
+        data: categoriaOngData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_categoria_ong seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_categoria_ong `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -123,6 +140,7 @@ async function ExecSeeds() {
     await seeds.tableContato(data.contato);
     await seeds.tableFavoritos(data.favoritos);
     await seeds.tableCategoria(data.categorias);
+    await seeds.tableOngCategoria(data.categoriasDasOngs);
   } catch (error) {
     throw new Error(error);
   }

@@ -1,4 +1,4 @@
-export const data = {
+const data = {
   estado: [
     { nome: "Acre", sigla: "AC" },
     { nome: "Alagoas", sigla: "AL" },
@@ -477,6 +477,30 @@ export const data = {
       email: "sosmataatlantica@email.com",
       telefone: "0800 000 0004",
     },
+    {
+      idOng: 11,
+      numero: "(11) 9000-0005",
+      email: "amada@email.com",
+      telefone: "0800 000 0005",
+    },
+    {
+      idOng: 12,
+      numero: "(11) 9000-0006",
+      email: "pas@email.com",
+      telefone: "0800 000 0006",
+    },
+    {
+      idOng: 13,
+      numero: "(11) 9000-0007",
+      email: "sbsc@email.com",
+      telefone: "0800 000 0007",
+    },
+    {
+      idOng: 14,
+      numero: "(11) 9000-0008",
+      email: "lgv@email.com",
+      telefone: "0800 000 0008",
+    },
   ],
   patrocinadores: [
     {
@@ -584,4 +608,18 @@ export const data = {
       nome: "Idosos",
     },
   ],
+  categoriasDasOngs: [
+    
+  ]
 };
+
+data.categorias.map((categoria, catIndex) => {
+  data.ong.map((ong, ongIndex) => {
+    data.categoriasDasOngs.push({
+      idOng: ongIndex+1,
+      idCategorias: catIndex+1,
+    });
+  });
+});
+
+export { data };
