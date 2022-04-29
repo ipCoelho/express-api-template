@@ -614,12 +614,39 @@ const data = {
 };
 
 data.categorias.map((categoria, catIndex) => {
-  data.ong.map((ong, ongIndex) => {
+  // data.ong.map((ong, ongIndex) => {
     data.categoriasDasOngs.push({
-      idOng: ongIndex+1,
-      idCategorias: catIndex+1,
+      idOng: catIndex + 1,
+      idCategorias: catIndex + 1,
     });
-  });
+  // });
 });
+
+data.categoriasDasOngs.push(
+  {
+    idOng: 2,
+    idCategorias: 1,
+  },
+  {
+    idOng: 2,
+    idCategorias: 7,
+  },
+  {
+    idOng: 2,
+    idCategorias: 3,
+  },
+  {
+    idOng: 2,
+    idCategorias: 4,
+  },
+  {
+    idOng: 2,
+    idCategorias: 5,
+  },
+  {
+    idOng: 2,
+    idCategorias: 6,
+  },
+)
 
 export { data };
