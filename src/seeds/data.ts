@@ -613,13 +613,15 @@ const data = {
   ]
 };
 
-data.categorias.map((categoria, catIndex) => {
-  // data.ong.map((ong, ongIndex) => {
-    data.categoriasDasOngs.push({
-      idOng: catIndex + 1,
-      idCategorias: catIndex + 1,
-    });
-  // });
+data.categorias.map((_, catIndex) => {
+  data.categoriasDasOngs.push({
+    idOng: catIndex + 1,
+    idCategorias: catIndex + 1,
+  });
+  data.categoriasDasOngs.push({
+    idOng: catIndex + 1,
+    idCategorias: 8,
+  });
 });
 
 data.categoriasDasOngs.push(
