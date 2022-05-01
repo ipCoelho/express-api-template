@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { catHelper } from '@utils/catHelper';
 
 const prisma = new PrismaClient();
 
@@ -179,33 +178,73 @@ class CategoryController {
         categoriasId.push(idCategorias);
       }
 
-      const catOngId = [];
+      const ongCatId = [];
       for (let i = 0; i < categoriasId.length; i++) {
         const array = await prisma.tbl_ong_categoria.findMany({
           where: {
             idCategorias: Number(categoriasId[i]),  
           },
         });
-        catOngId[i] = array;
+        ongCatId[i] = array;
       }
-      console.log("catOngId: ", catOngId);
 
       const idOngs = [];
-      for (let i = 0; i < catOngId.length; i++) {
-        for (let j = 0; j < catOngId[i].length; j++) {
-          idOngs.push(catOngId[i][j].idOng);
+      for (let i = 0; i < ongCatId.length; i++) {
+        for (let j = 0; j < ongCatId[i].length; j++) {
+          idOngs.push(ongCatId[i][j].idOng);
         }
       }
-      console.log("idOngs: ", idOngs);
+      console.log("\nidOngs: ", idOngs);
 
-      const helper = await catHelper(idOngs, categorias.length);
-      console.log("Helper: ", helper);
+      const r = [];
+      for (let i = 0; i < idOngs.length; i++) {
+        r.push({
+          id: idOngs[i],
+          name: await prisma.tbl_ong.findUnique({
+            where: {
+              idOng: Number(idOngs[i]),
+            },
+          }),
+          counter: 0,
+          index: i,
+        });
+      }
+      
+      r.map((item) => {
+        item.name = item.name.nome;
+      });
 
+      r.map((item) => {
+        r.map((item2) => {
+          if (item.name === item2.name) {
+            item.counter++;
+          }
+        });
+      });
+
+      r.map((item) => {
+        delete item.index;
+      });
+
+      
+      const final = [];
+      r.map((item) => {
+        if (item.counter == categorias.length) {
+          final.push(item);
+        }
+      });
+
+      const finalUnique = [];
+      final.forEach((item) => {
+        if(!finalUnique.includes(item.name)) {	
+          finalUnique.push(item.name);
+        }
+      });
       
       return res.status(200).json({
         message: "Lista de categorias retornada com sucesso.",
         status: 200,
-        data: helper,
+        data: finalUnique,
       });
 
     } catch (error) {
