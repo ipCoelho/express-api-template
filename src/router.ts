@@ -6,6 +6,7 @@ import ufRouter from "./routes/ufRouter";
 import categoryRouter from "./routes/categoryRouter";
 import contactRouter from "./routes/contactRouter";
 import bankdataRouter from "./routes/bankdataRouter";
+import donationRouter from "./routes/donationsRouter";
 
 import { Router } from "express";
 
@@ -20,5 +21,6 @@ router.use("/", ufRouter);
 router.use("/", categoryRouter);
 router.use("/", contactRouter);
 router.use("/", bankdataRouter);
+router.use("/", donationRouter);
 
 export default router;
