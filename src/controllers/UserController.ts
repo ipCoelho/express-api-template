@@ -293,6 +293,7 @@ class UserController {
         status: 400,
         expected: {
           nome: "string?",
+          email: "string?",
           senha: "string?",
           banner: "string?",
           curriculo: "string?",
@@ -305,31 +306,62 @@ class UserController {
     const { id } = req.params;
     const user = req.body;
 
+    
     const IDverify = await prisma.tbl_usuario.findUnique({
       where: {
         idUsuario: Number(id),
       },
     });
-
+    
     if (IDverify == null) {
       console.info(`> Returned:
       {
         message: "ID não encontrado.",
         status: 404
       }`);
-
+      
       return res.status(404).json({
         message: "ID não encontrado.",
         status: 404,
       });
     }
+    
+    let letEmail;
+    if(req.body.email) {
+      const emailVerify = await prisma.tbl_login.findUnique({
+        where: {
+          email: req.body.email,
+        },
+      });
 
+      if (emailVerify != null) {
+        const emailUpdate = await prisma.tbl_login.update({
+          where: {
+            email: req.body.email,
+          },
+          data: {
+            email: req.body.email,
+          },
+        });
+    
+        if(emailUpdate) {
+          letEmail = emailUpdate;
+        }
+      } else {
+        return res.status(400).json({
+          message: `Email '${req.body.email}' não encontrado.`,
+          status: 400,
+        });
+      }
+    }
+
+    const { email, senha, ...newUser } = user;
     const databaseData = await prisma.tbl_usuario.update({
       where: {
         idUsuario: Number(id),
       },
       data: {
-        ...user,
+        ...newUser,
       },
     });
 
@@ -344,7 +376,7 @@ class UserController {
       return res.status(200).json({
         message: "Usuário atualizado com sucesso.",
         status: 200,
-        data: databaseData,
+        data: {...databaseData, email}, 
       });
     } else {
       throw new Error(`Error: ${databaseData}`);
