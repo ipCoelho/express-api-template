@@ -80,7 +80,6 @@ model tbl_dados_bancarios {
   banco               String                @db.VarChar(50)
   agencia             String                @db.VarChar(10)
   conta               String                @db.VarChar(20)
-  contaCorrente       Int                   @db.TinyInt
   idOng               Int                   @unique(map: "idOng_UNIQUE")
   tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblDadosBancarios_tblOng1")
 }
