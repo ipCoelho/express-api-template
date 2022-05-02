@@ -76,12 +76,12 @@ model tbl_contato {
 }
 
 model tbl_dados_bancarios {
-  idDadosBancario     Int                   @id @unique(map: "idDadosBancario_UNIQUE") @default(autoincrement())
-  banco               String                @db.VarChar(50)
-  agencia             String                @db.VarChar(10)
-  conta               String                @db.VarChar(20)
-  idOng               Int                   @unique(map: "idOng_UNIQUE")
-  tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblDadosBancarios_tblOng1")
+  idDadosBancario Int     @id @unique(map: "idDadosBancario_UNIQUE") @default(autoincrement())
+  banco           String  @db.VarChar(50)
+  agencia         String  @db.VarChar(10)
+  conta           String  @db.VarChar(20)
+  idOng           Int     @unique(map: "idOng_UNIQUE")
+  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblDadosBancarios_tblOng1")
 }
 
 model tbl_endereco {
@@ -209,38 +209,38 @@ model tbl_login_reacao {
 }
 
 model tbl_meios_de_doacao {
-  idmeiosDeDoacao         Int                       @id @unique(map: "idmeiosDeDoacao_UNIQUE") @default(autoincrement())
-  site                    String?                   @db.VarChar(150)
-  pix                     String?                   @db.VarChar(100)
-  idOng                   Int
-  tbl_ong                 tbl_ong                   @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblMeiosDeDoacao_tblOng")
+  idmeiosDeDoacao Int     @id @unique(map: "idmeiosDeDoacao_UNIQUE") @default(autoincrement())
+  site            String? @db.VarChar(150)
+  pix             String? @db.VarChar(100)
+  idOng           Int     @unique(map: "idOng_UNIQUE")
+  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblMeiosDeDoacao_tblOng")
 }
 
 model tbl_ong {
-  idOng                   Int                       @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
-  nome                    String                    @db.VarChar(100)
-  descricao               String?                   @db.Text
-  numeroDeSeguidores      Int                       @default(0)
-  dataDeCriacao           DateTime                  @default(now())
-  cnpj                    String                    @unique(map: "cnpj_UNIQUE") @db.VarChar(50)
-  foto                    String?                   @db.VarChar(500)
-  banner                  String?                   @db.VarChar(500)
-  historia                String?                   @db.Text
-  qtdDeMembros            Int?
-  dataDeFundacao          DateTime?                 @default(now())
-  idLogin                 Int                       @unique
-  tbl_login               tbl_login                 @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
-  tbl_contato             tbl_contato[]
-  tbl_eventos             tbl_eventos[]
-  tbl_favoritos           tbl_favoritos[]
-  tbl_ong_categoria       tbl_ong_categoria[]
-  tbl_ong_estado          tbl_ong_estado[]
-  tbl_ong_patrocinadores  tbl_ong_patrocinadores[]
-  tbl_post                tbl_post[]
-  tbl_seguidor            tbl_seguidor[]
-  tbl_vagas               tbl_vagas[]
-  tbl_meios_de_doacao     tbl_meios_de_doacao[]
-  tbl_dados_bancarios     tbl_dados_bancarios[]
+  idOng                  Int                      @id @unique(map: "idOng_UNIQUE") @default(autoincrement())
+  nome                   String                   @db.VarChar(100)
+  descricao              String?                  @db.Text
+  numeroDeSeguidores     Int                      @default(0)
+  dataDeCriacao          DateTime                 @default(now())
+  cnpj                   String                   @unique(map: "cnpj_UNIQUE") @db.VarChar(50)
+  foto                   String?                  @db.VarChar(500)
+  banner                 String?                  @db.VarChar(500)
+  historia               String?                  @db.Text
+  qtdDeMembros           Int?
+  dataDeFundacao         DateTime?                @default(now())
+  idLogin                Int                      @unique
+  tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
+  tbl_contato            tbl_contato[]
+  tbl_eventos            tbl_eventos[]
+  tbl_favoritos          tbl_favoritos[]
+  tbl_ong_categoria      tbl_ong_categoria[]
+  tbl_ong_estado         tbl_ong_estado[]
+  tbl_ong_patrocinadores tbl_ong_patrocinadores[]
+  tbl_post               tbl_post[]
+  tbl_seguidor           tbl_seguidor[]
+  tbl_vagas              tbl_vagas[]
+  tbl_meios_de_doacao    tbl_meios_de_doacao[]
+  tbl_dados_bancarios    tbl_dados_bancarios[]
 
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
 }
