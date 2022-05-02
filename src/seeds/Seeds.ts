@@ -127,6 +127,32 @@ export class Seeds {
       console.log(`> tbl_categoria_ong `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableMeiosDeDoacao(meioDeDoacaoData) {
+    try {
+      const result = await prisma.tbl_meios_de_doacao.createMany({
+        data: meioDeDoacaoData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_meios_de_doacao seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_meios_de_doacao `, `WAS NOT SEEDED\n`, error);
+    }
+  }
+
+  async tableDadosBancarios(dadosBancariosData) {
+    try {
+      const result = await prisma.tbl_dados_bancarios.createMany({
+        data: dadosBancariosData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_dados_bancarios seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_dados_bancarios `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -141,6 +167,8 @@ async function ExecSeeds() {
     await seeds.tableFavoritos(data.favoritos);
     await seeds.tableCategoria(data.categorias);
     await seeds.tableOngCategoria(data.categoriasDasOngs);
+    await seeds.tableMeiosDeDoacao(data.meiosdeDoacao);
+    await seeds.tableDadosBancarios(data.dadosBancarios);
   } catch (error) {
     throw new Error(error);
   }

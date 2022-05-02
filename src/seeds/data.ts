@@ -610,7 +610,50 @@ const data = {
   ],
   categoriasDasOngs: [
     
-  ]
+  ],
+  meiosdeDoacao: [
+    {
+      idOng: 1,
+      site: "https//www.aacd.com.br/",
+      pix: "010101010101",
+    },
+    {
+      idOng: 2,
+      site: "https//www.greenpeace.com.br/",
+      pix: "0202020202020",
+    },
+    {
+      idOng: 3,
+      site: "https//www.vivario.com.br/",
+      pix: "0303030303030",
+    },
+  ],
+  dadosBancarios: [
+    {
+      idOng: 1,
+      banco: "Banco do Brasil",
+      agencia: "0001",
+      conta: "0001",
+    },
+    {
+      idOng: 2,
+      banco: "Banco do Brasil",
+      agencia: "0002",
+      conta: "0002",
+    },
+    {
+      idOng: 3,
+      banco: "Santander",
+      agencia: "0003",
+      conta: "0003",
+    },
+    {
+      idOng: 4,
+      banco: "Nubank",
+      agencia: "0004",
+      conta: "0004",
+    },
+  ],
 };
 
 data.categorias.map((_, catIndex) => {
