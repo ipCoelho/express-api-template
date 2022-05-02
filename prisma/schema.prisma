@@ -30,15 +30,6 @@ model tbl_chat_login {
   @@index([idLogin], map: "fk_tbl_chat_login_tbl_login1_idx")
 }
 
-model tbl_cidade {
-  idCidade   Int        @id @unique(map: "idCidade_UNIQUE") @default(autoincrement())
-  nome       String?    @db.VarChar(100)
-  idEstado   Int
-  tbl_estado tbl_estado @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblCidade_tblEstado1")
-
-  @@index([idEstado], map: "fk_tblCidade_tblEstado1_idx")
-}
-
 model tbl_comentario_principal {
   idComentarioPricipal      Int                         @id @unique(map: "idtblComentarioPricipal_UNIQUE") @default(autoincrement())
   comentario                String?                     @db.VarChar(300)
@@ -91,6 +82,7 @@ model tbl_endereco {
   cep                String               @db.VarChar(80)
   rua                String               @db.VarChar(80)
   complemento        String?              @db.Text
+  municipio          String              @db.VarChar(80)
   idEstado           Int
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
@@ -115,7 +107,6 @@ model tbl_estado {
   idEstado       Int              @id @unique(map: "idEstado_UNIQUE") @default(autoincrement())
   nome           String?          @db.VarChar(100)
   sigla          String?          @db.VarChar(10)
-  tbl_cidade     tbl_cidade[]
   tbl_endereco   tbl_endereco[]
   tbl_ong_estado tbl_ong_estado[]
 }
