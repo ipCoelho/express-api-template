@@ -82,7 +82,7 @@ model tbl_endereco {
   cep                String               @db.VarChar(80)
   rua                String               @db.VarChar(80)
   complemento        String?              @db.Text
-  municipio          String              @db.VarChar(80)
+  municipio          String               @db.VarChar(80)
   idEstado           Int
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
@@ -105,8 +105,8 @@ model tbl_endereco_vagas {
 
 model tbl_estado {
   idEstado       Int              @id @unique(map: "idEstado_UNIQUE") @default(autoincrement())
-  nome           String?          @db.VarChar(100)
-  sigla          String?          @db.VarChar(10)
+  nome           String?          @unique(map: "nome_UNIQUE") @db.VarChar(100)
+  sigla          String?          @unique(map: "sigla_UNIQUE") @db.VarChar(10)
   tbl_endereco   tbl_endereco[]
   tbl_ong_estado tbl_ong_estado[]
 }
