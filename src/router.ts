@@ -5,6 +5,7 @@ import favRouter from "./routes/favoriteRouter";
 import ufRouter from "./routes/ufRouter";
 import categoryRouter from "./routes/categoryRouter";
 import contactRouter from "./routes/contactRouter";
+import bankdataRouter from "./routes/bankdataRouter";
 
 import { Router } from "express";
 
@@ -18,5 +19,6 @@ router.use("/", favRouter);
 router.use("/", ufRouter);
 router.use("/", categoryRouter);
 router.use("/", contactRouter);
+router.use("/", bankdataRouter);
 
 export default router;
