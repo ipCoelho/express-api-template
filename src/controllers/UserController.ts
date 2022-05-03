@@ -362,6 +362,7 @@ class UserController {
       },
       data: {
         ...newUser,
+        letEmail
       },
     });
 
