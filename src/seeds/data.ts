@@ -654,7 +654,15 @@ const data = {
       conta: "0004",
     },
   ],
+  estadoDasOngs: [
+    {
+      idOng: 1,
+      idEstado: 1,
+    },
+  ]
 };
+
+
 
 data.categorias.map((_, catIndex) => {
   data.categoriasDasOngs.push({
@@ -693,5 +701,17 @@ data.categoriasDasOngs.push(
     idCategorias: 6,
   },
 )
+
+for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
+  for(let i = 0; i < 4; i++) {
+    let number = Math.floor(Math.random() * 10 + i);
+    number > 26? number = 26 : "";
+  
+    data.estadoDasOngs.push({
+      idOng: iTwo + 1,
+      idEstado: number,
+    });
+  }
+}
 
 export { data };

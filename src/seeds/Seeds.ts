@@ -153,6 +153,19 @@ export class Seeds {
       console.log(`> tbl_dados_bancarios `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableOngEstado(ongEstadoData) {
+    try {
+      const result = await prisma.tbl_ong_estado.createMany({
+        data: ongEstadoData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_ong_estado seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_ong_estado `, `WAS NOT SEEDED\n`, error);
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -169,6 +182,7 @@ async function ExecSeeds() {
     await seeds.tableOngCategoria(data.categoriasDasOngs);
     await seeds.tableMeiosDeDoacao(data.meiosdeDoacao);
     await seeds.tableDadosBancarios(data.dadosBancarios);
+    await seeds.tableOngEstado(data.estadoDasOngs);
   } catch (error) {
     throw new Error(error);
   }
