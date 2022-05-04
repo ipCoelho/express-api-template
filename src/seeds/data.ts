@@ -659,7 +659,18 @@ const data = {
       idOng: 1,
       idEstado: 1,
     },
-  ]
+  ],
+  reacoes: [
+    {
+      emoji: "coração",
+    },
+    {
+      emoji: "feliz",
+    },
+    {
+      emoji: "triste",
+    },
+  ],
 };
 
 

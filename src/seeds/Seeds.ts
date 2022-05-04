@@ -166,6 +166,19 @@ export class Seeds {
       console.log(`> tbl_ong_estado `, `WAS NOT SEEDED\n`, error);
     }
   }
+
+  async tableReacao(reacaoData) {
+    try {
+      const result = await prisma.tbl_reacao.createMany({
+        data: reacaoData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_reacao seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_reacao `, `WAS NOT SEEDED\n`, error);  
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -183,6 +196,7 @@ async function ExecSeeds() {
     await seeds.tableMeiosDeDoacao(data.meiosdeDoacao);
     await seeds.tableDadosBancarios(data.dadosBancarios);
     await seeds.tableOngEstado(data.estadoDasOngs);
+    await seeds.tableReacao(data.reacoes);
   } catch (error) {
     throw new Error(error);
   }
