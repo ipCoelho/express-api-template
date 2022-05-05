@@ -72,6 +72,8 @@ model tbl_endereco {
   complemento        String?              @db.Text
   municipio          String               @db.VarChar(80)
   idEstado           Int
+  idOng              Int
+  tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblOng1")
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
   tbl_eventos        tbl_eventos[]
@@ -111,7 +113,6 @@ model tbl_eventos {
   numeroParticipantes Int?
   tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_endereco1")
   tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_ong1")
-  tbl_midia           tbl_midia[]
   tbl_usuario_evento  tbl_usuario_evento[]
 
   @@index([idEndereco], map: "fk_tbl_eventos_tbl_endereco1_idx")
@@ -132,20 +133,17 @@ model tbl_favoritos {
   @@index([idUsuario], map: "fk_tbl_favoritos_tbl_usuario1_idx")
 }
 
-model tbl_midia {
+model tbl_post_media {
   idFoto                Int      @id @unique(map: "idtblFoto_UNIQUE") @default(autoincrement())
   titulo                String   @db.VarChar(500)
   endereco              String?  @db.VarChar(500)
   tipo                  String?  @db.VarChar(50)
   ext                   String?  @db.VarChar(10)
-  tbl_eventos_idEventos Int
   idOng                 Int?
   idPost                Int
   tbl_post              tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_post1")
 
-  tbl_eventos tbl_eventos @relation(fields: [tbl_eventos_idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_eventos1")
-
-  @@index([tbl_eventos_idEventos], map: "fk_tbl_midia_tbl_eventos1_idx")
+  @@index([idPost], map: "fk_tbl_midia_tbl_post1_idx")
 }
 
 model tbl_informacoes_de_contato {
@@ -226,6 +224,7 @@ model tbl_ong {
   tbl_meios_de_doacao    tbl_meios_de_doacao[]
   tbl_dados_bancarios    tbl_dados_bancarios[]
   tbl_comentario         tbl_comentario[]
+  tbl_endereco           tbl_endereco[]
 
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
 }
@@ -274,12 +273,12 @@ model tbl_patrocinadores {
 model tbl_post {
   idPost              Int                   @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
   descricao           String                @db.Text
-  dataHora            DateTime              @default(now())
   idOng               Int
+  createdAt           DateTime              @default(now())
   tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_tbl_ong1")
   tbl_post_comentario tbl_post_comentario[]
   tbl_post_reacao     tbl_post_reacao[]
-  tbl_midia           tbl_midia[]
+  tbl_post_media      tbl_post_media[]
 
   @@index([idOng], map: "fk_tbl_post_tbl_ong1_idx")
 }
@@ -303,7 +302,7 @@ model tbl_post_reacao {
 
   @@index([idPost], map: "fk_tbl_post_reacao_tbl_post1_idx")
   @@index([idReacao], map: "fk_tbl_post_reacao_tbl_reacao1_idx")
-} 
+}
 
 model tbl_reacao {
   idReacao           Int                  @id @unique(map: "idtblCurtida_UNIQUE") @default(autoincrement())
@@ -341,8 +340,8 @@ model tbl_usuario {
   tbl_vagas_usuario          tbl_vagas_usuario[]
   tbl_comentario             tbl_comentario[]
 
-  @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
   tbl_usuario_reacao tbl_usuario_reacao[]
+  @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
 }
 
 model tbl_usuario_reacao {
