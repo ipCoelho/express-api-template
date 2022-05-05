@@ -139,12 +139,11 @@ model tbl_post_media {
   endereco    String?  @db.VarChar(500)
   tipo        String?  @db.VarChar(50)
   ext         String?  @db.VarChar(10)
-  idOng       Int      @unique(map: "idOng_UNIQUE")
+  idOng       Int
   idPost      Int
   tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_post1")
   tbl_ong     tbl_ong  @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_ong1")
 
-  @@index([idOng], map: "fk_tbl_midia_tbl_ong1_idx")
   @@index([idPost], map: "fk_tbl_midia_tbl_post1_idx")
 }
 
@@ -276,7 +275,7 @@ model tbl_patrocinadores {
 model tbl_post {
   idPost              Int                   @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
   descricao           String                @db.Text
-  idOng               Int                   @unique
+  idOng               Int
   createdAt           DateTime              @default(now())
   tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_tbl_ong1")
   tbl_post_comentario tbl_post_comentario[]

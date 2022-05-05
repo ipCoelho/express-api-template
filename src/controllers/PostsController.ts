@@ -12,7 +12,11 @@ class allPostsController {
           expected: {
             idOng: "number",
             descricao: "string",
-
+            media: {
+              "titulo": "string",
+              "endereco": "string?",
+              "idOng": "number",
+            }
           },
           status: 400,
         });
@@ -28,15 +32,15 @@ class allPostsController {
       console.log(`Post: `, postCreate);
       
 
-      if (postCreate) {
+      if (postCreate != null) {
         const media = [];
         if (req.body.media && req.body.media.length > 0) {
           for (let i = 0; i < req.body.media.length; i++) {
             const creatingMedia = await prisma.tbl_post_media.create({
               data: {
-                titulo: req.body.media[i],
+                titulo: req.body.media[i].titulo,
                 idOng: Number(req.body.idOng),
-                endereco: req.body.media[i],
+                endereco: req.body.media[i].endereco,
                 idPost: postCreate.idPost,  
               },
             });
@@ -134,22 +138,15 @@ class allPostsController {
         });
       }
 
-      console.log(req.params);
       const request = req.body;
       request.idOng = Number(req.params.idOng);
       request.idPost = Number(req.params.idPost);
-      request.descricao = req.body.descricao;
-      request.media = req.body.media;
-
-      console.log(`Request Inteface: `, request);
 
       const postVerify = await prisma.tbl_post.findUnique({
         where: {
-          idPost: Number(req.params.idPost)
+          idPost: Number(request.idPost)
         },
       });
-      
-      console.log(`Post verif: `, postVerify);
 
       if (postVerify != null) {
         const postUpdate = await prisma.tbl_post.update({
@@ -158,28 +155,15 @@ class allPostsController {
           },
           data: {
             descricao: request.descricao,
-            
           },
         });
           console.log(`PostUpdated: `, postUpdate);
+      } else {
+        return res.status(400).json({
+          message: "Post não encontrado.",
+          status: 400,
+        });
       }
-
-
-      // for (let i = 0; i < request.media.length; i++) {
-      //   const mediaUpdate = await prisma.tbl_post_media.update({
-      //     where: {
-      //       idPostMedia: Number(request.media[i].idPostMedia),
-      //       idOng: Number(request.idOng),
-      //     },
-      //     data: {
-      //       titulo: request.media[i].titulo,
-      //       endereco: request.media[i].endereco,
-      //     },
-      //   });
-      //   console.log(`Media[${i}]:\n ${JSON.stringify(mediaUpdate)}.`);
-      // }
-      
-
     } catch (error) {
       console.log(error);
       console.log(`Error: ${error}`);
