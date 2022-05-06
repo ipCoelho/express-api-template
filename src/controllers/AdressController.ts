@@ -86,7 +86,16 @@ class AdressController {
 
   async findAll(req: Request, res: Response) {
     try {
-      const adress = await prisma.tbl_endereco.findMany();
+      const adress = await prisma.tbl_endereco.findMany({
+        include: {
+          tbl_estado: true,
+        },
+      });
+
+      adress.forEach(post => {
+        post['estado'] = post['tbl_estado']['nome'];
+        delete post['tbl_estado'];
+      });
 
       if (adress.length === 0) {
         return res.status(200).json({
@@ -117,7 +126,13 @@ class AdressController {
         where: {
           idOng: Number(req.params.id),
         },
+        include: {
+          tbl_estado: true,
+        },
       });
+
+      adress['estado'] = adress['tbl_estado']['nome'];
+      delete adress['tbl_estado'];
 
       if (adress == null) {
         return res.status(400).json({
