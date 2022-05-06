@@ -445,7 +445,7 @@ class OngController {
       },
     });
 
-    if (databaseData) {
+    if (databaseData != null || loginDelete != null) {
       console.info(`> Returned:
         {
           message: "ONG com (nome:'${IDverify.nome}', id:'${id}') excluída com sucesso.",
