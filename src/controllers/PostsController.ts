@@ -28,9 +28,6 @@ class allPostsController {
         }
       });
 
-      console.log(`Post: `, postCreate);
-      
-
       if (postCreate != null) {
         const media = [];
         if (req.body.media && req.body.media.length > 0) {
@@ -43,7 +40,6 @@ class allPostsController {
                 endereco: req.body.media[i].endereco,
               },
             });
-            console.log(`Media[${i}]:\n ${JSON.stringify(creatingMedia)}.`);
             media.push(creatingMedia);
           }
         }
