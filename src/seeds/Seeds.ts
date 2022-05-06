@@ -179,6 +179,19 @@ export class Seeds {
       console.log(`> tbl_reacao `, `WAS NOT SEEDED\n`, error);  
     }
   }
+
+  async tableEnderecos(enderecosData) {
+    try {
+      const result = await prisma.tbl_endereco.createMany({
+        data: enderecosData,
+        skipDuplicates: true,
+      });
+      console.log("> tbl_enderecos seeded.");
+      return result;
+    } catch (error) {
+      console.log(`> tbl_enderecos `, `WAS NOT SEEDED\n`, error); 
+    }
+  }
 }
 
 async function ExecSeeds() {
@@ -197,6 +210,7 @@ async function ExecSeeds() {
     await seeds.tableDadosBancarios(data.dadosBancarios);
     await seeds.tableOngEstado(data.estadoDasOngs);
     await seeds.tableReacao(data.reacoes);
+    await seeds.tableEnderecos(data.enderecos);
   } catch (error) {
     throw new Error(error);
   }
