@@ -70,6 +70,13 @@ class allPostsController {
          },
        }
       );
+
+      allPosts.forEach(post => {
+        post['ong'] = post['tbl_ong'];
+        post['media'] = post['tbl_post_media'];
+        delete post['tbl_ong'];
+        delete post['tbl_post_media'];
+      });
     
       return res.status(200).json({
         message: "Posts encontrados com sucesso.",
@@ -97,6 +104,13 @@ class allPostsController {
         },
       });
 
+      post.forEach(post => {
+        post['ong'] = post['tbl_ong'];
+        post['media'] = post['tbl_post_media'];
+        delete post['tbl_ong'];
+        delete post['tbl_post_media'];
+      });
+
       if (post) {
         return res.status(200).json({
           message: `Posts da ONG '${req.params.id}' encontrado com sucesso.`,
@@ -104,6 +118,38 @@ class allPostsController {
           data: post,
         });
       }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const allPostsOfTheOngById = await prisma.tbl_post.findMany({
+        where: {
+          idOng: Number(req.params.idOng),
+        },
+        include: {
+          tbl_post_media: true,
+        },
+      });
+      console.log(allPostsOfTheOngById);
+
+      const idPostVerifty = allPostsOfTheOngById.filter(post => {
+        post.idPost === Number(req.params.idPost)? true : "";
+      });
+      console.log(idPostVerifty);
+    
+      return res.status(200).json({
+        message: `Posts da ONG '${req.params.idOng}' encontrado com sucesso.`,
+        status: 200,
+        data: idPostVerifty,
+      });
+
     } catch (error) {
       console.log(`Error: ${error}`);
       return res.status(500).json({

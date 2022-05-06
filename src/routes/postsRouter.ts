@@ -24,4 +24,9 @@ router.put("/post/:idOng/:idPost", (req, res) => {
   postsController.update(req, res);
 });
 
+router.delete("/post/:idOng/:idPost", (req, res) => {
+  console.info(`> Request DELETE recieved in '/post/:idOng/:idPost' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  postsController.delete(req, res);
+});
+
 export default router;
