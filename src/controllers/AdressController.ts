@@ -175,7 +175,7 @@ class AdressController {
 
       if (adressVerify == null) {
         return res.status(400).json({
-          message: `Endereço não encontrado para ONG '${req.body.idOng}'.`,
+          message: `Endereço não encontrado para ONG '${req.params.id}'.`,
           status: 400,
         });
       }
