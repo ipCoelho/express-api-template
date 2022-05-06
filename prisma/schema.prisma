@@ -73,7 +73,7 @@ model tbl_endereco {
   complemento        String?              @db.Text
   municipio          String               @db.VarChar(80)
   idEstado           Int
-  idOng              Int
+  idOng              Int  @unique(map: "idOng_UNIQUE")
   tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblOng1")
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
