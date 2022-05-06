@@ -14,8 +14,7 @@ class allPostsController {
             descricao: "string",
             media: {
               "titulo": "string",
-              "endereco": "string?",
-              "idOng": "number",
+              "endereco": "string?"
             }
           },
           status: 400,
@@ -38,10 +37,10 @@ class allPostsController {
           for (let i = 0; i < req.body.media.length; i++) {
             const creatingMedia = await prisma.tbl_post_media.create({
               data: {
-                titulo: req.body.media[i].titulo,
                 idOng: Number(req.body.idOng),
-                endereco: req.body.media[i].endereco,
                 idPost: postCreate.idPost,  
+                titulo: req.body.media[i].titulo,
+                endereco: req.body.media[i].endereco,
               },
             });
             console.log(`Media[${i}]:\n ${JSON.stringify(creatingMedia)}.`);
