@@ -14,7 +14,7 @@ class AdressController {
         return res.status(400).json({
           message: "Dados incompletos.",
           expected: {
-            idOng: "number",
+            idLogin: "number",
             cep: "string",
             bairro: "string",
             numero: "number",
@@ -29,13 +29,13 @@ class AdressController {
 
       const adressVerify = await prisma.tbl_endereco.findUnique({
         where: {
-          idOng: req.body.idOng,
+
         },
       });
 
       if (adressVerify != null) {
         return res.status(400).json({
-          message: `Endereço já cadastrado para ONG '${req.body.idOng}'.`,
+          message: `Endereço já cadastrado para idLogin '${req.body.idLogin}'.`,
           status: 400,
           data: adressVerify,
         });
@@ -57,7 +57,7 @@ class AdressController {
 
       const adressCreate = await prisma.tbl_endereco.create({
         data: {
-          idOng: req.body.idOng,
+          idLogin: req.body.idLogin,
           cep: req.body.cep,
           bairro: req.body.bairro,
           numero: req.body.numero,
@@ -70,7 +70,7 @@ class AdressController {
 
       if (adressCreate != null) {
         return res.status(200).json({
-          message: `Endereço cadastrado com sucesso para ONG '${req.body.idOng}'.`,
+          message: `Endereço cadastrado com sucesso para Login '${req.body.idLogin}'.`,
           status: 200,
           data: adressCreate,
         });
@@ -86,7 +86,16 @@ class AdressController {
 
   async findAll(req: Request, res: Response) {
     try {
-      const adress = await prisma.tbl_endereco.findMany();
+      const adress = await prisma.tbl_endereco.findMany({
+        include: {
+          tbl_estado: true,
+        },
+      });
+
+      adress.forEach(post => {
+        post['estado'] = post['tbl_estado']['nome'];
+        delete post['tbl_estado'];
+      });
 
       if (adress.length === 0) {
         return res.status(200).json({
@@ -115,20 +124,25 @@ class AdressController {
     try {
       const adress = await prisma.tbl_endereco.findUnique({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
+        },
+        include: {
+          tbl_estado: true,
         },
       });
 
       if (adress == null) {
         return res.status(400).json({
-          message: `Endereço não encontrado para ONG '${req.params.id}'.`,
+          message: `Endereço não encontrado para Login '${req.params.id}'.`,
           status: 400,
-          data: adress,
         });
       }
 
+      adress['estado'] = adress['tbl_estado']['nome'];
+      delete adress['tbl_estado'];
+      
       return res.status(200).json({
-        message: `Endereço encontrado para ONG '${req.params.id}'.`,
+        message: `Endereço encontrado para Login '${req.params.id}'.`,
         status: 200,
         data: adress,
       });
@@ -154,7 +168,7 @@ class AdressController {
         return res.status(400).json({
           message: "Dados incompletos.",
           expected: {
-            idOng: "params-number",
+            id: "params-number",
             cep: "string?",
             bairro: "string?",
             numero: "number?",
@@ -169,13 +183,13 @@ class AdressController {
 
       const adressVerify = await prisma.tbl_endereco.findUnique({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         }
       });
 
       if (adressVerify == null) {
         return res.status(400).json({
-          message: `Endereço não encontrado para ONG '${req.params.id}'.`,
+          message: `Endereço não encontrado para Login '${req.params.id}'.`,
           status: 400,
         });
       }
@@ -196,7 +210,7 @@ class AdressController {
       const { estado, ...body } = req.body;
       const adressUpdate = await prisma.tbl_endereco.update({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         },
         data: {
           ...body,
@@ -206,7 +220,7 @@ class AdressController {
 
       if (adressUpdate != null) {
         return res.status(200).json({
-          message: `Endereço atualizado com sucesso para ONG '${req.params.id}'.`,
+          message: `Endereço atualizado com sucesso para Login '${req.params.id}'.`,
           status: 200,
           data: adressUpdate,
         });
@@ -225,26 +239,26 @@ class AdressController {
     try {
       const adressVerify = await prisma.tbl_endereco.findUnique({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         }
       });
 
       if (adressVerify == null) {
         return res.status(400).json({
-          message: `Endereço não encontrado para ONG '${req.params.id}'.`,
+          message: `Endereço não encontrado para Login '${req.params.id}'.`,
           status: 400,
         });
       }
 
       const adressDelete = await prisma.tbl_endereco.delete({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         }
       });
 
       if (adressDelete != null) {
         return res.status(200).json({
-          message: `Endereço deletado com sucesso para ONG '${req.params.id}'.`,
+          message: `Endereço deletado com sucesso para Login '${req.params.id}'.`,
           status: 200,
           data: adressDelete,
         });

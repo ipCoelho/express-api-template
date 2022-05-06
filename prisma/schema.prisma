@@ -73,12 +73,14 @@ model tbl_endereco {
   complemento        String?              @db.Text
   municipio          String               @db.VarChar(80)
   idEstado           Int
-  idOng              Int  @unique(map: "idOng_UNIQUE")
-  tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblOng1")
+  idLogin            Int                  @unique(map: "idLogin_UNIQUE")
+  tbl_login          tbl_login            @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblLogin1")
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
   tbl_eventos        tbl_eventos[]
   tbl_login_endereco tbl_login_endereco[]
+
+
 
   @@index([idEstado], map: "fk_tblEndereco_tblEstado1_idx")
 }
@@ -142,10 +144,10 @@ model tbl_post_media {
   ext         String?  @db.VarChar(10)
   idOng       Int
   idPost      Int
-  tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_post1")
-  tbl_ong     tbl_ong  @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_midia_tbl_ong1")
+  tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_media_tbl_post1")
+  tbl_ong     tbl_ong? @relation(fields: [idOng], references: [idOng])
 
-  @@index([idPost], map: "fk_tbl_midia_tbl_post1_idx")
+  @@index([idPost], map: "fk_tbl_post_media_tbl_post1_idx")
 }
 
 model tbl_informacoes_de_contato {
@@ -168,6 +170,7 @@ model tbl_login {
   tbl_login_reacao   tbl_login_reacao[]
   tbl_ong            tbl_ong[]
   tbl_usuario        tbl_usuario[]
+  tbl_endereco       tbl_endereco[]
 }
 
 model tbl_login_endereco {
@@ -226,7 +229,6 @@ model tbl_ong {
   tbl_meios_de_doacao    tbl_meios_de_doacao[]
   tbl_dados_bancarios    tbl_dados_bancarios[]
   tbl_comentario         tbl_comentario[]
-  tbl_endereco           tbl_endereco[]
   tbl_post_media         tbl_post_media[]
 
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
@@ -278,12 +280,12 @@ model tbl_post {
   descricao           String                @db.Text
   idOng               Int
   createdAt           DateTime              @default(now())
-  tbl_ong             tbl_ong               @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_tbl_ong1")
   tbl_post_comentario tbl_post_comentario[]
   tbl_post_reacao     tbl_post_reacao[]
   tbl_post_media      tbl_post_media[]
+  tbl_ong             tbl_ong?              @relation(fields: [idOng], references: [idOng])
 
-  @@index([idOng], map: "fk_tbl_post_tbl_ong1_idx")
+  @@index([idOng], map: "fk_tblPosts_tblOng1_idx")
 }
 
 model tbl_post_comentario {
@@ -344,7 +346,7 @@ model tbl_usuario {
   tbl_comentario             tbl_comentario[]
 
   tbl_usuario_reacao tbl_usuario_reacao[]
-  @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
+  // @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
 }
 
 model tbl_usuario_reacao {

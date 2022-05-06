@@ -675,9 +675,19 @@ const data = {
       emoji: "triste",
     },
   ],
+  enderecos: [
+    {
+      idLogin: 1,
+      cep: "329482394",
+      bairro: "Jardim Carlos",
+      numero: 1154,
+      rua: "Rua Fulano de Tal",
+      municipio: "Jardim Silveira",
+      idEstado: 1,
+      complemento: "Casa 2"
+    },
+  ],
 };
-
-
 
 data.categorias.map((_, catIndex) => {
   data.categoriasDasOngs.push({
@@ -715,7 +725,7 @@ data.categoriasDasOngs.push(
     idOng: 2,
     idCategorias: 6,
   },
-)
+);
 
 for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
   for(let i = 0; i < 4; i++) {
@@ -727,6 +737,20 @@ for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
       idEstado: number,
     });
   }
+}
+
+const adress = data.enderecos[0];
+for (let i = 0; i < data.ong.length; i++) {
+  data.enderecos.push({
+    idLogin: i + 1,
+    cep: adress.cep.concat(String(i+1)),
+    bairro: adress.bairro.concat(String(i+1)),
+    numero: Math.trunc(( Math.random() * 100 ) + ( Math.random() * 100 )),
+    rua: adress.rua.concat(String(i+1)),
+    municipio: adress.municipio.concat(String(i+1)),
+    idEstado: Math.trunc(( Math.random() * 26 ) + i),
+    complemento: adress.complemento.concat(String(i+1)),
+  });
 }
 
 export { data };
