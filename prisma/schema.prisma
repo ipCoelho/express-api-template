@@ -73,12 +73,14 @@ model tbl_endereco {
   complemento        String?              @db.Text
   municipio          String               @db.VarChar(80)
   idEstado           Int
-  idOng              Int                  @unique(map: "idOng_UNIQUE")
-  tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblOng1")
+  idLogin            Int                  @unique(map: "idLogin_UNIQUE")
+  tbl_login          tbl_login            @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblLogin1")
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
   tbl_endereco_vagas tbl_endereco_vagas[]
   tbl_eventos        tbl_eventos[]
   tbl_login_endereco tbl_login_endereco[]
+
+
 
   @@index([idEstado], map: "fk_tblEndereco_tblEstado1_idx")
 }
@@ -168,6 +170,7 @@ model tbl_login {
   tbl_login_reacao   tbl_login_reacao[]
   tbl_ong            tbl_ong[]
   tbl_usuario        tbl_usuario[]
+  tbl_endereco       tbl_endereco[]
 }
 
 model tbl_login_endereco {
@@ -226,7 +229,6 @@ model tbl_ong {
   tbl_meios_de_doacao    tbl_meios_de_doacao[]
   tbl_dados_bancarios    tbl_dados_bancarios[]
   tbl_comentario         tbl_comentario[]
-  tbl_endereco           tbl_endereco[]
   tbl_post_media         tbl_post_media[]
 
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")

@@ -677,7 +677,7 @@ const data = {
   ],
   enderecos: [
     {
-      idOng: 1,
+      idLogin: 1,
       cep: "329482394",
       bairro: "Jardim Carlos",
       numero: 1154,
@@ -742,7 +742,7 @@ for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
 const adress = data.enderecos[0];
 for (let i = 0; i < data.ong.length; i++) {
   data.enderecos.push({
-    idOng: i + 1,
+    idLogin: i + 1,
     cep: adress.cep.concat(String(i+1)),
     bairro: adress.bairro.concat(String(i+1)),
     numero: Math.trunc(( Math.random() * 100 ) + ( Math.random() * 100 )),
