@@ -634,24 +634,28 @@ const data = {
       banco: "Banco do Brasil",
       agencia: "0001",
       conta: "0001",
+      tipo: "Conta Corrente"
     },
     {
       idOng: 2,
       banco: "Banco do Brasil",
       agencia: "0002",
       conta: "0002",
+      tipo: "Conta Corrente"
     },
     {
       idOng: 3,
       banco: "Santander",
       agencia: "0003",
       conta: "0003",
+      tipo: "Conta Corrente"
     },
     {
       idOng: 4,
       banco: "Nubank",
       agencia: "0004",
       conta: "0004",
+      tipo: "Conta Corrente"
     },
   ],
   estadoDasOngs: [

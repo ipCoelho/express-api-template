@@ -278,33 +278,61 @@ class OngController {
   }
 
   async update(req: Request, res: Response) {
-    if (req.params.id == null) {
-      console.info(`> Returned:
-        {
+    try {
+      if (req.params.id == null || req.body.idLogin == null) {
+        return res.status(400).json({
           message: "ID nulo ou inválido.",
           status: 400,
-        }`);
-
-      return res.status(400).json({
-        message: "ID nulo ou inválido.",
-        status: 400,
-      });
-    } else if (
-      req.body.nome == null &&
-      req.body.email == null &&
-      req.body.senha == null &&
-      req.body.banner == null &&
-      req.body.descricao == null &&
-      req.body.numeroDeSeguidores == null &&
-      req.body.telefone == null &&
-      req.body.cnpj == null &&
-      req.body.foto == null &&
-      req.body.historia == null &&
-      req.body.qtdDeMembros == null &&
-      req.body.dataDeFundacao == null 
-    ) {
-      console.info(`> Returned:
-        {
+          expected: {
+            nome: "string?",
+            email: "string?",
+            senha: "string?",
+            banner: "string?",
+            descricao: "string?",
+            numeroDeSeguidores: "number?",
+            telefone: "string?",
+            cnpj: "string?",
+            foto: "string",
+            historia: "string?",
+            qtdDeMembros: "number?",
+            dataDeFundacao: "string?",
+          }
+        });
+      } else if (
+        req.body.nome == null &&
+        req.body.email == null &&
+        req.body.senha == null &&
+        req.body.banner == null &&
+        req.body.descricao == null &&
+        req.body.numeroDeSeguidores == null &&
+        req.body.telefone == null &&
+        req.body.cnpj == null &&
+        req.body.foto == null &&
+        req.body.historia == null &&
+        req.body.qtdDeMembros == null &&
+        req.body.dataDeFundacao == null
+      ) {
+        console.info(`> Returned:
+          {
+            message: "Os dados enviados são nulos ou inválidos.",
+            status: 400,
+            expected: {
+              nome: "string?",
+              email: "string?",
+              senha: "string?",
+              banner: "string?",
+              descricao: "string?",
+              numeroDeSeguidores: "number?",
+              telefone: "string?",
+              cnpj: "string?",
+              foto: "string",
+              historia: "string?",
+              qtdDeMembros: "number?",
+              dataDeFundacao: "string?",
+            }
+          }`);
+  
+        return res.status(400).json({
           message: "Os dados enviados são nulos ou inválidos.",
           status: 400,
           expected: {
@@ -321,70 +349,67 @@ class OngController {
             qtdDeMembros: "number?",
             dataDeFundacao: "string?",
           }
-        }`);
-
-      return res.status(400).json({
-        message: "Os dados enviados são nulos ou inválidos.",
-        status: 400,
-        expected: {
-          nome: "string?",
-          email: "string?",
-          senha: "string?",
-          banner: "string?",
-          descricao: "string?",
-          numeroDeSeguidores: "number?",
-          telefone: "string?",
-          cnpj: "string?",
-          foto: "string",
-          historia: "string?",
-          qtdDeMembros: "number?",
-          dataDeFundacao: "string?",
-        },
+        });
+      }
+  
+      const { id } = req.params, ong = req.body; 
+  
+      const IDverify = await prisma.tbl_ong.findUnique({
+        where: { idOng: Number(id) },
       });
-    }
-
-    const { id } = req.params;
-    const ong = req.body; 
-
-    const IDverify = await prisma.tbl_ong.findUnique({
-      where: { idOng: Number(id) },
-    });
-
-    if (IDverify == null) {
-      console.info(`> Returned:
-        {
-          message: "ONG com ID '${id}' não foi encontrada.",
+  
+      if (IDverify == null) {
+        console.info(`> Returned:
+          {
+            message: "ONG com ID '${id}' não foi encontrada.",
+            status: 404,
+          }`);
+  
+        return res.status(404).json({
+          message: `ONG com ID '${id}' não foi encontrada.`,
           status: 404,
-        }`);
-
-      return res.status(404).json({
-        message: `ONG com ID '${id}' não foi encontrada.`,
-        status: 404,
+        });
+      }
+  
+      const databaseData = await prisma.tbl_ong.update({
+        where: { idOng: Number(id) },
+        data: {
+          ...ong.alteracoes,
+         },
       });
-    }
-
-    const databaseData = await prisma.tbl_ong.update({
-      where: { idOng: Number(id) },
-      data: {
-        ...ong,
-       },
-    });
-
-    if (databaseData != null) {
-      console.info(`> Returned:
-        {
-          message: "ONG com ID '${id}' atualizada com sucesso.",
+  
+      const loginUpdate = await prisma.tbl_login.update({
+        where: {
+          idLogin: Number(IDverify.idLogin),
+        },
+        data: {
+          email: ong.data.email,
+        }
+      })
+  
+      if (databaseData != null || loginUpdate != null) {
+        console.info(`> Returned:
+          {
+            message: "ONG com ID '${id}' atualizada com sucesso.",
+            status: 200,
+            data: ${JSON.stringify(databaseData)},
+          }`);
+  
+        res.status(200).json({  
+          message: `ONG com ID '${id}' atualizada com sucesso.`,
           status: 200,
-          data: ${JSON.stringify(databaseData)},
-        }`);
-
-      res.status(200).json({  
-        message: `ONG com ID '${id}' atualizada com sucesso.`,
-        status: 200,
-        data: databaseData
+          data: {
+            ong: databaseData,
+            login: loginUpdate,
+          }
+        });
+      }
+    } catch (error) {
+      console.error(`> Error: ${error}`);
+      res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor",
+        status: 500,
       });
-    } else {
-      throw new Error(`Error: ${databaseData}.`);
     }
   }
 
@@ -398,12 +423,12 @@ class OngController {
     if (IDverify == null) {
       console.info(`> Returned:
         {
-          message: "ID '${id}' não foi encontrada.",
+          message: "ONG '${id}' não foi encontrada.",
           status: 404,
         }`);
 
       return res.status(404).json({
-        message: `ID '${id}' não foi encontrada.`,
+        message: `ONG '${id}' não foi encontrada.`,
         status: 404,
       });
     }
@@ -411,6 +436,12 @@ class OngController {
     const databaseData = await prisma.tbl_ong.delete({
       where: {
         idOng: Number(id),
+      },
+    });
+
+    const loginDelete = await prisma.tbl_login.delete({
+      where: {
+        idLogin: Number(IDverify.idLogin),
       },
     });
 

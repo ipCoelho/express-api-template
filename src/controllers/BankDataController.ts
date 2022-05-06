@@ -42,6 +42,7 @@ class bankDataController {
           agencia: req.body.agencia,
           conta: req.body.conta,
           idOng: req.body.idOng,
+          tipo: req.body.tipo,
         },
       });
 
@@ -121,7 +122,8 @@ class bankDataController {
             body: {
               banco: "string",
               agencia: "string",
-              conta: "string"
+              conta: "string",
+              tipo: "string",
             },
             params: {
               id: "params",
@@ -152,6 +154,7 @@ class bankDataController {
           banco: req.body.banco,
           agencia: req.body.agencia,
           conta: req.body.conta,
+          tipo: req.body.tipo,
         },
       });
 
