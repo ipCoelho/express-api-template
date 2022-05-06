@@ -131,17 +131,16 @@ class AdressController {
         },
       });
 
-      adress['estado'] = adress['tbl_estado']['nome'];
-      delete adress['tbl_estado'];
-
       if (adress == null) {
         return res.status(400).json({
           message: `Endereço não encontrado para Login '${req.params.id}'.`,
           status: 400,
-          data: adress,
         });
       }
 
+      adress['estado'] = adress['tbl_estado']['nome'];
+      delete adress['tbl_estado'];
+      
       return res.status(200).json({
         message: `Endereço encontrado para Login '${req.params.id}'.`,
         status: 200,
