@@ -38,6 +38,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "express": "^4.17.2",
+    "firebase": "^9.8.0",
     "mongoose": "^6.1.10",
     "tsc": "^2.0.4"
   }
