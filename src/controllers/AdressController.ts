@@ -60,7 +60,7 @@ class AdressController {
           idLogin: req.body.idLogin,
           cep: req.body.cep,
           bairro: req.body.bairro,
-          numero: req.body.numero,
+          numero: Number(req.body.numero),
           rua: req.body.rua,
           municipio: req.body.municipio,
           complemento: req.body.complemento ?? undefined,
