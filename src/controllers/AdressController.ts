@@ -29,7 +29,7 @@ class AdressController {
 
       const adressVerify = await prisma.tbl_endereco.findUnique({
         where: {
-
+          idLogin: Number(req.body.idLogin),
         },
       });
 
