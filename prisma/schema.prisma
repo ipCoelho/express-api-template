@@ -114,6 +114,7 @@ model tbl_eventos {
   idEndereco          Int
   idOng               Int
   numeroParticipantes Int?
+  candidatos          Boolean              @db.TinyInt
   tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_endereco1")
   tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_ong1")
   tbl_usuario_evento  tbl_usuario_evento[]
