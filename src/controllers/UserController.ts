@@ -255,132 +255,102 @@ class UserController {
   }
 
   async update(req: Request, res: Response) {
-    if (req.params.id == null) {
-      console.info(`> Returned:
-        {
-          message: "ID nulo ou inválido.",
-          status: 400
-        }`);
-
-      return res.status(400).json({
-        message: "ID nulo ou inválido.",
-        status: 400,
-      });
-    } else if (
-      req.body.nome == null &&
-      req.body.banner == null &&
-      req.body.curriculo == null &&
-      req.body.foto == null &&
-      req.body.email == null &&
-      req.body.senha == null
-    ) {
-      console.info(`> Returned:
-      {
-        message: "Nenhum dado foi enviado.",
+    try {
+      if (
+        req.body.usuario == null &&
+        req.body.login == null
+      ) {
+        return res.status(400).json({
+          message: "Nenhum dado válido foi enviado.",
           status: 400,
           expected: {
-            nome: "string?",
-            banner: "string?",
-            curriculo: "string?",
-            foto: "string?",
-            email: "string?",
-            senha: "string?"
-          }
-        }`);
-
-      return res.status(400).json({
-        message: "Nenhum dado foi enviado.",
-        status: 400,
-        expected: {
-          nome: "string?",
-          email: "string?",
-          senha: "string?",
-          banner: "string?",
-          curriculo: "string?",
-          foto: "string?",
-          dataDeNascimento: "date?",
-        },
-      });
-    }
-
-    const { id } = req.params;
-    const user = req.body;
-
-    
-    const IDverify = await prisma.tbl_usuario.findUnique({
-      where: {
-        idUsuario: Number(id),
-      },
-    });
-    
-    if (IDverify == null) {
-      console.info(`> Returned:
-      {
-        message: "ID não encontrado.",
-        status: 404
-      }`);
-      
-      return res.status(404).json({
-        message: "ID não encontrado.",
-        status: 404,
-      });
-    }
-    
-    let letEmail;
-    if(req.body.email) {
-      const emailVerify = await prisma.tbl_login.findUnique({
-        where: {
-          email: req.body.email,
-        },
-      });
-
-      if (emailVerify != null) {
-        const emailUpdate = await prisma.tbl_login.update({
-          where: {
-            email: req.body.email,
+            usuario: {
+              nome: "string?",
+              banner: "string?",
+              curriculo: "string?",
+              foto: "string?",
+              dataDeNascimento: "date?",
+            },
+            login: {
+              email: "string?",
+              senha: "string?",
+            }
           },
-          data: {
-            email: req.body.email,
-          },
-        });
-    
-        if(emailUpdate) {
-          letEmail = emailUpdate;
-        }
-      } else {
-        return res.status(400).json({
-          message: `Email '${req.body.email}' não encontrado.`,
-          status: 400,
         });
       }
-    }
 
-    const { email, senha, ...newUser } = user;
-    const databaseData = await prisma.tbl_usuario.update({
-      where: {
-        idUsuario: Number(id),
-      },
-      data: {
-        ...newUser,
-        letEmail
-      },
-    });
+      const { id } = req.params, user = req.body.usuario, login = req.body.login;
 
-    if (databaseData) {
-      console.info(`> Returned:
-        {
+      const IDverify = await prisma.tbl_usuario.findUnique({
+        where: {
+          idUsuario: Number(id),
+        },
+        include: {
+          tbl_login: true,
+        },
+      });
+      console.log("tblUsuario: ", IDverify);
+      
+      
+      if (IDverify == null) {
+        return res.status(404).json({
+          message: `Usuário com id '${id}' não encontrado.`,
+          status: 404,
+        });
+      }
+      
+      let email;
+      if(login != null) {
+        email = await prisma.tbl_login.findUnique({
+          where: { email: IDverify.tbl_login.email },
+        });
+        console.log("tblLogin: ", email);
+
+        if (email == null) {
+          return res.status(404).json({
+            message: `Email '${login.email}' não encontrado.`,
+            status: 404,
+          });
+        }
+
+        email = await prisma.tbl_login.update({
+          where: {
+            email: IDverify.tbl_login.email,
+          },
+          data: {
+            email: login.email ?? email.email,
+            senha: login.senha ?? email.senha,
+          },
+        });
+        console.log("tblLoginUpdated: ", email);
+      }
+
+      const usuarioUpdate = await prisma.tbl_usuario.update({
+        where: {
+          idUsuario: Number(id),
+        },
+        data: {
+          ...user
+        },
+      });
+      console.log("tblUsuarioUpdated: ", usuarioUpdate);
+
+      if (usuarioUpdate != null) {
+      return res.status(200).json({
           message: "Usuário atualizado com sucesso.",
           status: 200,
-          data: ${JSON.stringify(databaseData)}
-        }`);
-
-      return res.status(200).json({
-        message: "Usuário atualizado com sucesso.",
-        status: 200,
-        data: {...databaseData, email}, 
+          updated: {
+            usuario: { ...usuarioUpdate },
+            email: email,
+          }, 
+        });
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
       });
-    } else {
-      throw new Error(`Error: ${databaseData}`);
     }
   }
 
