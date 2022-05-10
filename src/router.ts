@@ -14,7 +14,7 @@ import { Router } from "express";
 
 const router = Router(); 
 
-router.get("/", (req, res) => res.json({message: "API working."}));
+router.get("/", (_, res) => res.json({message: "API working."}));
 router.use("/", ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
