@@ -1,0 +1,17 @@
+import FileHandlerController from "@controllers/FileHandlerController";
+import { Router } from "express";
+
+const router = Router();
+const fileHandlerController = new FileHandlerController();
+
+router.get("/upload", (req, res) => {
+  console.info(`> Request GET recieved in '/upload' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  fileHandlerController.download(req, res);
+});
+
+router.post("/upload", (req, res) => {
+  console.info(`> Request POST recieved in '/upload' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  fileHandlerController.upload(req, res);
+});
+
+export default router;
