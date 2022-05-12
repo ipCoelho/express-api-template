@@ -1,4 +1,6 @@
 import cors from "cors";
+import fileUpload from "express-fileupload";
+
 
 export class API {
   api;
@@ -19,6 +21,14 @@ export class API {
     this.api.listen(this.port, () =>
       console.log(`\n > API listening at: ${this.host}${this.port}/`)
     );
-    this.api.use(this.framework.json()).use(cors()).use("/", this.router);
+    this.api
+      .use(this.framework.json())
+      .use(this.framework.urlencoded({ extended: true }))
+      .use(cors())
+      .use(fileUpload({
+        useTempFiles : true,
+        tempFileDir : './src/temp/',
+      }))
+      .use("/", this.router);
   }
 }
