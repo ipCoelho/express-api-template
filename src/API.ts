@@ -25,10 +25,6 @@ export class API {
       .use(this.framework.json())
       .use(this.framework.urlencoded({ extended: true }))
       .use(cors())
-      .use(fileUpload({
-        useTempFiles : true,
-        tempFileDir : './src/temp/',
-      }))
       .use("/", this.router);
   }
 }
