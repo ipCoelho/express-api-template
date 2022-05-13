@@ -1,13 +1,12 @@
 import cors from "cors";
-import fileUpload from "express-fileupload";
-
+import { Router } from "express";
 
 export class API {
   api;
   framework;
-  host;
-  port;
-  router;
+  host: string;
+  port: number;
+  router: Router;
 
   constructor(framework, host, port, router) {
     this.api = framework();
