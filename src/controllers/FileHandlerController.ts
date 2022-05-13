@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { FileArray } from "express-fileupload";
 import { initializeApp, getApp } from "firebase/app";
-import { getBlob, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlxB-5oJDDKYwa8KiRrxi6KK_9iVyIQJk",
@@ -20,43 +19,27 @@ const firebaseApp = getApp(), storage = getStorage(firebaseApp, "gs://helpongs-c
 class FileHandlerController {
   async upload(req: Request, res: Response) {
     try {
-      let sampleFile = undefined, uploadPath = undefined;
+      const file = req.file;
+      const fileRef = ref(storage, `help-ongs/media/${file.originalname}`);
 
-      if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({ 
-          message:'No files were sent.',
-          status: 400
+      uploadBytes(fileRef, file.buffer, { contentType: file.mimetype })
+        .then((snapshot) => {
+          console.log(`snapshot: `, snapshot);
+          res.status(200).json({
+            message: `Arquivo '${file.originalname}' salvo com sucesso.`,
+            snapshot: snapshot,
+            status: 200,  
+          });
+        })
+        .catch(error => {
+          if (error) {
+            console.log(`> Error: `, error);
+            return res.status(500).json({ 
+              message: process.env.ERRO_500 ?? "Erro no servidor.",
+              status: 500
+            });
+          }
         });
-      }
-
-      sampleFile = req.files.imagefile;
-      uploadPath = __dirname + '/../temp/' + sampleFile.name;
-      console.log(`File: `, sampleFile);
-// Creating refs for the storage bucket and the path where the file will be uploaded.
-      const mediaRef = ref(storage, sampleFile.name);
-      const mediaFolderRef = ref(storage, `images/${sampleFile.name}`);
-// Parsing the file into a buffer, so the method uploadBytes() can understand it.
-      const abFile = new ArrayBuffer(sampleFile);
-      console.log(`ArrayBuffer: `, abFile);
-// By some reason, the file is uploaded, but it's size is empty.
-      uploadBytes(mediaFolderRef, abFile, { contentType: sampleFile.mimetype })
-        .then(obj => console.log(`Snapshot: `, obj)
-      );
-
-      sampleFile.mv(uploadPath, (error : unknown) => {
-        if (error) {
-          console.log(`> Error: ${error}`);
-          return res.status(500).json({
-            message: process.env.ERRO_500 ?? "Erro no servidor.",
-            status: 500,
-          });
-        } else {
-          return res.status(200).json({
-            message: `Arquivo '${sampleFile.name}' salvo com sucesso.`,
-            status: 200
-          });
-        }
-      });
     } catch (error) {
       console.log(`> Error: ${error}`);
       return res.status(500).json({
