@@ -94,12 +94,13 @@ class allPostsController {
        }
       );
 
-      allPosts.forEach(post => {
-        post['ong'] = post['tbl_ong'];
-        post['media'] = post['tbl_post_media'];
-        delete post['tbl_ong'];
-        delete post['tbl_post_media'];
-      });
+      for (let i = 0; i < allPosts.length; i++) {
+        for (let j = 0; j < allPosts[i].tbl_post_media.length; j++) {
+          const imageUrl = await fbhandler.getMediaUrl(`help-ongs/media/${allPosts[i].tbl_post_media[j].endereco}`);
+          allPosts[i].tbl_post_media[j].endereco = imageUrl;
+          console.log('imageUrl: ', imageUrl);
+        }
+      }
     
       return res.status(200).json({
         message: "Posts encontrados com sucesso.",
