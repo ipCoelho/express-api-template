@@ -152,25 +152,40 @@ class allPostsController {
 
   async delete(req: Request, res: Response) {
     try {
-      const allPostsOfTheOngById = await prisma.tbl_post.findMany({
+      const ongsPosts = await prisma.tbl_post.findMany({
+        where: { idOng: Number(req.params.idOng) },
+        include: { 
+          tbl_post_media: true,
+          tbl_ong: true,
+        },
+      });
+      
+      let desiredPost: any;
+      ongsPosts.filter(post => {
+        post.idPost == Number(req.params.idPost)? desiredPost = post : null;
+      });
+
+
+      for (let i = 0; i < desiredPost.tbl_post_media.length; i++) {
+        const fileRef = `${ongsPosts[0].tbl_ong.nome}/${desiredPost.tbl_post_media[i].titulo}`;
+        const resolve = await fbhandler.deleteFile(fileRef);
+        console.log(`file ${i + 1} deleted: `, resolve);	
+      }
+
+      const deletePostResolve = await prisma.tbl_post.delete({
         where: {
-          idOng: Number(req.params.idOng),
+          idPost: Number(req.params.idPost),
         },
         include: {
           tbl_post_media: true,
         },
-      });
-      console.log(allPostsOfTheOngById);
-
-      const idPostVerifty = allPostsOfTheOngById.filter(post => {
-        post.idPost === Number(req.params.idPost)? true : "";
-      });
-      console.log(idPostVerifty);
-    
+      });        
+      console.log('deletePostResolve: ', deletePostResolve);
+      
       return res.status(200).json({
-        message: `Posts da ONG '${req.params.idOng}' encontrado com sucesso.`,
+        message: `Post '${req.params.idPost}' da ONG '${req.params.idOng}' encontrado com sucesso.`,
         status: 200,
-        data: idPostVerifty,
+        data: deletePostResolve,
       });
 
     } catch (error) {
