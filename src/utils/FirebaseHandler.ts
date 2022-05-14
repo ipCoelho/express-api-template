@@ -1,5 +1,5 @@
 import { initializeApp, getApp, FirebaseApp } from "firebase/app";
-import { FirebaseStorage, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, FirebaseStorage, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 class FirebaseHandler {
   protected firebaseConfig: object = {
@@ -65,6 +65,18 @@ class FirebaseHandler {
     const url: string = await getDownloadURL(fileReference);
     
     return url;
+  }
+
+  async deleteFile(path: string) {
+    const fileReference = ref(this.storage, `help-ongs/media/${path}`);
+    const resolve = await deleteObject(fileReference)
+      .catch(error => {
+        if (error) {
+          console.log(`Error on deleting file from bucket: `, error);
+        }
+      });
+      
+    return resolve;
   }
 }
 
