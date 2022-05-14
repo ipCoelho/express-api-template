@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import FirebaseHandler from "@utils/FirebaseHandler";
+import { base64intoUint8Array } from "@utils/base64intoUint8Array";
 
 const prisma = new PrismaClient();
+const fbhandler = new FirebaseHandler();
 
 class allPostsController {
   async create(req: Request, res: Response) {
@@ -13,13 +16,25 @@ class allPostsController {
             idOng: "number",
             descricao: "string",
             media: {
-              "titulo": "string",
-              "endereco": "string?"
-            }
+              "fileName": "string",
+              "base64": "base64",
+              "type": "string",
+            },
           },
           status: 400,
         });
       }
+
+      req.body.media.forEach((media, index) => {
+        console.log(`media[${index}]: `, media);
+      });
+      
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: {
+          idOng: Number(req.body.idOng),
+        }
+      });
 
       const postCreate = await prisma.tbl_post.create({
         data: {
@@ -32,12 +47,20 @@ class allPostsController {
         const media = [];
         if (req.body.media && req.body.media.length > 0) {
           for (let i = 0; i < req.body.media.length; i++) {
-            const creatingMedia = await prisma.tbl_post_media.create({
+            const fileData = req.body.media[i];
+            const uiArray = base64intoUint8Array(fileData.base64);
+            const fileRef = `${ongMask.nome}/${fileData.fileName}`;
+
+            const resolve = await fbhandler.uploadUint8Array(uiArray, fileRef, fileData.type);
+            console.log(' resolve: ', resolve);
+            
+            const creatingMedia = await prisma.tbl_post_media.create({ 
               data: {
                 idOng: Number(req.body.idOng),
                 idPost: postCreate.idPost,  
-                titulo: req.body.media[i].titulo,
-                endereco: req.body.media[i].endereco,
+                titulo: fileData.fileName,
+                endereco: fileRef,
+                tipo: fileData.type,
               },
             });
             media.push(creatingMedia);
