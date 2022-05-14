@@ -41,6 +41,25 @@ class FirebaseHandler {
       });
     return resolve;
   }
+
+  async uploadUint8Array(uiArray: Uint8Array, path: string, contentType = "image/jpeg") {
+    const fileReference = ref(this.storage, `help-ongs/media/${path}`);
+
+    let resolve = false;
+    await uploadBytes(fileReference, uiArray, { contentType: contentType })
+      .then((snapshot) => {
+        if (snapshot) {
+          resolve = true;
+        }
+      })
+      .catch(error => {
+        if (error) {
+          console.log(`error: `, error);
+          resolve = false;
+        }
+      });
+    return resolve;
+  }
 }
 
 
