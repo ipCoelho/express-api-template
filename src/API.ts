@@ -1,5 +1,6 @@
 import cors from "cors";
 import { Router } from "express";
+import bodyParser from "body-parser";
 
 export class API {
   api;
@@ -21,8 +22,8 @@ export class API {
       console.log(`\n > API listening at: ${this.host}${this.port}/`)
     );
     this.api
-      .use(this.framework.json())
-      .use(this.framework.urlencoded({ extended: true }))
+      .use(bodyParser.json({ limit: '50mb' }))
+      .use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
       .use(cors())
       .use("/", this.router);
   }
