@@ -1,5 +1,5 @@
 import { initializeApp, getApp, FirebaseApp } from "firebase/app";
-import { FirebaseStorage, getStorage, ref, uploadBytes } from "firebase/storage";
+import { FirebaseStorage, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 class FirebaseHandler {
   protected firebaseConfig: object = {
@@ -54,11 +54,17 @@ class FirebaseHandler {
       })
       .catch(error => {
         if (error) {
-          console.log(`error: `, error);
           resolve = false;
         }
       });
     return resolve;
+  }
+
+  async getMediaUrl(path: string): Promise<string> {
+    const fileReference = ref(this.storage, path);
+    const url: string = await getDownloadURL(fileReference);
+    
+    return url;
   }
 }
 
