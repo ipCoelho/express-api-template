@@ -140,8 +140,9 @@ model tbl_favoritos {
 model tbl_post_media {
   idPostMedia Int      @id @unique(map: "idtblFoto_UNIQUE") @default(autoincrement())
   titulo      String   @db.VarChar(500)
-  endereco    String?  @db.VarChar(500)
+  referencia  String?  @db.VarChar(500)
   tipo        String?  @db.VarChar(50)
+  url         String?  @db.VarChar(500)
   idOng       Int
   idPost      Int
   tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_media_tbl_post1")

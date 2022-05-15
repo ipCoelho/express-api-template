@@ -61,7 +61,7 @@ class FirebaseHandler {
   }
 
   async getMediaUrl(path: string): Promise<string> {
-    const fileReference = ref(this.storage, path);
+    const fileReference = ref(this.storage, `help-ongs/media/${path}`);
     const url: string = await getDownloadURL(fileReference);
     
     return url;
