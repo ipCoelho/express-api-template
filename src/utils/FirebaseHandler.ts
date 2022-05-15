@@ -69,9 +69,14 @@ class FirebaseHandler {
 
   async deleteFile(path: string) {
     const fileReference = ref(this.storage, `help-ongs/media/${path}`);
-    const resolve = await deleteObject(fileReference)
+    let resolve: boolean;
+    await deleteObject(fileReference)
+      .then(() => {
+        resolve = true;
+      })
       .catch(error => {
         if (error) {
+          resolve = false;
           console.log(`Error on deleting file from bucket: `, error);
         }
       });

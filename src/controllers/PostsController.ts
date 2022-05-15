@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, tbl_post_media } from "@prisma/client";
 import FirebaseHandler from "@utils/FirebaseHandler";
 import { base64intoUint8Array } from "@utils/base64intoUint8Array";
 
@@ -25,11 +25,6 @@ class allPostsController {
         });
       }
 
-      req.body.media.forEach((media, index) => {
-        console.log(`media[${index}]: `, media);
-      });
-      
-
       const ongMask = await prisma.tbl_ong.findUnique({
         where: {
           idOng: Number(req.body.idOng),
@@ -49,10 +44,9 @@ class allPostsController {
           for (let i = 0; i < req.body.media.length; i++) {
             const fileData = req.body.media[i];
             const uiArray = base64intoUint8Array(fileData.base64);
-            const fileRef = `${ongMask.nome}/${fileData.fileName}`;
+            const fileRef = `${ongMask.nome}/${postCreate.descricao}/${fileData.fileName}`;
 
-            const resolve = await fbhandler.uploadUint8Array(uiArray, fileRef, fileData.type);
-            console.log(' resolve: ', resolve);
+            await fbhandler.uploadUint8Array(uiArray, fileRef, fileData.type);
             
             const creatingMedia = await prisma.tbl_post_media.create({ 
               data: {
@@ -85,22 +79,20 @@ class allPostsController {
 
   async findAll(req: Request, res: Response) {
     try {
-      const allPosts = await prisma.tbl_post.findMany(
-       {
-         include: {
-          tbl_ong: true,
-          tbl_post_media: true,
-         },
-       }
-      );
+      const allPosts = await prisma.tbl_post.findMany({
+        include: {
+        tbl_ong: true,
+        tbl_post_media: true,
+        },
+      });
 
       for (let i = 0; i < allPosts.length; i++) {
         for (let j = 0; j < allPosts[i].tbl_post_media.length; j++) {
           const imageUrl = await fbhandler.getMediaUrl(`help-ongs/media/${allPosts[i].tbl_post_media[j].endereco}`);
-          allPosts[i].tbl_post_media[j].endereco = imageUrl;
+          allPosts[i].tbl_post_media[j]['url'] = imageUrl;
         }
       }
-    
+
       return res.status(200).json({
         message: "Posts encontrados com sucesso.",
         status: 200,
@@ -129,7 +121,7 @@ class allPostsController {
 
       for (let i = 0; i < post.length; i++) {
         for (let j = 0; j < post[i].tbl_post_media.length; j++) {
-          const imageUrl = await fbhandler.getMediaUrl(`help-ongs/media/${post[i].tbl_post_media[j].endereco}`);
+          const imageUrl = await fbhandler.getMediaUrl(`help-ongs/media//${post[i].tbl_post_media[j].endereco}`);
           post[i].tbl_post_media[j].endereco = imageUrl;
         }
       }
@@ -160,26 +152,26 @@ class allPostsController {
         },
       });
       
-      let desiredPost: any;
+      let desiredPost;
       ongsPosts.filter(post => {
-        post.idPost == Number(req.params.idPost)? desiredPost = post : null;
+        console.log(`post.idPost: ${post.idPost}`, `req.params.idPost: ${req.params.idPost}`);
+        post.idPost == Number(req.params.idPost)? desiredPost = post : "";
+        console.log(`desiredPost: `, desiredPost);
       });
 
+      await desiredPost.tbl_post_media.map(async (media: tbl_post_media, i) => {
+        const fileReference = `${ongsPosts[0].tbl_ong.nome}/${media.titulo}`;
+        console.log(`fileReference: ${fileReference}`);
 
-      for (let i = 0; i < desiredPost.tbl_post_media.length; i++) {
-        const fileRef = `${ongsPosts[0].tbl_ong.nome}/${desiredPost.tbl_post_media[i].titulo}`;
-        const resolve = await fbhandler.deleteFile(fileRef);
-        console.log(`file ${i + 1} deleted: `, resolve);	
-      }
+        const resolve = await fbhandler.deleteFile(fileReference);
+        console.log(' resolve: ', resolve);
+      });
 
       const deletePostResolve = await prisma.tbl_post.delete({
         where: {
           idPost: Number(req.params.idPost),
         },
-        include: {
-          tbl_post_media: true,
-        },
-      });        
+      });
       console.log('deletePostResolve: ', deletePostResolve);
       
       return res.status(200).json({
