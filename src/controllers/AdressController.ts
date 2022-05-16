@@ -43,7 +43,7 @@ class AdressController {
 
       const ufVerify = await prisma.tbl_estado.findUnique({
         where: {
-          nome: req.body.estado,
+          sigla: req.body.estado,
         },
       });
 
@@ -174,7 +174,7 @@ class AdressController {
             numero: "number?",
             rua: "string?",
             municipio: "string?",
-            estado: "string?",
+            sigla: "string?",
             complemento: "string?",
           },
           status: 400,
@@ -196,7 +196,7 @@ class AdressController {
 
       const ufVerify = await prisma.tbl_estado.findUnique({
         where: {
-          nome: req.body.estado,
+          sigla: req.body.estado,
         },
       });
 
@@ -207,7 +207,7 @@ class AdressController {
         });
       }
 
-      const { estado, ...body } = req.body;
+      const { sigla, ...body } = req.body;
       const adressUpdate = await prisma.tbl_endereco.update({
         where: {
           idLogin: Number(req.params.id),
