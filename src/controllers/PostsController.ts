@@ -173,61 +173,58 @@ class allPostsController {
     }
   }
 
-  async update(req: Request, res: Response) {
-    try {
-      if (
-        !req.body.descricao &&
-        !req.body.media
-      ) {
-        return res.status(400).json({
-          message: "Dados incompletos.",
-          expected: {
-            descricao: "string",
-            media: {
-              idPostMedia: "number",
-              titulo: "string",
-              endereco: "string?",
-            },  
-          },
-          status: 400,
-        });
-      }
+  // async update(req: Request, res: Response) {
+  //   try {
+  //     if (!req.body.descricao && !req.body.media) {
+  //       return res.status(400).json({
+  //         message: "Dados incompletos.",
+  //         expected: {
+  //           descricao: "string",
+  //           media: {
+  //             idPostMedia: "number",
+  //             titulo: "string",
+  //             endereco: "string?",
+  //           },  
+  //         },
+  //         status: 400,
+  //       });
+  //     }
 
-      const request = req.body;
-      request.idOng = Number(req.params.idOng);
-      request.idPost = Number(req.params.idPost);
+  //     const request = req.body;
+  //     request.idOng = Number(req.params.idOng);
+  //     request.idPost = Number(req.params.idPost);
 
-      const postVerify = await prisma.tbl_post.findUnique({
-        where: {
-          idPost: Number(request.idPost)
-        },
-      });
+  //     const postVerify = await prisma.tbl_post.findUnique({
+  //       where: {
+  //         idPost: Number(request.idPost)
+  //       },
+  //     });
 
-      if (postVerify != null) {
-        const postUpdate = await prisma.tbl_post.update({
-          where: {
-            idPost: Number(request.idPost),
-          },
-          data: {
-            descricao: request.descricao,
-          },
-        });
-          console.log(`PostUpdated: `, postUpdate);
-      } else {
-        return res.status(400).json({
-          message: "Post não encontrado.",
-          status: 400,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      console.log(`Error: ${error}`);
-      return res.status(500).json({
-        message: process.env.ERRO_500 ?? "Erro no servidor.",
-        status: 500,
-      });
-    }
-  }
+  //     if (postVerify != null) {
+  //       const postUpdate = await prisma.tbl_post.update({
+  //         where: {
+  //           idPost: Number(request.idPost),
+  //         },
+  //         data: {
+  //           descricao: request.descricao,
+  //         },
+  //       });
+  //         console.log(`PostUpdated: `, postUpdate);
+  //     } else {
+  //       return res.status(400).json({
+  //         message: "Post não encontrado.",
+  //         status: 400,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log(`Error: ${error}`);
+  //     return res.status(500).json({
+  //       message: process.env.ERRO_500 ?? "Erro no servidor.",
+  //       status: 500,
+  //     });
+  //   }
+  // }
 }
 
 export default allPostsController;
