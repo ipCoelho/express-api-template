@@ -10,6 +10,7 @@ import donationRouter from "./routes/donationsRouter";
 import postsRouter from "./routes/postsRouter";
 import adressRouter from "./routes/adressRouter";
 import fileHandlerRouter from "./routes/filehandlerRouter";
+import vacanciesRouter from "./routes/vacanciesRouter";
 
 import { Router } from "express";
 
@@ -28,5 +29,6 @@ router.use("/", donationRouter);
 router.use("/", postsRouter);
 router.use("/", adressRouter);
 router.use("/", fileHandlerRouter);
+router.use("/", vacanciesRouter);
 
 export default router;

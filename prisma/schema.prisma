@@ -9,8 +9,9 @@ datasource db {
 
 model tbl_categorias {
   idCategorias      Int                 @id @unique(map: "idtblCategorias_UNIQUE") @default(autoincrement())
-  nome              String              @db.VarChar(150)
+  nome              String              @unique(map: "nome_UNIQUE") @db.VarChar(150)
   tbl_ong_categoria tbl_ong_categoria[]
+
 }
 
 model tbl_chat {
@@ -51,9 +52,9 @@ model tbl_contato {
   idLogin   Int       @unique
   tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
 
-  @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
   tbl_ong      tbl_ong? @relation(fields: [tbl_ongIdOng], references: [idOng])
   tbl_ongIdOng Int?
+  @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
 }
 
 model tbl_dados_bancarios {
@@ -380,7 +381,7 @@ model tbl_vagas {
   titulo             String               @db.VarChar(200)
   decricao           String               @db.Text
   requisitos         String               @db.Text
-  dataDeCriacao      DateTime             @db.Date
+  dataDeCriacao      DateTime             @default(now())
   cargaHoraria       String               @db.VarChar(50)
   idOng              Int
   tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
