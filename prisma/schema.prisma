@@ -45,15 +45,16 @@ model tbl_comentario {
 }
 
 model tbl_contato {
-  idcontato Int       @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
+  idContato Int       @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
   numero    String?   @db.VarChar(45)
   email     String?   @unique(map: "email_UNIQUE") @db.VarChar(80)
   telefone  String?   @db.VarChar(45)
   idLogin   Int       @unique
   tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
 
-  tbl_ong      tbl_ong? @relation(fields: [tbl_ongIdOng], references: [idOng])
+  tbl_ong      tbl_ong?    @relation(fields: [tbl_ongIdOng], references: [idOng])
   tbl_ongIdOng Int?
+  tbl_vagas    tbl_vagas[]
   @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
 }
 
@@ -76,27 +77,14 @@ model tbl_endereco {
   complemento        String?              @db.Text
   municipio          String               @db.VarChar(80)
   idEstado           Int
-  idLogin            Int                  @unique(map: "idLogin_UNIQUE")
-  tbl_login          tbl_login            @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblLogin1")
+  idLogin            Int?                 @unique(map: "idLogin_UNIQUE")
   tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
-  tbl_endereco_vagas tbl_endereco_vagas[]
   tbl_eventos        tbl_eventos[]
   tbl_login_endereco tbl_login_endereco[]
+  tbl_vagas          tbl_vagas[]
 
-
-
+  tbl_login tbl_login? @relation(fields: [idLogin], references: [idLogin])
   @@index([idEstado], map: "fk_tblEndereco_tblEstado1_idx")
-}
-
-model tbl_endereco_vagas {
-  idEnderecoVagas Int          @id @unique(map: "idtbl_endereco_vagas_UNIQUE") @default(autoincrement())
-  idEndereco      Int
-  idVagas         Int
-  tbl_endereco    tbl_endereco @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_endereco_vagas_tbl_endereco1")
-  tbl_vagas       tbl_vagas    @relation(fields: [idVagas], references: [idVagas], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_endereco_vagas_tbl_vagas1")
-
-  @@index([idEndereco], map: "fk_tbl_endereco_vagas_tbl_endereco1_idx")
-  @@index([idVagas], map: "fk_tbl_endereco_vagas_tbl_vagas1_idx")
 }
 
 model tbl_estado {
@@ -377,18 +365,23 @@ model tbl_usuario_evento {
 }
 
 model tbl_vagas {
-  idVagas            Int                  @id @unique(map: "idtbl_vagas_UNIQUE") @default(autoincrement())
-  titulo             String               @db.VarChar(200)
-  decricao           String               @db.Text
-  requisitos         String               @db.Text
-  dataDeCriacao      DateTime             @default(now())
-  cargaHoraria       String               @db.VarChar(50)
-  idOng              Int
-  tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
-  tbl_endereco_vagas tbl_endereco_vagas[]
-  tbl_vagas_usuario  tbl_vagas_usuario[]
+  idVagas           Int                 @id @unique(map: "idtbl_vagas_UNIQUE") @default(autoincrement())
+  titulo            String              @db.VarChar(200)
+  descricao         String              @db.Text
+  requisitos        String              @db.Text
+  dataDeCriacao     DateTime            @default(now())
+  cargaHoraria      String              @db.VarChar(50)
+  idOng             Int
+  idContato         Int
+  idEndereco        Int
+  tbl_ong           tbl_ong             @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
+  tbl_contato       tbl_contato         @relation(fields: [idContato], references: [idContato], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_contato1")
+  tbl_endereco      tbl_endereco        @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_endereco1")
+  tbl_vagas_usuario tbl_vagas_usuario[]
 
   @@index([idOng], map: "fk_tbl_vagas_tbl_ong1_idx")
+  @@index([idContato], map: "fk_tbl_vagas_tbl_contato1_idx")
+  @@index([idEndereco], map: "fk_tbl_vagas_tbl_endereco1_idx")
 }
 
 model tbl_vagas_usuario {
