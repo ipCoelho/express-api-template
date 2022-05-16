@@ -44,14 +44,16 @@ model tbl_comentario {
 }
 
 model tbl_contato {
-  idcontato Int     @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
-  numero    String? @db.VarChar(45)
-  email     String? @unique(map: "email_UNIQUE") @db.VarChar(80)
-  telefone  String? @db.VarChar(45)
-  idOng     Int     @unique
-  tbl_ong   tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblContato_tblOng1")
+  idcontato Int       @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
+  numero    String?   @db.VarChar(45)
+  email     String?   @unique(map: "email_UNIQUE") @db.VarChar(80)
+  telefone  String?   @db.VarChar(45)
+  idLogin   Int       @unique
+  tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
 
-  @@index([idOng], map: "fk_tblContato_tblOng1_idx")
+  @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
+  tbl_ong      tbl_ong? @relation(fields: [tbl_ongIdOng], references: [idOng])
+  tbl_ongIdOng Int?
 }
 
 model tbl_dados_bancarios {
@@ -110,7 +112,7 @@ model tbl_eventos {
   dataHora            DateTime             @db.DateTime(0)
   objetivo            String               @db.Text
   descricao           String               @db.Text
-  dataDeCriacao       DateTime             @db.Date
+  dataDeCriacao       DateTime             @default(now())
   idEndereco          Int
   idOng               Int
   numeroParticipantes Int?
@@ -172,6 +174,7 @@ model tbl_login {
   tbl_ong            tbl_ong[]
   tbl_usuario        tbl_usuario[]
   tbl_endereco       tbl_endereco[]
+  tbl_contato        tbl_contato[]
 }
 
 model tbl_login_endereco {
@@ -378,7 +381,7 @@ model tbl_vagas {
   decricao           String               @db.Text
   requisitos         String               @db.Text
   dataDeCriacao      DateTime             @db.Date
-  cargaHoraria       DateTime?            @db.Time(0)
+  cargaHoraria       String               @db.VarChar(50)
   idOng              Int
   tbl_ong            tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
   tbl_endereco_vagas tbl_endereco_vagas[]

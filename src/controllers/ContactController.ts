@@ -7,11 +7,11 @@ const prisma = new PrismaClient();
 class ContactController {
   async create(req: Request, res: Response) {
     try {
-      if (!req.body.idOng) {
+      if (!req.body.idLogin) {
         return res.status(400).json({
-          error: "'idOng' não recebido.",
+          error: "'idLogin' não recebido.",
           expected: {
-            idOng: "string",
+            idLogin: "string",
             email: "string?",
             numero: "string?",
             telefone: "string?"
@@ -21,7 +21,7 @@ class ContactController {
         return res.status(400).send({
           message: "Nenhum parâmetro para alteração recebido.",
           expected: {
-            idOng: "number",
+            idLogin: "number",
             email: "string?",
             numero: "string?",
             telefone: "string?"
@@ -31,13 +31,13 @@ class ContactController {
 
       const idVerify = await prisma.tbl_contato.findUnique({
         where: {
-          idOng: req.body.idOng
+          idLogin: req.body.idLogin
         }
       });
 
       if (idVerify) {
         return res.status(400).json({
-          message: `Contato já cadastrado para a ONG de ID '${req.body.idOng}'.`,
+          message: `Contato já cadastrado para o LOGIN de ID '${req.body.idLogin}'.`,
           status: 400,
           data: idVerify
         });
@@ -88,7 +88,7 @@ class ContactController {
 
       const contact = await prisma.tbl_contato.findUnique({
         where: {
-          idOng: Number(id)
+          idLogin: Number(id)
         }
       });
 
@@ -100,7 +100,7 @@ class ContactController {
         });
       } else {
         return res.status(404).json({
-          message: `Contato não encontrado para a ONG de ID '${id}'.`,
+          message: `Contato não encontrado para o LOGIN de ID '${id}'.`,
           status: 404,
         });
       }
@@ -127,7 +127,7 @@ class ContactController {
 
       const IDverify = await prisma.tbl_contato.findUnique({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         },
       });
 
@@ -140,7 +140,7 @@ class ContactController {
 
       const contact = await prisma.tbl_contato.update({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         },
         data: {
           ...req.body
@@ -177,7 +177,7 @@ class ContactController {
 
       const IDverify = await prisma.tbl_contato.findUnique({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         },
       });
 
@@ -190,7 +190,7 @@ class ContactController {
 
       const contact = await prisma.tbl_contato.delete({
         where: {
-          idOng: Number(req.params.id),
+          idLogin: Number(req.params.id),
         },
       });
 
