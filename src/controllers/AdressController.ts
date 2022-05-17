@@ -207,13 +207,17 @@ class AdressController {
         });
       }
 
-      const { sigla, ...body } = req.body;
       const adressUpdate = await prisma.tbl_endereco.update({
         where: {
           idLogin: Number(req.params.id),
         },
         data: {
-          ...body,
+          bairro: req.body.bairro,
+          cep: req.body.cep,
+          complemento: req.body.complemento ?? undefined,
+          municipio: req.body.municipio,
+          numero: Number(req.body.numero),
+          rua: req.body.rua,
           idEstado: ufVerify.idEstado,
         }
       });
