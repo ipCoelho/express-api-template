@@ -131,6 +131,17 @@ class ContactController {
         },
       });
 
+      const allEmails = await prisma.tbl_contato.findMany();
+
+      allEmails.map(contato => {
+        if (contato.email == req.body.email) {
+          return res.status(400).json({
+            message: `Email '${req.body.email}' já em uso.`,
+            status: 400,
+          });
+        }
+      });
+
       if (!IDverify) {
         return res.status(404).json({
           message: `Nenhum contato com ID '${req.params.id}'.`,
