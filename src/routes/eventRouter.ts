@@ -14,5 +14,9 @@ router.post("/event", uploadMiddleware.array("media"), (req, res) => {
   eventController.createEvent(req, res);
 });
 
+router.get("/event", (req, res) => {
+  console.info(`> Request GET recieved in '/event' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  eventController.findAll(req, res);
+});
 
 export default router;

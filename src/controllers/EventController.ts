@@ -30,6 +30,7 @@ class EventController {
               rua: "string",
               complemento: "string?",
               municipio: "string",
+              idLogin: "number",
             },
             media: [
               {
@@ -127,6 +128,29 @@ class EventController {
           });
         });
       }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+
+  async findAll(req: Request, res: Response) {
+    try {
+      const allEvents = await prisma.tbl_eventos.findMany({
+        include: {
+          tbl_endereco: true,
+          tbl_evento_media: true
+        }
+      });
+
+      return res.status(200).json({
+        message: "Posts encontrados com sucesso.",
+        status: 200,
+        data: allEvents,
+      });
     } catch (error) {
       console.log(`Error: ${error}`);
       return res.status(500).json({
