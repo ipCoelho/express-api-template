@@ -62,6 +62,9 @@ class UFController {
 				where: {
 					idEstado: getUfId.idEstado,
 				},
+				include: {
+					tbl_ong: true
+				}
 			});
 			console.log("ongsId: ", ongsId);
 
