@@ -24,11 +24,6 @@ router.get("/post/:id", (req, res) => {
   postsController.findById(req, res);
 });
 
-// router.put("/post/:idOng/:idPost", (req, res) => {
-//   console.info(`> Request PUT recieved in '/post/:idOng/:idPost' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
-//   postsController.update(req, res);
-// });
-
 router.delete("/post/:idOng/:idPost", (req, res) => {
   console.info(`> Request DELETE recieved in '/post/:idOng/:idPost' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
   postsController.delete(req, res);
