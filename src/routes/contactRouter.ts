@@ -24,7 +24,7 @@ router.put("/contact/:id", (req, res) => {
     contactController.update(req, res);
 });
 
-router.delete("/contact/:id", (req, res) => {
+router.delete("/contact/:idContact", (req, res) => {
     console.info(`> Request DELETE recieved in '/contact' at ${new Date().toLocaleString()}. \n> req.params:`, req.params);
     contactController.remove(req, res);
 });

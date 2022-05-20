@@ -176,40 +176,29 @@ class ContactController {
 
   async remove(req: Request, res: Response) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          message: "ID não informado.",
-          expected: {
-            id: "number",
-          },
-          status: 400,
-        });
-      }
-
+      const idContact = Number(req.params.idContact);
+      
       const IDverify = await prisma.tbl_contato.findUnique({
-        where: {
-          idLogin: Number(req.params.id),
-        },
+        where: { idContato: idContact }
       });
+      console.log(`> IDverify: ${IDverify}`);
 
-      if (!IDverify) {
+      if (IDverify == null) {
         return res.status(404).json({
-          message: `Nenhum contato com ID '${req.params.id}'.`,
+          message: `Nenhum contato com ID '${idContact}'.`,
           status: 404
         });
       }
 
-      const contact = await prisma.tbl_contato.delete({
-        where: {
-          idLogin: Number(req.params.id),
-        },
+      const contactRecordDeleted = await prisma.tbl_contato.delete({
+        where: { idContato: idContact }
       });
 
-      if (contact) {
+      if (contactRecordDeleted != null) {
         return res.status(200).json({
           message: "Contato removido com sucesso.",
           status: 200,
-          data: contact,
+          data: contactRecordDeleted,
         });
       }
     } catch (error) {
