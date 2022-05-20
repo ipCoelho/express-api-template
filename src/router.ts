@@ -11,6 +11,7 @@ import postsRouter from "./routes/postsRouter";
 import adressRouter from "./routes/adressRouter";
 import fileHandlerRouter from "./routes/filehandlerRouter";
 import vacanciesRouter from "./routes/vacanciesRouter";
+import eventRouter from "./routes/eventRouter";
 
 import { Router } from "express";
 
@@ -30,5 +31,6 @@ router.use("/", postsRouter);
 router.use("/", adressRouter);
 router.use("/", fileHandlerRouter);
 router.use("/", vacanciesRouter);
+router.use("/", eventRouter);
 
 export default router;
