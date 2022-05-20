@@ -142,7 +142,8 @@ class EventController {
       const allEvents = await prisma.tbl_eventos.findMany({
         include: {
           tbl_endereco: true,
-          tbl_evento_media: true
+          tbl_evento_media: true,
+          tbl_ong: true
         }
       });
 
