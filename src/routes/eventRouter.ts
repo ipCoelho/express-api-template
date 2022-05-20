@@ -9,5 +9,10 @@ const uploadMiddleware = multer({
 const router = Router();
 const eventController = new EventController();
 
+router.post("/event", uploadMiddleware.array("media"), (req, res) => {
+  console.info(`> Request POST recieved in '/event' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  eventController.createEvent(req, res);
+});
+
 
 export default router;
