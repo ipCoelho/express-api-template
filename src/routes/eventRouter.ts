@@ -19,4 +19,19 @@ router.get("/event", (req, res) => {
   eventController.findAll(req, res);
 });
 
+router.get("/event/:idOng", (req, res) => {
+  console.info(`> Request GET recieved in '/event/:id' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  eventController.findAllByOng(req, res);
+});
+
+router.get("/event/:idOng/:idEvent", (req, res) => {
+  console.info(`> Request GET recieved in '/event/:idOng/:idEvent' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  eventController.findUnique(req, res);
+});
+
+router.delete("/event/:idOng/:idEvent", (req, res) => {
+  console.info(`> Request DELETE recieved in '/event/:idOng/:idEvent' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  eventController.deleteEvent(req, res);
+});
+
 export default router;

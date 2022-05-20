@@ -160,6 +160,103 @@ class EventController {
       });
     }
   }
+
+  async findAllByOng(req: Request, res: Response) {
+    try {
+      const idOng = Number(req.params.idOng);
+
+      const allEvents = await prisma.tbl_eventos.findMany({
+        where: { idOng: Number(idOng) },
+        include: {
+          tbl_endereco: true,
+          tbl_ong: true,
+          tbl_evento_media: true,
+        }
+      });
+
+      return res.status(200).json({
+        message: `Todos eventos da ONG ${idOng} encontrados.`,
+        data: allEvents,
+      });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+
+  async findUnique(req: Request, res: Response) {
+    try {
+      const idEvent = Number(req.params.idEvent);
+      const idOng = Number(req.params.idOng);
+
+      const selectedEvent = await prisma.tbl_eventos.findUnique({
+        where: {
+          idEventos: Number(idEvent) 
+        }
+      });
+
+      if (selectedEvent == null) {
+        return res.status(400).json({
+          message: `Evento '${idEvent}' da ONG '${idOng}' não encontrado.`,
+          status: 400,
+        });
+      }
+
+      if (Number(selectedEvent.idOng) === Number(idOng)) {
+        return res.status(200).json({
+          message: `Evento '${idEvent}' da ONG '${idOng}' encontrado com sucesso.`,
+          data: selectedEvent,
+        });
+      } else {
+        return res.status(400).json({
+          message: `Evento '${idEvent}' da ONG '${idOng}' não encontrado.`,
+          status: 400,
+        });
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+  
+  async deleteEvent(req: Request, res: Response) {
+    try {
+      const idEvento = Number(req.params.idEvento);
+      const idOng = Number(req.params.idOng);
+
+      const selectedEvent = await prisma.tbl_eventos.findUnique({
+        where: {idEventos: idEvento }
+      });
+
+      if (Number(selectedEvent.idOng) === Number(idOng)) {
+        await prisma.tbl_eventos.delete({
+          where: { idEventos: idEvento }
+        });
+
+        return res.status(200).json({
+          message: `Evento ${idEvento} deletado com sucesso.`,
+          status: 200,
+        });
+      } else {
+        return res.status(400).json({
+          message: `Evento '${idEvento}' da ONG '${idOng}' não encontrado.`,
+          status: 400,
+        });
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 interface EventModel {
