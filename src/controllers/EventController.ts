@@ -227,26 +227,50 @@ class EventController {
   
   async deleteEvent(req: Request, res: Response) {
     try {
-      const idEvento = Number(req.params.idEvento);
+      const idEvent = Number(req.params.idEvent);
       const idOng = Number(req.params.idOng);
 
-      const selectedEvent = await prisma.tbl_eventos.findUnique({
-        where: {idEventos: idEvento }
+      const allOngsEvents = await prisma.tbl_eventos.findMany({
+        where: { idOng: Number(idOng) },
+        include: { 
+          tbl_endereco: true, 
+          tbl_evento_media: true 
+        }
+      });
+      const selectedEvent = allOngsEvents.find(event => event.idEventos === idEvent);
+
+      if (selectedEvent == null) {
+        return res.status(400).json({
+          message: `Evento '${idEvent}' da ONG '${idOng}' não deletado pois não existe.`,
+          status: 400,
+        });
+      }
+
+      await Promise.all(
+        selectedEvent.tbl_evento_media.map(async (media, index) => {
+          const recordDeleted = await prisma.tbl_evento_media.delete({
+            where: { idEventoMedia: media.idEventoMedia }
+          });
+          console.log(`evento_media record[${index}] deleted? `, recordDeleted);
+
+          const fileRef = media.referencia;
+          console.log(`fileRef[${index}]:`, fileRef);
+
+          const fbResolve = await fbhandler.deleteFile(fileRef);
+          console.log(`fbResolve[${index}]:`, fbResolve);
+        }),
+      );
+
+      const recordDeleted = await prisma.tbl_eventos.delete({
+        where: {
+          idEventos: Number(idEvent),
+        }
       });
 
-      if (Number(selectedEvent.idOng) === Number(idOng)) {
-        await prisma.tbl_eventos.delete({
-          where: { idEventos: idEvento }
-        });
-
+      if (recordDeleted != null) {
         return res.status(200).json({
-          message: `Evento ${idEvento} deletado com sucesso.`,
+          message: `Evento '${idEvent}' da ONG '${idOng}' deletado com sucesso.`,
           status: 200,
-        });
-      } else {
-        return res.status(400).json({
-          message: `Evento '${idEvento}' da ONG '${idOng}' não encontrado.`,
-          status: 400,
         });
       }
     } catch (error) {
