@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient, tbl_post_media } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import FirebaseHandler from "@utils/FirebaseHandler";
 import { base64intoUint8Array } from "@utils/base64intoUint8Array";
 
