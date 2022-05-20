@@ -387,11 +387,11 @@ model tbl_vagas {
   titulo            String              @db.VarChar(200)
   descricao         String              @db.Text
   requisitos        String              @db.Text
-  dataDeCriacao     DateTime            @default(now())
   cargaHoraria      String              @db.VarChar(50)
   idOng             Int
   idContato         Int
   idEndereco        Int
+  dataDeCriacao     DateTime            @default(now())
   tbl_ong           tbl_ong             @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
   tbl_contato       tbl_contato         @relation(fields: [idContato], references: [idContato], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_contato1")
   tbl_endereco      tbl_endereco        @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_endereco1")
