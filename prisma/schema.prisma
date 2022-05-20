@@ -109,6 +109,7 @@ model tbl_eventos {
   tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_endereco1")
   tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_ong1")
   tbl_usuario_evento  tbl_usuario_evento[]
+  tbl_evento_media    tbl_evento_media[]
 
   @@index([idEndereco], map: "fk_tbl_eventos_tbl_endereco1_idx")
   @@index([idOng], map: "fk_tbl_eventos_tbl_ong1_idx")
@@ -140,6 +141,22 @@ model tbl_post_media {
   tbl_ong     tbl_ong? @relation(fields: [idOng], references: [idOng])
 
   @@index([idPost], map: "fk_tbl_post_media_tbl_post1_idx")
+}
+
+model tbl_evento_media {
+  idEventoMedia Int     @id @unique(map: "idtblEventoMedia_UNIQUE") @default(autoincrement())
+  titulo        String  @db.VarChar(500)
+  referencia    String? @db.VarChar(500)
+  tipo          String? @db.VarChar(50)
+  url           String? @db.VarChar(500)
+  idOng         Int
+  idEventos     Int
+
+  tbl_evento tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_evento_media_tbl_eventos1")
+  tbl_ong    tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_evento_media_tbl_ong1")
+
+  @@index([idEventos], map: "fk_tbl_evento_media_tbl_eventos1_idx")
+  @@index([idOng], map: "fk_tbl_evento_media_tbl_ong1_idx")
 }
 
 model tbl_informacoes_de_contato {
@@ -224,6 +241,7 @@ model tbl_ong {
   tbl_comentario         tbl_comentario[]
   tbl_post_media         tbl_post_media[]
 
+  tbl_evento_media tbl_evento_media[]
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
 }
 
