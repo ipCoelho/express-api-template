@@ -44,7 +44,7 @@ class allPostsController {
           for (let i = 0; i < req.body.media.length; i++) {
             const fileData = req.body.media[i];
             const uiArray = base64intoUint8Array(fileData.base64);
-            const fileRef = `${ongMask.nome}/${postCreate.idPost}/${fileData.fileName}`;
+            const fileRef = `${ongMask.nome}/post/${postCreate.idPost}/${fileData.fileName}`;
 
             await fbhandler.uploadUint8Array(uiArray, fileRef, fileData.type);
             const url = await fbhandler.getMediaUrl(fileRef);
