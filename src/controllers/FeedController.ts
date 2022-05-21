@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { transformDocument } from "@prisma/client/runtime";
 
 const prisma = new PrismaClient();
 
@@ -29,18 +28,25 @@ class FeedController {
         }
       });
 
-      allPosts.map(post => post["type"] = "post");
+      allPosts.map(post => {
+        post["type"] = "post";
+        post["dataDeCriacao"] = post.createdAt;
+        delete post["createdAt"];
+      });
       allEvents.map(event => event["type"] = "evento");
       allVacancies.map(vacancy => vacancy["type"] = "vaga");
 
       console.log("post: ", allPosts[0], "event: ", allEvents[0], "vacancy: ", allVacancies[0]);
       console.log("post.length: ", allPosts.length, "event.length: ", allEvents.length, "vacancy.length: ", allVacancies.length);
 
-      const feed = ShuffleArray([...allPosts, ...allEvents, ...allVacancies]);
-      
+      const feed = sortByDate([...allPosts, ...allEvents, ...allVacancies]);
+      const page = Number(req.params.id);
+
+      const feedPaginated = feed.slice(page * 9, page * 9 + 9);
+
       return res.status(200).json({
         message: "Feed devolvido com sucesso.",
-        data: feed,
+        data: feedPaginated,
       });
     } catch (error) {
       console.log(`Error: ${error}`);
@@ -52,8 +58,9 @@ class FeedController {
   }
 }
 
-function ShuffleArray(array) {
-  return array.sort(() => Math.random() - 0.5);
+function sortByDate(array: any[]) {
+  array = array.sort((a, b) => b.dataDeCriacao - a.dataDeCriacao);
+  return array;
 }
 
 export default FeedController;
