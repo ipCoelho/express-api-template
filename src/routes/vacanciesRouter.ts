@@ -9,4 +9,24 @@ router.post("/vacancy", (req, res) => {
   vacanciesController.createVacancy(req, res);
 });
 
+router.get("/vacancy", (req, res) => {
+  console.info(`> Request GET recieved in '/vacancy' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  vacanciesController.getVacancies(req, res);
+});
+
+router.get("/vacancy/:idOng", (req, res) => {
+  console.info(`> Request GET recieved in '/vacancy/:idOng' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  vacanciesController.getVacanciesByOng(req, res);
+});
+
+router.get("/vacancy/:idOng/:idVacancy", (req, res) => {
+  console.info(`> Request GET recieved in '/vacancy/:idOng/:idVacancy' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  vacanciesController.getUnique(req, res);
+});
+
+router.delete("/vacancy/:idOng/:idVacancy", (req, res) => {
+  console.info(`> Request DELETE recieved in '/vacancy/:idOng/:idVacancy' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  vacanciesController.deleteVacancy(req, res);
+});
+
 export default router;
