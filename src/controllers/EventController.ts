@@ -30,7 +30,7 @@ class EventController {
               rua: "string",
               complemento: "string?",
               municipio: "string",
-              idLogin: "number",
+              idEstado: "number",
             },
             media: [
               {
