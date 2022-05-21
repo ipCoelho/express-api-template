@@ -52,9 +52,7 @@ model tbl_contato {
   idLogin   Int       @unique
   tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
 
-  tbl_ong      tbl_ong?    @relation(fields: [tbl_ongIdOng], references: [idOng])
-  tbl_ongIdOng Int?
-  tbl_vagas    tbl_vagas[]
+  tbl_vagas tbl_vagas[]
   @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
 }
 
@@ -227,7 +225,6 @@ model tbl_ong {
   dataDeFundacao         DateTime?                @default(now())
   idLogin                Int                      @unique
   tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
-  tbl_contato            tbl_contato[]
   tbl_eventos            tbl_eventos[]
   tbl_favoritos          tbl_favoritos[]
   tbl_ong_categoria      tbl_ong_categoria[]
