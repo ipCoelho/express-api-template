@@ -30,7 +30,7 @@ class EventController {
               rua: "string",
               complemento: "string?",
               municipio: "string",
-              idEstado: "number",
+              uf: "string",
             },
             media: [
               {
@@ -64,6 +64,17 @@ class EventController {
         });
       }
 
+      const ufMask = await prisma.tbl_estado.findUnique({
+        where: { sigla: adress.uf }
+      });
+
+      if (ufMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `UF '${adress.uf}' não encontrado.`,
+        });
+      }
+
       const adressCreate = await prisma.tbl_endereco.create({
         data: {
           bairro: adress.bairro,
@@ -72,7 +83,7 @@ class EventController {
           municipio: adress.municipio,
           numero: Number(adress.numero),
           rua: adress.rua,
-          idEstado: Number(adress.idEstado)
+          idEstado: Number(ufMask.idEstado)
         },
       });
 
@@ -299,7 +310,7 @@ interface AdressModel {
   rua: string;
   complemento?: string;
   municipio: string;
-  idEstado: number;
+  uf: string;
 }
 
 interface MediaModel {
