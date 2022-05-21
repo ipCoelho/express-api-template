@@ -25,7 +25,7 @@ class VacanciesController {
               rua: "string",
               complemento: "string?",
               municipio: "string",
-              idEstado: "number",
+              uf: "string",
             },
           },
         });
@@ -58,6 +58,17 @@ class VacanciesController {
         });
       }
 
+      const adressMask = await prisma.tbl_estado.findUnique({
+        where: { sigla: endereco.uf }
+      });
+
+      if (adressMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `UF '${endereco.uf}' não encontrada.`,
+        });
+      }
+
       const adressRecord = await prisma.tbl_endereco.create({
         data: {
           bairro: endereco.bairro,
@@ -66,7 +77,7 @@ class VacanciesController {
           municipio: endereco.municipio,
           numero: Number(endereco.numero),
           rua: endereco.rua,
-          idEstado: Number(endereco.idEstado),
+          idEstado: Number(adressMask.idEstado),
         }
       });
       console.log(`Registro do Endereço: `, adressRecord);
@@ -118,7 +129,7 @@ interface VacancyModel {
 }
 
 interface AdressModel {
-  idEstado: number;
+  uf: string;
   bairro: string;
   numero: number;
   rua: string;
