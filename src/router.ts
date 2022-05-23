@@ -14,6 +14,7 @@ import vacanciesRouter from "./routes/vacanciesRouter";
 import eventRouter from "./routes/eventRouter";
 import feedRouter from "./routes/feedRouter";
 import userEventRouter from "./routes/userToEventRouter";
+import userVacancyRouter from "./routes/userToVacancyRouter";
 
 import { Router } from "express";
 
@@ -36,5 +37,6 @@ router.use("/", vacanciesRouter);
 router.use("/", eventRouter);
 router.use("/", feedRouter);
 router.use("/", userEventRouter);
+router.use("/", userVacancyRouter);
 
 export default router;
