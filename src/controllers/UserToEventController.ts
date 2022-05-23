@@ -74,6 +74,54 @@ class UserToEventController {
     }
   }
 
+  async findAllUsersPerEvent(req: Request, res: Response) {
+    try {
+      const idEvento = Number(req.params.idEvento);
+      const idOng = Number(req.params.idOng);
+
+      const allOngsEvents = await prisma.tbl_eventos.findMany({
+        where: { idOng: Number(idOng) },
+      });
+
+      if (allOngsEvents.length === 0) {
+        return res.status(400).json({
+          status: 400,
+          message: `ONG com ID '${idOng}' não tem nenhum evento cadastrado.`,
+        });
+      }
+
+      const selectedEvent = allOngsEvents.find(
+        (event) => event.idEventos === idEvento
+      );
+
+      if (selectedEvent == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Evento com ID '${idEvento}' não encontrado.`,
+        });
+      }
+
+      const allUsersPerEvent = await prisma.tbl_usuario_evento.findMany({
+        where: { idEventos: Number(idEvento) },
+        include: {
+          tbl_usuario: true,
+          tbl_eventos: true,
+        },
+      });
+
+      return res.status(200).json({
+        status: 200,
+        message: `Todos usuários inscritos no evento com ID '${idEvento}'; da ONG com ID '${idOng}' encontrados.`,
+        data: allUsersPerEvent,
+      });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        status: 500,
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+      });
+    }
+  }
 }
 
 export default UserToEventController;

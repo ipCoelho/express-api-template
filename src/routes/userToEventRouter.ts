@@ -9,4 +9,9 @@ router.post("/event-controller", (req, res) => {
   userToEventController.createUserToEvent(req, res);
 });
 
+router.get("/event-controller/:idOng/:idEvento", (req, res) => {
+  console.info(`> Request GET recieved in '/event-controller' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  userToEventController.findAllUsersPerEvent(req, res);
+});
+
 export default router;
