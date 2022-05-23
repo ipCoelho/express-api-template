@@ -13,6 +13,7 @@ import fileHandlerRouter from "./routes/filehandlerRouter";
 import vacanciesRouter from "./routes/vacanciesRouter";
 import eventRouter from "./routes/eventRouter";
 import feedRouter from "./routes/feedRouter";
+import userEventRouter from "./routes/userToEventRouter";
 
 import { Router } from "express";
 
@@ -34,5 +35,6 @@ router.use("/", fileHandlerRouter);
 router.use("/", vacanciesRouter);
 router.use("/", eventRouter);
 router.use("/", feedRouter);
+router.use("/", userEventRouter);
 
 export default router;
