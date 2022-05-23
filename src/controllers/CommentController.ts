@@ -15,7 +15,6 @@ class CommentController {
             idUsuario: "number",
             comentario: {
               texto: "string",
-              indiceNaConversa: "number",
               filhoDoComentario: "number?",
             },
           },
@@ -46,12 +45,16 @@ class CommentController {
         });
       }
 
+      const commentCount = await prisma.tbl_comentario.findMany({
+        where: { idPost: Number(idPost) }
+      });
+
       const commentCreation = await prisma.tbl_comentario.create({
         data: {
           idPost: idPost,
           idUsuario: idUsuario,
+          indiceNaConversa: commentCount.length,
           comentario: comentario.texto,
-          indiceNaConversa: comentario.indiceNaConversa,
           filhoDoComentario: comentario.filhoDoComentario || null,
         },
         include: {
@@ -81,18 +84,44 @@ class CommentController {
     }
   }
 
+  async findAllCommentsPerPost(req: Request, res: Response) {
+    try {
+      const idPost = Number(req.params.idPost);
+
+      const postMask = await prisma.tbl_post.findUnique({ 
+        where: { idPost: idPost },
+        include: {
+          tbl_ong: true,
+          tbl_comentario: true,
+          tbl_post_media: true
+        }
+      });
+
+      if (postMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Post com ID '${idPost}' não encontrado.`,
+        });
+      }
+
+      return res.status(200).json({
+        status: 200,
+        message: `Comentários do post com ID '${idPost}' recuperados com sucesso.`,
+        data: postMask,
+      });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 interface Comment {
   texto: string;
-  indiceNaConversa: number;
   filhoDoComentario: number;
-}
-
-interface CommentModel {
-  idPost: number;
-  idUsuario: number;
-  comentario: Comment;
 }
 
 export default CommentController;
