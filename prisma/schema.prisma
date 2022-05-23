@@ -285,27 +285,16 @@ model tbl_patrocinadores {
 }
 
 model tbl_post {
-  idPost              Int                   @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
-  descricao           String                @db.Text
-  idOng               Int
-  createdAt           DateTime              @default(now())
-  tbl_post_comentario tbl_post_comentario[]
-  tbl_post_reacao     tbl_post_reacao[]
-  tbl_post_media      tbl_post_media[]
-  tbl_ong             tbl_ong?              @relation(fields: [idOng], references: [idOng])
+  idPost          Int               @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
+  descricao       String            @db.Text
+  idOng           Int
+  createdAt       DateTime          @default(now())
+  tbl_comentario  tbl_comentario[]
+  tbl_post_reacao tbl_post_reacao[]
+  tbl_post_media  tbl_post_media[]
+  tbl_ong         tbl_ong?          @relation(fields: [idOng], references: [idOng])
 
-  tbl_comentario tbl_comentario[]
   @@index([idOng], map: "fk_tblPosts_tblOng1_idx")
-}
-
-model tbl_post_comentario {
-  idPostComentario Int      @id @unique(map: "idtbl_post_comentario_UNIQUE") @default(autoincrement())
-  idcomentario     Int
-  idPost           Int
-  tbl_post         tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_comentario_tbl_post1")
-
-  @@index([idcomentario], map: "fk_tbl_post_comentario_tbl_comentario1_idx")
-  @@index([idPost], map: "fk_tbl_post_comentario_tbl_post1_idx")
 }
 
 model tbl_post_reacao {
