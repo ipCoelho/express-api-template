@@ -354,7 +354,6 @@ model tbl_usuario {
   tbl_comentario             tbl_comentario[]
 
   tbl_usuario_reacao tbl_usuario_reacao[]
-  // @@index([idLogin], map: "fk_tbl_usuario_tbl_login1_idx")
 }
 
 model tbl_usuario_reacao {
