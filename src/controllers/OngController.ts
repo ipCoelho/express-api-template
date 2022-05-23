@@ -319,46 +319,26 @@ class OngController {
         });
       }
   
-      const ongUpdated = await prisma.tbl_ong.update({
-        where: { idOng: Number(id) },
-        data: {
-          ...ong,
-         },
-      });
-  
-      const loginMask = await prisma.tbl_login.findUnique({
-        where: {
-          idLogin: Number(ongUpdated.idLogin),
-        }
-      });
-
-      const loginUpdated = await prisma.tbl_login.update({
-        where: {
-          idLogin: Number(ongMask.idLogin),
-        },
-        data: {
-          email: login.email ?? loginMask.email,
-          senha: login.senha ?? loginMask.senha,
-        }
-      })
-  
-      if (ongUpdated != null || loginUpdated != null) {
-        console.info(`> Returned:
-          {
-            message: "ONG com ID '${id}' atualizada com sucesso.",
-            status: 200,
-            data: ${JSON.stringify(ongUpdated)},
-          }`);
-  
-        res.status(200).json({  
-          message: `ONG com ID '${id}' atualizada com sucesso.`,
-          status: 200,
-          data: {
-            ong: ongUpdated,
-            login: loginUpdated,
-          }
+      let ongData, loginData;
+      if (ong != null) {
+        ongData = await prisma.tbl_ong.update({
+          where: { idOng: Number(id) },
+          data: { ...ong },
         });
       }
+  
+      if (login != null) {
+        loginData = await prisma.tbl_login.update({
+          where: { idLogin: Number(id) },
+          data: { ...login },
+        });
+      }
+
+      return res.status(200).json({
+        message: `ONG com ID '${id}' atualizada com sucesso.`,
+        status: 200,
+        data: { ong: ongData, login: loginData },
+      });
     } catch (error) {
       console.error(`> Error: ${error}`);
       res.status(500).json({
