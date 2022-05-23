@@ -206,6 +206,12 @@ class EventController {
       const selectedEvent = await prisma.tbl_eventos.findUnique({
         where: {
           idEventos: Number(idEvent) 
+        },
+        include: {
+          tbl_endereco: true,
+          tbl_evento_media: true,
+          tbl_ong: true,
+          tbl_usuario_evento: true
         }
       });
 
