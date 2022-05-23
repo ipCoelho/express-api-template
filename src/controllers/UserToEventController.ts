@@ -122,6 +122,103 @@ class UserToEventController {
       });
     }
   }
+  
+  async findAllEventsAndUsersPerOng(req: Request, res: Response) {
+    try {
+      const idOng = Number(req.params.idOng);
+
+      const allOngsEvents = await prisma.tbl_eventos.findMany({
+        where: { idOng: Number(idOng) },
+        include: {
+          tbl_endereco: true,
+          tbl_evento_media: true,
+          tbl_usuario_evento: {
+            select: {
+              id_usuario_evento: true,
+              tbl_usuario: true,
+              idEventos: true,
+              idUsuario: true,
+            }
+          }
+        }
+      });
+
+      if (allOngsEvents.length === 0) {
+        return res.status(400).json({
+          status: 400,
+          message: `ONG com ID '${idOng}' não tem nenhum evento cadastrado.`,
+        });
+      } else {
+        return res.status(200).json({
+          status: 200,
+          message: `Todas eventos da ONG com ID '${idOng}' encontradas.`,
+          data: allOngsEvents,
+        });
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        status: 500,
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+      });
+    }
+  }
+
+  async removeUserToEvent(req: Request, res: Response) {
+    try {
+      const idEvento = Number(req.params.idEvento);
+      const idUsuario = Number(req.params.idUsuario);
+
+      const eventMask = await prisma.tbl_eventos.findUnique({
+        where: { idEventos: Number(idEvento) }
+      });
+
+      if (eventMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Evento com ID '${idEvento}' não encontrado.`,
+        });
+      }
+
+      const userMask = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: Number(idUsuario) }
+      });
+
+      if (userMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Usuário com ID '${idUsuario}' não encontrado.`,
+        });
+      }
+
+      const userToEventMask = await prisma.tbl_usuario_evento.findFirst({
+        where: { idUsuario: Number(idUsuario), idEventos: Number(idEvento) }
+      });
+
+      if (userToEventMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Usuário com ID '${idUsuario}' não está inscrito no evento com ID '${idEvento}'.`,
+        });
+      }
+
+      const userToEvent = await prisma.tbl_usuario_evento.delete({
+        where: { id_usuario_evento: userToEventMask.id_usuario_evento }
+      });
+
+      return res.status(200).json({
+        status: 200,
+        message: `Usuário com ID '${idUsuario}' removido do evento com ID '${idEvento}' com sucesso.`,
+        data: userToEvent,
+      });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        status: 500,
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+      });
+    }
+  }
 }
 
 export default UserToEventController;

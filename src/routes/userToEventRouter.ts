@@ -14,4 +14,14 @@ router.get("/event-controller/:idOng/:idEvento", (req, res) => {
   userToEventController.findAllUsersPerEvent(req, res);
 });
 
+router.get("/event-controller/:idOng", (req, res) => {
+  console.info(`> Request GET recieved in '/event-controller' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  userToEventController.findAllEventsAndUsersPerOng(req, res);
+});
+
+router.delete("/event-controller/:idEvento/:idUsuario", (req, res) => {
+  console.info(`> Request DELETE recieved in '/event-controller' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  userToEventController.removeUserToEvent(req, res);
+});
+
 export default router;
