@@ -35,14 +35,14 @@ model tbl_comentario {
   idcomentario      Int         @id @unique(map: "idtblcomentario_UNIQUE") @default(autoincrement())
   comentario        String?     @db.Text
   dataDeCriacao     DateTime    @default(now())
-  idOng             Int
+  idPost            Int
   idUsuario         Int
   indiceNaConversa  Int
   filhoDoComentario Int?
-  tbl_ong           tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_ong1")
+  tbl_post          tbl_post    @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_post1")
   tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_usuario1")
 
-  @@index([idOng], map: "fk_tbl_comentario_tbl_ong1_idx")
+  @@index([idPost], map: "fk_tbl_comentario_tbl_post1_idx")
   @@index([idUsuario], map: "fk_tbl_comentario_tbl_usuario1_idx")
 }
 
@@ -237,7 +237,6 @@ model tbl_ong {
   tbl_vagas              tbl_vagas[]
   tbl_meios_de_doacao    tbl_meios_de_doacao[]
   tbl_dados_bancarios    tbl_dados_bancarios[]
-  tbl_comentario         tbl_comentario[]
   tbl_post_media         tbl_post_media[]
 
   tbl_evento_media tbl_evento_media[]
@@ -295,6 +294,7 @@ model tbl_post {
   tbl_post_media      tbl_post_media[]
   tbl_ong             tbl_ong?              @relation(fields: [idOng], references: [idOng])
 
+  tbl_comentario tbl_comentario[]
   @@index([idOng], map: "fk_tblPosts_tblOng1_idx")
 }
 
