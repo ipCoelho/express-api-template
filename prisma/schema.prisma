@@ -32,13 +32,15 @@ model tbl_chat_login {
 }
 
 model tbl_comentario {
-  idcomentario  Int         @id @unique(map: "idtblcomentario_UNIQUE") @default(autoincrement())
-  comentario    String?     @db.Text
-  dataDeCriacao DateTime    @default(now())
-  idOng         Int
-  idUsuario     Int
-  tbl_ong       tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_ong1")
-  tbl_usuario   tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_usuario1")
+  idcomentario      Int         @id @unique(map: "idtblcomentario_UNIQUE") @default(autoincrement())
+  comentario        String?     @db.Text
+  dataDeCriacao     DateTime    @default(now())
+  idOng             Int
+  idUsuario         Int
+  indiceNaConversa  Int
+  filhoDoComentario Int?
+  tbl_ong           tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_ong1")
+  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_usuario1")
 
   @@index([idOng], map: "fk_tbl_comentario_tbl_ong1_idx")
   @@index([idUsuario], map: "fk_tbl_comentario_tbl_usuario1_idx")
