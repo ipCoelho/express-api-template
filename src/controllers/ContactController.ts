@@ -12,17 +12,15 @@ class ContactController {
           error: "'idLogin' não recebido.",
           expected: {
             idLogin: "string",
-            email: "string?",
             numero: "string?",
             telefone: "string?"
           }
         });
-      } else if (!req.body.email && !req.body.numero && !req.body.telefone) {
+      } else if (!req.body.numero && !req.body.telefone) {
         return res.status(400).send({
           message: "Nenhum parâmetro para alteração recebido.",
           expected: {
             idLogin: "number",
-            email: "string?",
             numero: "string?",
             telefone: "string?"
           }
@@ -129,17 +127,6 @@ class ContactController {
         where: {
           idLogin: Number(req.params.id),
         },
-      });
-
-      const allEmails = await prisma.tbl_contato.findMany();
-
-      allEmails.map(contato => {
-        if (contato.email == req.body.email) {
-          return res.status(400).json({
-            message: `Email '${req.body.email}' já em uso.`,
-            status: 400,
-          });
-        }
       });
 
       if (!IDverify) {

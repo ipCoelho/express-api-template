@@ -49,7 +49,6 @@ model tbl_comentario {
 model tbl_contato {
   idContato Int       @id @unique(map: "idcontato_UNIQUE") @default(autoincrement())
   numero    String?   @db.VarChar(45)
-  email     String?   @unique(map: "email_UNIQUE") @db.VarChar(80)
   telefone  String?   @db.VarChar(45)
   idLogin   Int       @unique
   tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
