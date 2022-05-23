@@ -10,7 +10,7 @@ class FeedController {
         include: {
           tbl_ong: true,
           tbl_post_media: true,
-          tbl_post_comentario: true,
+          tbl_comentario: true,
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
