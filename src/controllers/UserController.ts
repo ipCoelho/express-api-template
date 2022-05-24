@@ -201,6 +201,16 @@ class UserController {
 
       const databaseData = await prisma.tbl_usuario.findUnique({
         where: { idUsuario: Number(id) },
+        include: {
+          tbl_comentario: true,
+          tbl_login: true,
+          tbl_favoritos: true,
+          tbl_informacoes_de_contato: true,
+          tbl_usuario_evento: true,
+          tbl_seguidor: true,
+          tbl_usuario_reacao: true,
+          tbl_vagas_usuario: true
+        }
       });
 
       if (databaseData) {
@@ -389,7 +399,7 @@ class UserController {
           tbl_informacoes_de_contato: true,
           tbl_seguidor: true,
           tbl_usuario_reacao: true,
-          tbl_vagas_usuario: true
+          tbl_vagas_usuario: true,
         }
       });
 
