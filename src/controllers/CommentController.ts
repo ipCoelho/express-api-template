@@ -117,6 +117,38 @@ class CommentController {
       });
     }
   }
+
+  async findAllCommentsPerUser(req: Request, res: Response) {
+    try {
+      const idUsuario = Number(req.params.idUsuario);
+
+      const userMask = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: idUsuario },
+        include: {
+          tbl_comentario: true
+        }
+      });
+
+      if (userMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Usuário com ID '${idUsuario}' não encontrado.`,
+        });
+      }
+
+      return res.status(200).json({
+        status: 200,
+        message: `Comentários do usuário com ID '${idUsuario}' recuperados com sucesso.`,
+        data: userMask,
+      });
+    } catch (error) {
+      console.log(`Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 interface Comment {
