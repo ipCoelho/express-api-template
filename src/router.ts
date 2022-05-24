@@ -16,12 +16,13 @@ import feedRouter from "./routes/feedRouter";
 import userEventRouter from "./routes/userToEventRouter";
 import userVacancyRouter from "./routes/userToVacancyRouter";
 import commentRouter from "./routes/commentRouter";
+import followerRouter from "./routes/followerController";
 
 import { Router } from "express";
 
 const router = Router(); 
 
-router.get("/", (_, res) => res.json({message: "API working."}));
+router.get("/", (_, res) => res.json({ message: "API working." }));
 router.use("/", ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
@@ -40,5 +41,6 @@ router.use("/", feedRouter);
 router.use("/", userEventRouter);
 router.use("/", userVacancyRouter);
 router.use("/", commentRouter);
+router.use("/", followerRouter);
 
 export default router;
