@@ -208,7 +208,11 @@ class EventController {
           idEventos: Number(idEvent) 
         },
         include: {
-          tbl_endereco: true,
+          tbl_endereco: {
+            include: {
+              tbl_estado: true
+            } 
+          },
           tbl_evento_media: true,
           tbl_ong: true,
           tbl_usuario_evento: true
