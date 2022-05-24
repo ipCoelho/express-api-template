@@ -31,7 +31,7 @@ router.put("/user/:id", (req, res) => {
 
 router.delete("/user/:id", (req, res) => {
   console.info(`> Request DELETE recieved in '/user/:id' at ${new Date().toLocaleString()}. \n> req.params:`, req.params);
-  userController.remove(req, res)
+  userController.removeUser(req, res)
 });
 
 export default router;

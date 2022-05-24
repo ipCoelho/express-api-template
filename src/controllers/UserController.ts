@@ -354,44 +354,55 @@ class UserController {
     }
   }
 
-  async remove(req: Request, res: Response) {
-    const id = req.params.id;
+  async removeUser(req: Request, res: Response) {
+    try {
+      const idUser = Number(req.params.id);
 
-    const IDverify = await prisma.tbl_usuario.findUnique({
-      where: {
-        idUsuario: Number(id),
-      },
-    });
+      const userMask = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: idUser },
+        include: {
+          tbl_login: true,
+          tbl_usuario_evento: true,
+          tbl_comentario: true,
+          tbl_favoritos: true,
+          tbl_informacoes_de_contato: true,
+          tbl_seguidor: true,
+          tbl_usuario_reacao: true,
+          tbl_vagas_usuario: true
+        }
+        });
 
-    if (IDverify == null) {
-      console.info(`> Returned:
-      {
-        message: "ID '${id}' não encontrado.",
-        status: 404
-      }`);
+      if (userMask == null) {
+        return res.status(404).json({
+          message: `Usuário com id '${idUser}' não encontrado.`,
+          status: 404,
+        });
+      }
 
-      return res.status(404).json({
-        message: `ID '${id}' não encontrado.`,
-        status: 404,
+      const userDelete = await prisma.tbl_usuario.delete({
+        where: { idUsuario: idUser },
+        include: {
+          tbl_login: true,
+          tbl_usuario_evento: true,
+          tbl_comentario: true,
+          tbl_favoritos: true,
+          tbl_informacoes_de_contato: true,
+          tbl_seguidor: true,
+          tbl_usuario_reacao: true,
+          tbl_vagas_usuario: true
+        }
       });
-    }
-
-    const databaseData = await prisma.tbl_usuario.delete({
-      where: { idUsuario: Number(id) },
-    });
-
-    if (databaseData) {
-      console.info(`> Returned:
-        {
-          message: "Usuário (nome:'${IDverify.nome}', id:${id}) excluído com sucesso.",
-          status: 200,
-          data: ${JSON.stringify(databaseData)}
-        }`);
 
       return res.status(200).json({
-        message: `Usuário (nome:'${IDverify.nome}', id:${id}) excluído com sucesso.`,
+        message: `Usuário com id '${idUser}' removido com sucesso.`,
         status: 200,
-        data: databaseData,
+        data: userDelete,
+      });
+    } catch (error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
       });
     }
   }
