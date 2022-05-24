@@ -149,6 +149,46 @@ class CommentController {
       });
     }
   }
+
+  async deleteComment(req: Request, res: Response) {
+    try {
+      const idComentario = Number(req.params.idComentario);
+
+      const commentMask = await prisma.tbl_comentario.findUnique({
+        where: { idcomentario: idComentario }
+      });
+
+      if (commentMask == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Comentário com ID '${idComentario}' não encontrado.`,
+        });
+      }
+
+      const commentDeletion = await prisma.tbl_comentario.delete({
+        where: { idcomentario: idComentario }
+      });
+
+      if (commentDeletion == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Erro ao deletar comentário com ID '${idComentario}'.`,
+        });
+      } else {
+        return res.status(200).json({
+          status: 200,
+          message: `Comentário com ID '${idComentario}' deletado com sucesso.`,
+          data: commentDeletion
+        });
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 interface Comment {

@@ -19,4 +19,9 @@ router.get("/comment/user/:idUsuario", (req, res) => {
   commentController.findAllCommentsPerUser(req, res);
 });
 
+router.delete("/comment/:idComentario", (req, res) => {
+  console.info(`> Request DELETE recieved in '/comment' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  commentController.deleteComment(req, res);
+});
+
 export default router;
