@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -173,6 +174,7 @@ model tbl_login {
   idLogin            Int                  @id @unique(map: "idtbl_login_UNIQUE") @default(autoincrement())
   email              String               @unique(map: "email_UNIQUE") @db.VarChar(80)
   senha              String               @db.VarChar(80)
+  accountStatus      Boolean              @db.TinyInt @default(true)
   tbl_chat_login     tbl_chat_login[]
   tbl_login_endereco tbl_login_endereco[]
   tbl_login_reacao   tbl_login_reacao[]
