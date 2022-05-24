@@ -154,6 +154,11 @@ class OngController {
           message: `O e-mail '${email}' não foi encontrado.`,
           status: 404,
         });
+      } else if (database.accountStatus == false) {
+        return res.status(403).json({
+          message: `O login '${email}' está DESATIVADO.`,
+          status: 403,
+        });
       }
 
       if (database.senha === senha) {

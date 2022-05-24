@@ -133,6 +133,11 @@ class UserController {
           message: `Email '${user.email}' não encontrado.`,
           status: 404,
         });
+      } else if (tblLogin.accountStatus == false) {
+        return res.status(403).json({
+          message: `O login '${user.email}' está DESATIVADO.`,
+          status: 403,
+        });
       } else if (tblLogin.senha === user.senha) {
         const tblUser = await prisma.tbl_usuario.findMany({
           where: { idLogin: tblLogin.idLogin },
@@ -380,7 +385,7 @@ class UserController {
           tbl_usuario_reacao: true,
           tbl_vagas_usuario: true
         }
-        });
+      });
 
       if (userMask == null) {
         return res.status(404).json({
@@ -389,25 +394,29 @@ class UserController {
         });
       }
 
-      const userDelete = await prisma.tbl_usuario.delete({
-        where: { idUsuario: idUser },
-        include: {
-          tbl_login: true,
-          tbl_usuario_evento: true,
-          tbl_comentario: true,
-          tbl_favoritos: true,
-          tbl_informacoes_de_contato: true,
-          tbl_seguidor: true,
-          tbl_usuario_reacao: true,
-          tbl_vagas_usuario: true,
-        }
+      const loginMask = await prisma.tbl_login.findUnique({
+        where: { idLogin: userMask.idLogin }
       });
 
-      return res.status(200).json({
-        message: `Usuário com id '${idUser}' removido com sucesso.`,
-        status: 200,
-        data: userDelete,
+      if (loginMask.accountStatus == false) {
+        return res.status(400).json({
+          message: `Usuário com ID '${idUser}' já foi DESATIVADO.`,
+          status: 400,
+        });
+      }
+
+      const desactivateAccont = await prisma.tbl_login.update({
+        where: { idLogin: userMask.idLogin },
+        data: { accountStatus: false },
       });
+
+      if (desactivateAccont != null) {
+        return res.status(200).json({
+          message: `Usuário com id '${idUser}' removido com sucesso.`,
+          status: 200,
+          data: desactivateAccont,
+        }); 
+      }
     } catch (error) {
       console.log("Error: ", error);
       return res.status(500).json({
