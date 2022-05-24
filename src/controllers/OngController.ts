@@ -209,7 +209,11 @@ class OngController {
 
   async read(req: Request, res: Response) {
     try {
-      const data = await prisma.tbl_ong.findMany();
+      const data = await prisma.tbl_ong.findMany({
+        include: {
+          tbl_login: true
+        }
+      });
   
       console.info(`> Returned:
         {
@@ -349,49 +353,72 @@ class OngController {
   }
 
   async remove(req: Request, res: Response) {
-    const { id } = req.params;
-
-    const ongMask = await prisma.tbl_ong.findUnique({
-      where: { idOng: Number(id) },
-    });
-
-    if (ongMask == null) {
-      console.info(`> Returned:
-        {
-          message: "ONG '${id}' não foi encontrada.",
-          status: 404,
-        }`);
-
-      return res.status(404).json({
-        message: `ONG '${id}' não foi encontrada.`,
-        status: 404,
+    try {
+      const idOng = Number(req.params.id);
+  
+      const ongMask = await prisma.tbl_ong.findUnique({ 
+        where: { idOng: Number(idOng) },
+        include: {
+          tbl_dados_bancarios: true,
+          tbl_evento_media: true,
+          tbl_eventos: true,
+          tbl_favoritos: true,
+          tbl_login: true,
+          tbl_meios_de_doacao: true,
+          tbl_ong_categoria: true,
+          tbl_ong_estado: true,
+          tbl_ong_patrocinadores: true,
+          tbl_post: true,
+          tbl_post_media: true,
+          tbl_seguidor: true,
+          tbl_vagas: true
+        }
       });
-    }
 
-    const databaseData = await prisma.tbl_ong.delete({
-      where: {
-        idOng: Number(id),
-      },
-    });
+      const loginMask = await prisma.tbl_login.findUnique({
+        where: { idLogin: Number(ongMask.idLogin) },
+      });
 
-    const loginDelete = await prisma.tbl_login.delete({
-      where: {
-        idLogin: Number(ongMask.idLogin),
-      },
-    });
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `ONG com ID '${idOng}' não foi encontrada.`,
+          status: 404,
+        });
+      } else if (loginMask == null) {
+        return res.status(400).json({
+          message: `ONG com ID '${idOng}' já teve sua conta desativada.`,
+          status: 400,
+        });
+      } else if (loginMask.accountStatus == false) {
+        return res.status(400).json({
+          message: `0NG com ID '${idOng}' já teve sua conta desativada.`,
+          status: 400,
+        });
+      }
 
-    if (databaseData != null || loginDelete != null) {
-      console.info(`> Returned:
-        {
-          message: "ONG com (nome:'${ongMask.nome}', id:'${id}') excluída com sucesso.",
+      const desactiveAccount = await prisma.tbl_login.update({
+        where: {
+          idLogin: ongMask.idLogin
+        },
+        data: {
+          accountStatus: false
+        }
+      });
+      console.log(desactiveAccount);
+  
+      if (desactiveAccount) {
+        return res.status(200).json({
+          message: `ONG com ID '${idOng}' DESATIVADA com sucesso.`,
           status: 200,
-          data: ${JSON.stringify(databaseData)},
-        }`);
+          data: desactiveAccount
+        });
+      }
 
-      return res.status(200).json({
-        message: `ONG com (nome:'${ongMask.nome}, id:'${id}') excluída com sucesso.`,
-        status: 200,
-        data: databaseData,
+    } catch (error) {
+      console.log(`> Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
       });
     }
   }
