@@ -24,8 +24,8 @@ model tbl_chat_login {
   idChatLogin Int       @id @unique(map: "idtblChatLogin_UNIQUE") @default(autoincrement())
   idLogin     Int
   idChat      Int
-  tbl_chat    tbl_chat  @relation(fields: [idChat], references: [idChat], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_chat_login_tbl_chat1")
-  tbl_login   tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_chat_login_tbl_login1")
+  tbl_chat    tbl_chat  @relation(fields: [idChat], references: [idChat], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_chat_login_tbl_chat1")
+  tbl_login   tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_chat_login_tbl_login1")
 
   @@index([idChat], map: "fk_tbl_chat_login_tbl_chat1_idx")
   @@index([idLogin], map: "fk_tbl_chat_login_tbl_login1_idx")
@@ -39,8 +39,8 @@ model tbl_comentario {
   idUsuario         Int
   indiceNaConversa  Int
   filhoDoComentario Int?
-  tbl_post          tbl_post    @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_post1")
-  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_comentario_tbl_usuario1")
+  tbl_post          tbl_post    @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_post1")
+  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_usuario1")
 
   @@index([idPost], map: "fk_tbl_comentario_tbl_post1_idx")
   @@index([idUsuario], map: "fk_tbl_comentario_tbl_usuario1_idx")
@@ -51,7 +51,7 @@ model tbl_contato {
   numero    String?   @db.VarChar(45)
   telefone  String?   @db.VarChar(45)
   idLogin   Int       @unique
-  tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_contato_tbl_login1")
+  tbl_login tbl_login @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_contato_tbl_login1")
 
   tbl_vagas tbl_vagas[]
   @@index([idLogin], map: "fk_tbl_contato_tbl_login1_idx")
@@ -64,7 +64,7 @@ model tbl_dados_bancarios {
   conta           String  @db.VarChar(20)
   tipo            String  @db.VarChar(30)
   idOng           Int     @unique(map: "idOng_UNIQUE")
-  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblDadosBancarios_tblOng1")
+  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblDadosBancarios_tblOng1")
 }
 
 model tbl_endereco {
@@ -77,7 +77,7 @@ model tbl_endereco {
   municipio          String               @db.VarChar(80)
   idEstado           Int
   idLogin            Int?                 @unique(map: "idLogin_UNIQUE")
-  tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblEndereco_tblEstado1")
+  tbl_estado         tbl_estado           @relation(fields: [idEstado], references: [idEstado], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblEndereco_tblEstado1")
   tbl_eventos        tbl_eventos[]
   tbl_login_endereco tbl_login_endereco[]
   tbl_vagas          tbl_vagas[]
@@ -105,8 +105,8 @@ model tbl_eventos {
   idOng               Int
   numeroParticipantes Int?
   candidatos          Boolean              @db.TinyInt
-  tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_endereco1")
-  tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_eventos_tbl_ong1")
+  tbl_endereco        tbl_endereco         @relation(fields: [idEndereco], references: [idEndereco], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_eventos_tbl_endereco1")
+  tbl_ong             tbl_ong              @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_eventos_tbl_ong1")
   tbl_usuario_evento  tbl_usuario_evento[]
   tbl_evento_media    tbl_evento_media[]
 
@@ -121,8 +121,8 @@ model tbl_favoritos {
   usuario     String?     @db.VarChar(100)
   ong         String?     @db.VarChar(100)
   favoritado  Boolean     @db.TinyInt
-  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_ong1")
-  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_favoritos_tbl_usuario1")
+  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_favoritos_tbl_ong1")
+  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_favoritos_tbl_usuario1")
 
   @@index([idOng], map: "fk_tbl_favoritos_tbl_ong1_idx")
   @@index([idUsuario], map: "fk_tbl_favoritos_tbl_usuario1_idx")
@@ -136,7 +136,7 @@ model tbl_post_media {
   url         String?  @db.VarChar(500)
   idOng       Int
   idPost      Int
-  tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_media_tbl_post1")
+  tbl_post    tbl_post @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_post_media_tbl_post1")
   tbl_ong     tbl_ong? @relation(fields: [idOng], references: [idOng])
 
   @@index([idPost], map: "fk_tbl_post_media_tbl_post1_idx")
@@ -151,8 +151,8 @@ model tbl_evento_media {
   idOng         Int
   idEventos     Int
 
-  tbl_evento tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_evento_media_tbl_eventos1")
-  tbl_ong    tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_evento_media_tbl_ong1")
+  tbl_evento tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_evento_media_tbl_eventos1")
+  tbl_ong    tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_evento_media_tbl_ong1")
 
   @@index([idEventos], map: "fk_tbl_evento_media_tbl_eventos1_idx")
   @@index([idOng], map: "fk_tbl_evento_media_tbl_ong1_idx")
@@ -164,7 +164,7 @@ model tbl_informacoes_de_contato {
   email                  String      @unique(map: "email_UNIQUE") @db.VarChar(100)
   telefone               String?     @db.VarChar(45)
   idUsuario              Int
-  tbl_usuario            tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblInformacoesDeContado_tblUsuario1")
+  tbl_usuario            tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblInformacoesDeContado_tblUsuario1")
 
   @@index([idUsuario], map: "fk_tblInformacoesDeContado_tblUsuario1_idx")
 }
@@ -186,8 +186,8 @@ model tbl_login_endereco {
   idLoginEndereco Int          @id @unique(map: "idtbl_login_endereco_UNIQUE") @default(autoincrement())
   idEndereco      Int
   idLogin         Int
-  tbl_endereco    tbl_endereco @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_endereco_tbl_endereco1")
-  tbl_login       tbl_login    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_endereco_tbl_login1")
+  tbl_endereco    tbl_endereco @relation(fields: [idEndereco], references: [idEndereco], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_login_endereco_tbl_endereco1")
+  tbl_login       tbl_login    @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_login_endereco_tbl_login1")
 
   @@index([idEndereco], map: "fk_tbl_login_endereco_tbl_endereco1_idx")
   @@index([idLogin], map: "fk_tbl_login_endereco_tbl_login1_idx")
@@ -197,8 +197,8 @@ model tbl_login_reacao {
   idLoginReacao Int        @id @unique(map: "idtbl_login_reacao_UNIQUE") @default(autoincrement())
   idReacao      Int
   idLogin       Int
-  tbl_login     tbl_login  @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_reacao_tbl_login1")
-  tbl_reacao    tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_login_reacao_tbl_reacao1")
+  tbl_login     tbl_login  @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_login_reacao_tbl_login1")
+  tbl_reacao    tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_login_reacao_tbl_reacao1")
 
   @@index([idLogin], map: "fk_tbl_login_reacao_tbl_login1_idx")
   @@index([idReacao], map: "fk_tbl_login_reacao_tbl_reacao1_idx")
@@ -209,7 +209,7 @@ model tbl_meios_de_doacao {
   site            String? @db.VarChar(150)
   pix             String? @db.VarChar(100)
   idOng           Int     @unique(map: "idOng_UNIQUE")
-  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblMeiosDeDoacao_tblOng")
+  tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblMeiosDeDoacao_tblOng")
 }
 
 model tbl_ong {
@@ -225,7 +225,7 @@ model tbl_ong {
   qtdDeMembros           Int?
   dataDeFundacao         DateTime?                @default(now())
   idLogin                Int                      @unique
-  tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_tbl_login1")
+  tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_tbl_login1")
   tbl_eventos            tbl_eventos[]
   tbl_favoritos          tbl_favoritos[]
   tbl_ong_categoria      tbl_ong_categoria[]
@@ -246,8 +246,8 @@ model tbl_ong_categoria {
   idOngCategoria Int            @id @unique(map: "idtbl-ong_categoria_UNIQUE") @default(autoincrement())
   idOng          Int
   idCategorias   Int
-  tbl_categorias tbl_categorias @relation(fields: [idCategorias], references: [idCategorias], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblong_categoria_tbl_categorias1")
-  tbl_ong        tbl_ong        @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblong_categoria_tbl_ong1")
+  tbl_categorias tbl_categorias @relation(fields: [idCategorias], references: [idCategorias], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblong_categoria_tbl_categorias1")
+  tbl_ong        tbl_ong        @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblong_categoria_tbl_ong1")
 
   @@index([idCategorias], map: "fk_tblong_categoria_tbl_categorias1_idx")
   @@index([idOng], map: "fk_tblong_categoria_tbl_ong1_idx")
@@ -257,8 +257,8 @@ model tbl_ong_estado {
   idOngRegiao Int        @id @unique(map: "idtblOngRegiao_UNIQUE") @default(autoincrement())
   idOng       Int
   idEstado    Int
-  tbl_estado  tbl_estado @relation(fields: [idEstado], references: [idEstado], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_ong_estado_tbl_estado1")
-  tbl_ong     tbl_ong    @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngRegiao_tblOng1")
+  tbl_estado  tbl_estado @relation(fields: [idEstado], references: [idEstado], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_estado_tbl_estado1")
+  tbl_ong     tbl_ong    @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblOngRegiao_tblOng1")
 
   @@index([idOng], map: "fk_tblOngRegiao_tblOng1_idx")
   @@index([idEstado], map: "fk_tbl_ong_estado_tbl_estado1_idx")
@@ -268,8 +268,8 @@ model tbl_ong_patrocinadores {
   idOngPatrocinadores Int                @id @unique(map: "idtblOngPatrocinadores_UNIQUE") @default(autoincrement())
   idOng               Int
   idPatrocinadores    Int
-  tbl_ong             tbl_ong            @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngPatrocinadores_tblOng1")
-  tbl_patrocinadores  tbl_patrocinadores @relation(fields: [idPatrocinadores], references: [idPatrocinadores], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblOngPatrocinadores_tblPatrocinadores1")
+  tbl_ong             tbl_ong            @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblOngPatrocinadores_tblOng1")
+  tbl_patrocinadores  tbl_patrocinadores @relation(fields: [idPatrocinadores], references: [idPatrocinadores], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblOngPatrocinadores_tblPatrocinadores1")
 
   @@index([idOng], map: "fk_tblOngPatrocinadores_tblOng1_idx")
   @@index([idPatrocinadores], map: "fk_tblOngPatrocinadores_tblPatrocinadores1_idx")
@@ -300,8 +300,8 @@ model tbl_post_reacao {
   idPostReacao Int        @id @unique(map: "id_post_reacao_UNIQUE") @default(autoincrement())
   idReacao     Int
   idPost       Int
-  tbl_post     tbl_post   @relation(fields: [idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_reacao_tbl_post1")
-  tbl_reacao   tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_post_reacao_tbl_reacao1")
+  tbl_post     tbl_post   @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_post_reacao_tbl_post1")
+  tbl_reacao   tbl_reacao @relation(fields: [idReacao], references: [idReacao], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_post_reacao_tbl_reacao1")
 
   @@index([idPost], map: "fk_tbl_post_reacao_tbl_post1_idx")
   @@index([idReacao], map: "fk_tbl_post_reacao_tbl_reacao1_idx")
@@ -319,8 +319,8 @@ model tbl_seguidor {
   idSeguidor  Int         @id @unique(map: "idtblUsuarioOng_UNIQUE") @default(autoincrement())
   idOng       Int
   idUsuario   Int
-  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioOng_tblOng1")
-  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioOng_tblUsuario1")
+  tbl_ong     tbl_ong     @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblUsuarioOng_tblOng1")
+  tbl_usuario tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblUsuarioOng_tblUsuario1")
 
   @@index([idOng], map: "fk_tblUsuarioOng_tblOng1_idx")
   @@index([idUsuario], map: "fk_tblUsuarioOng_tblUsuario1_idx")
@@ -335,7 +335,7 @@ model tbl_usuario {
   dataDeCriacao              DateTime                     @default(now())
   banner                     String?                      @db.VarChar(100)
   idLogin                    Int
-  tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_tbl_login1")
+  tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_tbl_login1")
   tbl_favoritos              tbl_favoritos[]
   tbl_informacoes_de_contato tbl_informacoes_de_contato[]
   tbl_seguidor               tbl_seguidor[]
@@ -350,8 +350,8 @@ model tbl_usuario_reacao {
   idUsuarioReacao Int         @id @unique(map: "idtblUsuarioReacao_UNIQUE") @default(autoincrement())
   idReacao        Int
   idUsuario       Int
-  tbl_reacao      tbl_reacao  @relation(fields: [idReacao], references: [idReacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioReacao_tbl_reacao1")
-  tbl_usuario     tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tblUsuarioReacao_tbl_usuario1")
+  tbl_reacao      tbl_reacao  @relation(fields: [idReacao], references: [idReacao], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblUsuarioReacao_tbl_reacao1")
+  tbl_usuario     tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblUsuarioReacao_tbl_usuario1")
 
   @@index([idReacao], map: "fk_tblUsuarioReacao_tbl_reacao1_idx")
   @@index([idUsuario], map: "fk_tblUsuarioReacao_tbl_usuario1_idx")
@@ -361,8 +361,8 @@ model tbl_usuario_evento {
   id_usuario_evento Int         @id @unique(map: "idtbl_usuario_evento_UNIQUE") @default(autoincrement())
   idUsuario         Int
   idEventos         Int
-  tbl_eventos       tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_evento_tbl_eventos1")
-  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_usuario_evento_tbl_usuario1")
+  tbl_eventos       tbl_eventos @relation(fields: [idEventos], references: [idEventos], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_evento_tbl_eventos1")
+  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_evento_tbl_usuario1")
 
   @@index([idEventos], map: "fk_tbl_usuario_evento_tbl_eventos1_idx")
   @@index([idUsuario], map: "fk_tbl_usuario_evento_tbl_usuario1_idx")
@@ -378,9 +378,9 @@ model tbl_vagas {
   idContato         Int
   idEndereco        Int
   dataDeCriacao     DateTime            @default(now())
-  tbl_ong           tbl_ong             @relation(fields: [idOng], references: [idOng], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_ong1")
-  tbl_contato       tbl_contato         @relation(fields: [idContato], references: [idContato], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_contato1")
-  tbl_endereco      tbl_endereco        @relation(fields: [idEndereco], references: [idEndereco], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_tbl_endereco1")
+  tbl_ong           tbl_ong             @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_vagas_tbl_ong1")
+  tbl_contato       tbl_contato         @relation(fields: [idContato], references: [idContato], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_vagas_tbl_contato1")
+  tbl_endereco      tbl_endereco        @relation(fields: [idEndereco], references: [idEndereco], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_vagas_tbl_endereco1")
   tbl_vagas_usuario tbl_vagas_usuario[]
 
   @@index([idOng], map: "fk_tbl_vagas_tbl_ong1_idx")
@@ -392,8 +392,8 @@ model tbl_vagas_usuario {
   idVagasUsuario Int         @id @unique(map: "idtblVagasUsuario_UNIQUE") @default(autoincrement())
   idVagas        Int
   idUsuario      Int
-  tbl_usuario    tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_usuario_tbl_usuario1")
-  tbl_vagas      tbl_vagas   @relation(fields: [idVagas], references: [idVagas], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbl_vagas_usuario_tbl_vagas1")
+  tbl_usuario    tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_vagas_usuario_tbl_usuario1")
+  tbl_vagas      tbl_vagas   @relation(fields: [idVagas], references: [idVagas], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_vagas_usuario_tbl_vagas1")
 
   @@index([idUsuario], map: "fk_tbl_vagas_usuario_tbl_usuario1_idx")
   @@index([idVagas], map: "fk_tbl_vagas_usuario_tbl_vagas1_idx")
