@@ -219,6 +219,62 @@ class UserToEventController {
       });
     }
   }
+
+  // services for management.
+  async getUsersOfTheEventPaged(req: Request, res: Response) {
+    try {
+      const page = Number(req.params.page);
+      const idEvent = Number(req.params.idEvent);
+      const idOng = Number(req.params.idOng);
+
+      const allEvents = await prisma.tbl_eventos.findMany({
+        where: { idOng: idOng },
+        include: {
+          tbl_usuario_evento: {
+            select: { 
+              tbl_usuario: {
+                select: {
+                  nome: true,
+                  curriculo: true,
+                  dataDeNascimento: true,
+                  tbl_login: {
+                    include: { tbl_contato: true }
+                  }
+                } 
+              }
+            }
+          }
+        }
+      });
+
+      const requestedEvent = allEvents.find(event => event.idEventos == idEvent);
+
+      if (requestedEvent == null) {
+        return res.status(400).json({
+          status: 400,
+          message: `Vaga com ID '${idEvent}'; da ONG com ID '${idOng}' não encontrada.`,
+        });
+      }
+
+      const responsePagination = requestedEvent.tbl_usuario_evento.slice(
+        page * 7,
+        page * 7 + 7
+      );
+
+      return res.status(200).json({
+        message: `Usuários do evento com ID '${idEvent}'; da ONG com ID '${idOng}' recuperados com sucesso.`,
+        status: 200,
+        data: responsePagination.map(user => user.tbl_usuario)
+      });
+
+    } catch (error) {
+      console.log(`> Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 export default UserToEventController;

@@ -24,4 +24,10 @@ router.delete("/event-controller/:idEvento/:idUsuario", (req, res) => {
   userToEventController.removeUserToEvent(req, res);
 });
 
+// event-managemnet
+router.get("/event-controller/:idOng/:idEvent/:page", (req, res) => {
+  console.info(`> Request GET recieved in '/event-controller/:idOng/:idEvent/:page' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  userToEventController.getUsersOfTheEventPaged(req, res);
+});
+
 export default router;
