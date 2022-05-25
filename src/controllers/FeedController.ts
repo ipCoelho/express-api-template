@@ -162,7 +162,7 @@ class FeedController {
   }
 }
 
-function sortByDate(array: any[]) {
+function sortByDate(array) {
   array = array.sort((a, b) => b.dataDeCriacao - a.dataDeCriacao);
   return array;
 }
