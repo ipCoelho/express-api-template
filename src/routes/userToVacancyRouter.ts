@@ -24,4 +24,10 @@ router.delete("/vacancy-controller/:idVagas/:idUsuario", (req, res) => {
   userToVacancyController.removeUserToVacancy(req, res);
 });
 
+// vacancy-managemnet
+router.get("/vacancy-controller/:idOng/:idVacancy/:page", (req, res) => {
+  console.info(`> Request GET recieved in '/vacancy-controller/:idOng/:idEvento/:page' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  userToVacancyController.getUsersOfTheVacancyPaged(req, res);
+});
+
 export default router;

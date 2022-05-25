@@ -191,6 +191,62 @@ class UserToVacancyController {
       });
     }
   }
+
+    // services for management.
+    async getUsersOfTheVacancyPaged(req: Request, res: Response) {
+      try {
+        const page = Number(req.params.page);
+        const idVacancy = Number(req.params.idVacancy);
+        const idOng = Number(req.params.idOng);
+  
+        const allVacancies = await prisma.tbl_vagas.findMany({
+          where: { idOng: idOng },
+          include: {
+            tbl_vagas_usuario: {
+              select: { 
+                tbl_usuario: {
+                  select: {
+                    nome: true,
+                    curriculo: true,
+                    dataDeNascimento: true,
+                    tbl_login: {
+                      include: { tbl_contato: true }
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        });
+  
+        const requestedVacancy = allVacancies.find(vacancy => vacancy.idVagas == idVacancy);
+  
+        if (requestedVacancy == null) {
+          return res.status(400).json({
+            status: 400,
+            message: `Vaga com ID '${idVacancy}'; da ONG com ID '${idOng}' não encontrada.`,
+          });
+        }
+  
+        const responsePagination = requestedVacancy.tbl_vagas_usuario.slice(
+          page * 7,
+          page * 7 + 7
+        );
+  
+        return res.status(200).json({
+          message: `Usuários da vaga com ID '${idVacancy}'; da ONG com ID '${idOng}' recuperados com sucesso.`,
+          status: 200,
+          data: responsePagination.map(user => user.tbl_usuario)
+        });
+  
+      } catch (error) {
+        console.log(`> Error: `, error);
+        return res.status(500).json({
+          message: process.env.ERRO_500 ?? "Erro no servidor.",
+          status: 500,
+        });
+      }
+    }
 }
 
 export default UserToVacancyController;
