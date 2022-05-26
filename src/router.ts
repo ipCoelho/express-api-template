@@ -17,6 +17,7 @@ import userEventRouter from "./routes/userToEventRouter";
 import userVacancyRouter from "./routes/userToVacancyRouter";
 import commentRouter from "./routes/commentRouter";
 import followerRouter from "./routes/followerRouter";
+import likeRouter from "./routes/likeRouter";
 
 import { Router } from "express";
 
@@ -42,5 +43,6 @@ router.use("/", userEventRouter);
 router.use("/", userVacancyRouter);
 router.use("/", commentRouter);
 router.use("/", followerRouter);
+router.use("/", likeRouter);
 
 export default router;
