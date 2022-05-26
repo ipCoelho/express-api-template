@@ -16,7 +16,7 @@ import feedRouter from "./routes/feedRouter";
 import userEventRouter from "./routes/userToEventRouter";
 import userVacancyRouter from "./routes/userToVacancyRouter";
 import commentRouter from "./routes/commentRouter";
-import followerRouter from "./routes/followerController";
+import followerRouter from "./routes/followerRouter";
 
 import { Router } from "express";
 
