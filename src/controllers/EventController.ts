@@ -101,8 +101,8 @@ class EventController {
       });
 
       // Dealing with media sent, posting it to Firebase and saving it's ref into the database.
+      const mediaCreated = [];
       if (eventCreate != null && media.length > 0) {
-        const mediaCreated = [];
         await Promise.all(
           media.map(async (file, index) => {
             const uiArray = base64intoUint8Array(file.base64);
@@ -127,18 +127,18 @@ class EventController {
             console.log(`url[${index}]:`, url);
             console.log(`eventsMediaCreate[${index}]:`, eventsMediaCreate);
           })
-        ).then(() => {
-          return res.status(200).json({
-            status: 200,
-            message: "Evento criado com sucesso.",
-            data: {
-              evento: { ...eventCreate },
-              endereco: { ...adressCreate },
-              media: mediaCreated
-            }
-          });
-        });
+        );
       }
+
+      return res.status(200).json({
+        status: 200,
+        message: "Evento criado com sucesso.",
+        data: {
+          evento: { ...eventCreate },
+          endereco: { ...adressCreate },
+          media: mediaCreated
+        }
+      });
     } catch (error) {
       console.log(`Error: ${error}`);
       return res.status(500).json({
