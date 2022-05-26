@@ -1,5 +1,5 @@
 generator client {
-  provider   = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -33,18 +33,30 @@ model tbl_chat_login {
 }
 
 model tbl_comentario {
-  idcomentario      Int         @id @unique(map: "idtblcomentario_UNIQUE") @default(autoincrement())
-  comentario        String?     @db.Text
-  dataDeCriacao     DateTime    @default(now())
-  idPost            Int
-  idUsuario         Int
-  indiceNaConversa  Int
-  filhoDoComentario Int?
-  tbl_post          tbl_post    @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_post1")
-  tbl_usuario       tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_usuario1")
+  idcomentario              Int                         @id @unique(map: "idtblcomentario_UNIQUE") @default(autoincrement())
+  comentario                String?                     @db.Text
+  dataDeCriacao             DateTime                    @default(now())
+  idPost                    Int
+  idUsuario                 Int
+  indiceNaConversa          Int
+  filhoDoComentario         Int?
+  tbl_curtida_do_comentario tbl_curtida_do_comentario[]
+  tbl_post                  tbl_post                    @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_post1")
+  tbl_usuario               tbl_usuario                 @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_comentario_tbl_usuario1")
 
   @@index([idPost], map: "fk_tbl_comentario_tbl_post1_idx")
   @@index([idUsuario], map: "fk_tbl_comentario_tbl_usuario1_idx")
+}
+
+model tbl_curtida_do_comentario {
+  idCurtidaDoComentario Int            @id @unique(map: "idtblcurtida_do_comentario_UNIQUE") @default(autoincrement())
+  idComentario          Int
+  idUsuario             Int
+  tbl_comentario        tbl_comentario @relation(fields: [idComentario], references: [idcomentario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_curtida_do_comentario_tbl_comentario1")
+  tbl_usuario           tbl_usuario    @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_curtida_do_comentario_tbl_usuario1")
+
+  @@index([idComentario], map: "fk_tbl_curtida_do_comentario_tbl_comentario1_idx")
+  @@index([idUsuario], map: "fk_tbl_curtida_do_comentario_tbl_usuario1_idx")
 }
 
 model tbl_contato {
@@ -174,7 +186,7 @@ model tbl_login {
   idLogin            Int                  @id @unique(map: "idtbl_login_UNIQUE") @default(autoincrement())
   email              String               @unique(map: "email_UNIQUE") @db.VarChar(80)
   senha              String               @db.VarChar(80)
-  accountStatus      Boolean              @db.TinyInt @default(true)
+  accountStatus      Boolean              @default(true) @db.TinyInt
   tbl_chat_login     tbl_chat_login[]
   tbl_login_endereco tbl_login_endereco[]
   tbl_login_reacao   tbl_login_reacao[]
@@ -286,16 +298,25 @@ model tbl_patrocinadores {
 }
 
 model tbl_post {
-  idPost          Int               @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
-  descricao       String            @db.Text
-  idOng           Int
-  createdAt       DateTime          @default(now())
-  tbl_comentario  tbl_comentario[]
-  tbl_post_reacao tbl_post_reacao[]
-  tbl_post_media  tbl_post_media[]
-  tbl_ong         tbl_ong?          @relation(fields: [idOng], references: [idOng])
+  idPost                 Int                      @id @unique(map: "idtblPosts_UNIQUE") @default(autoincrement())
+  descricao              String                   @db.Text
+  idOng                  Int
+  createdAt              DateTime                 @default(now())
+  tbl_comentario         tbl_comentario[]
+  tbl_post_reacao        tbl_post_reacao[]
+  tbl_post_media         tbl_post_media[]
+  tbl_curtidas_dos_posts tbl_curtidas_dos_posts[]
+  tbl_ong                tbl_ong?                 @relation(fields: [idOng], references: [idOng])
 
   @@index([idOng], map: "fk_tblPosts_tblOng1_idx")
+}
+
+model tbl_curtidas_dos_posts {
+  idCurtidasPosts Int         @id @unique(map: "idtblCurtidasPosts_UNIQUE") @default(autoincrement())
+  idPost          Int
+  idUsuario       Int
+  tbl_post        tbl_post    @relation(fields: [idPost], references: [idPost], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblCurtidasPosts_tblPosts1")
+  tbl_usuario     tbl_usuario @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblCurtidasPosts_tblUsuario1")
 }
 
 model tbl_post_reacao {
@@ -344,8 +365,9 @@ model tbl_usuario {
   tbl_usuario_evento         tbl_usuario_evento[]
   tbl_vagas_usuario          tbl_vagas_usuario[]
   tbl_comentario             tbl_comentario[]
-
-  tbl_usuario_reacao tbl_usuario_reacao[]
+  tbl_curtidas_dos_posts     tbl_curtidas_dos_posts[]
+  tbl_usuario_reacao         tbl_usuario_reacao[]
+  tbl_curtida_do_comentario  tbl_curtida_do_comentario[]
 }
 
 model tbl_usuario_reacao {
