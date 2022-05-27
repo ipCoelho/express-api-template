@@ -1,76 +1,75 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { base64intoUint8Array } from "@utils/base64intoUint8Array";
+import FirebaseHandler from "@utils/FirebaseHandler";
 
 const prisma = new PrismaClient();
+const fbhandler = new FirebaseHandler();
 
 class SponsorController {
  async create(req: Request, res: Response) {
     try {
-      const sponsor = req.body;
-
-      if (!req.body.nome) {
-        console.info(`> Returned:
-          {
-            message: "O campo 'nome' é obrigatório.",
-            fields: {
-              nome: "string",
-              foto: "string?",
-              link: "string?",
-            },
-            status: 400,
-          }
-        `);
-
+      if (!req.body.nome || !req.body.site || (!req.body.media || req.body.media.length === 0)) {
         return res.status(400).json({
-          message: "O campo 'nome' é obrigatório.",
-          fields: {
+          message: `Requisição vazia ou inválida.`,
+          expected: {
             nome: "string",
-            foto: "string?",
-            link: "string?",
-          },
-          status: 400,
+            site: "string",
+            media: [
+              {
+                fileName: "string",
+                fileType: "string",
+                base64: "string"
+              }
+            ]
+          }
         });
-      } else {
-        const nameVerify = await prisma.tbl_patrocinadores.findUnique({
-          where: {
-            nome: sponsor.nome,
-          },
-        });
-
-        if (nameVerify) {
-          console.info(`> Returned:
-            {
-              message: "O nome '${sponsor.nome}' já está em uso.",
-              status: 400,
-            }
-          `);
-
-          return res.status(400).json({
-            message: `O nome '${sponsor.nome}' já está em uso.`,
-            status: 400,
-          });
-        }
       }
 
-      const databaseData = await prisma.tbl_patrocinadores.create({
-        data: {
-          nome: sponsor.nome,
-          foto: sponsor.foto,
-          link: sponsor.link,
-        },
+      const sponsorName: string = req.body.nome;
+      const sponsorSite: string = req.body.site;
+      const sponsorMedia: File = req.body.media[0];
+
+      const sponsorMask = await prisma.tbl_patrocinadores.findUnique({
+        where: { nome: sponsorName }
       });
 
-      console.info(`> Returned:
-        {
-          message: "Patrocinador '${sponsor.nome}' criado com sucesso.",
-          data: ${JSON.stringify(databaseData)},
-          status: 200,
+      if (sponsorMask != null) {
+        return res.status(400).json({
+          message: `O nome '${sponsorName}' já existe.`,
+          status: 400,
+          data: sponsorMask,
+        });
+      }
+
+      const u8array = base64intoUint8Array(sponsorMedia.base64);
+      const fileRef = `/patrocinadores/${sponsorName}/foto/${sponsorMedia.fileName}`;
+
+      await fbhandler.uploadUint8Array(u8array, fileRef);
+      const url = await fbhandler.getMediaUrl(fileRef);
+      console.log(`> sponsorMediaUrl: `, url);
+
+      const fbsponsorMedia = await prisma.tbl_firebase_foto.create({
+        data: {
+          referencia: fileRef,
+          titulo: sponsorMedia.fileName,
+          tipo: sponsorMedia.type,
+          url: url,
         }
-      `);
+      });
+      
+      const sponsor = await prisma.tbl_patrocinadores.create({
+        data: {
+          nome: sponsorName,
+          url: sponsorSite,
+          titulo: sponsorMedia.fileName,
+          referencia: fbsponsorMedia.url,
+        }
+      });
 
       return res.status(200).json({
-        message: `Patrocinador '${sponsor.nome}' criado com sucesso.`,
-        data: databaseData,
+        message: `Patrocinador '${sponsorName}' criado com sucesso.`,
+        data: sponsor,
         status: 200,
       });
     } catch (error) {
@@ -278,6 +277,12 @@ class SponsorController {
       });
     }
   }
+}
+
+type File = {
+  fileName: string;
+  type: string;
+  base64: string;
 }
 
 export default SponsorController;
