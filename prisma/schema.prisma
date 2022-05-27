@@ -380,11 +380,11 @@ model tbl_seguidor {
 model tbl_usuario {
   idUsuario                  Int                          @id @unique(map: "idUsuario_UNIQUE") @default(autoincrement())
   nome                       String                       @db.VarChar(150)
-  foto                       String?                      @db.VarChar(100)
+  foto                       String?                      @db.VarChar(500)
   dataDeNascimento           DateTime?                    @db.Date
   curriculo                  String?                      @db.Text
   dataDeCriacao              DateTime                     @default(now())
-  banner                     String?                      @db.VarChar(100)
+  banner                     String?                      @db.VarChar(500)
   idLogin                    Int
   tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_tbl_login1")
   idFirebaseBanner           Int?
