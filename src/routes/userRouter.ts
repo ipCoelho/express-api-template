@@ -34,4 +34,9 @@ router.delete("/user/:id", (req, res) => {
   userController.removeUser(req, res)
 });
 
+router.put("/user/media/:idUser", (req, res) => {
+  console.info(`> Request PUT recieved in '/user/media/:idUser' at ${new Date().toLocaleString()}. \n> req.body:`, req.body, `\n> req.params:`, req.params);
+  userController.updatePhotoAndBanner(req, res)
+});
+
 export default router;

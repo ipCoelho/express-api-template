@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { base64intoUint8Array } from "@utils/base64intoUint8Array";
+import FirebaseHandler from "@utils/FirebaseHandler";
 
 const prisma = new PrismaClient();
+const fbhandler = new FirebaseHandler();
 
 class UserController {
   async preRegister(req: Request, res: Response) {
@@ -371,10 +374,10 @@ class UserController {
 
   async removeUser(req: Request, res: Response) {
     try {
-      const idUser = Number(req.params.id);
+      const idUsuario = Number(req.params.id);
 
       const userMask = await prisma.tbl_usuario.findUnique({
-        where: { idUsuario: idUser },
+        where: { idUsuario: idUsuario },
         include: {
           tbl_login: true,
           tbl_usuario_evento: true,
@@ -389,7 +392,7 @@ class UserController {
 
       if (userMask == null) {
         return res.status(404).json({
-          message: `Usuário com id '${idUser}' não encontrado.`,
+          message: `Usuário com id '${idUsuario}' não encontrado.`,
           status: 404,
         });
       }
@@ -400,7 +403,7 @@ class UserController {
 
       if (loginMask.accountStatus == false) {
         return res.status(400).json({
-          message: `Usuário com ID '${idUser}' já foi DESATIVADO.`,
+          message: `Usuário com ID '${idUsuario}' já foi DESATIVADO.`,
           status: 400,
         });
       }
@@ -412,7 +415,7 @@ class UserController {
 
       if (desactivateAccont != null) {
         return res.status(200).json({
-          message: `Usuário com id '${idUser}' removido com sucesso.`,
+          message: `Usuário com id '${idUsuario}' removido com sucesso.`,
           status: 200,
           data: desactivateAccont,
         }); 
@@ -425,6 +428,150 @@ class UserController {
       });
     }
   }
+
+  async updatePhotoAndBanner(req: Request, res: Response) {
+    try {
+      if (!req.body.foto || !req.body.banner) {
+        return res.status(400).json({
+          status: 400,
+          message: "Os dados enviados são nulos ou inválidos.",
+          expected: {
+            foto: [
+              {
+                fileName: "string?",
+                type: "string?",
+                base64: "string?",
+              }
+            ],
+            banner: [
+              {
+                fileName: "string?",
+                type: "string?",
+                base64: "string?",
+              }
+            ],
+          },
+        });
+      }
+
+      const idUsuario = Number(req.params.idUser);
+      const foto: File = req.body.foto[0];
+      const banner: File = req.body.banner[0];
+
+      const userMask = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: Number(idUsuario) },
+      });
+
+      if (userMask == null) {
+        return res.status(404).json({
+          message: `Usuário com ID '${idUsuario}' não foi encontrado.`,
+          status: 404,
+        });
+      }
+
+      const data = [];
+      // altering @foto
+      if (foto != null) {
+        const u8array = base64intoUint8Array(foto.base64);
+        const fileRef = `/usuários/${userMask.nome}/foto/${foto.fileName}`;
+
+        await fbhandler.uploadUint8Array(u8array, fileRef);
+        const url = await fbhandler.getMediaUrl(fileRef);
+        console.log(`> imageUrl: `, url);
+
+        const fbFoto = await prisma.tbl_firebase_foto.upsert({
+          where: { idFirebaseFoto: Number(userMask.idFirebaseFoto) },
+          create: {
+            referencia: fileRef,
+            titulo: foto.fileName,
+            tipo: foto.type,
+            url: url,
+          },
+          update: {
+            referencia: fileRef,
+            titulo: foto.fileName,
+            tipo: foto.type,
+            url: url
+          }
+        });
+        console.log(`> tbl_firebase_foto(upsert): `, fbFoto);
+
+        const fotoMask = await prisma.tbl_usuario.update({
+          where: { idUsuario: Number(idUsuario) },
+          data: {
+            foto: url,
+            idFirebaseFoto: Number(fbFoto.idFirebaseFoto),
+          }
+        });
+        data.push({ foto: fotoMask });
+      }
+
+      // altering @banner
+      if (banner != null) {
+        const u8array = base64intoUint8Array(banner.base64);
+        const fileRef = `/usuários/${userMask.nome}/banner/${banner.fileName}`;
+
+        await fbhandler.uploadUint8Array(u8array, fileRef);
+        const url = await fbhandler.getMediaUrl(fileRef);
+        console.log(`> bannerUrl: `, url);
+
+        const fbBanner = await prisma.tbl_firebase_banner.upsert({
+          where: { idFirebaseBanner: Number(userMask.idFirebaseFoto) },
+          create: {
+            referencia: fileRef,
+            titulo: banner.fileName,
+            tipo: banner.type,
+            url: url,
+          },
+          update: {
+            referencia: fileRef,
+            titulo: banner.fileName,
+            tipo: banner.type,
+            url: url
+          }
+        });
+        console.log(`> tbl_firebase_banner(upsert): `, fbBanner);
+
+        const bannerMask = await prisma.tbl_usuario.update({
+          where: { idUsuario: Number(idUsuario) },
+          data: {
+            banner: url,
+            idFirebaseBanner: Number(fbBanner.idFirebaseBanner),
+          }
+        });
+        data.push({ banner: bannerMask });
+      }
+
+      if (banner == null && foto == null) {
+        return res.status(400).json({
+          message: "Nenhum dado foi enviado.",
+          status: 400,
+        });
+      }
+
+      const userAltered = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: Number(idUsuario) },
+      });
+
+      return res.status(200).json({
+        message: `ONG com ID '${idUsuario}' atualizada com sucesso.`,
+        status: 200,
+        data: userAltered,
+      });
+    } catch (error) {
+      console.log(`> Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+}
+
+type File = {
+  fileName: string;
+  type: string;
+  base64: string;
 }
 
 export default UserController;
