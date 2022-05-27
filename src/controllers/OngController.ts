@@ -473,7 +473,7 @@ class OngController {
       // altering @foto
       if (foto != null) {
         const u8array = base64intoUint8Array(foto.base64);
-        const fileRef = `${ongMask.nome}/foto/${foto.fileName}`;
+        const fileRef = `/usuários/${ongMask.nome}/foto/${foto.fileName}`;
 
         await fbhandler.uploadUint8Array(u8array, fileRef);
         const url = await fbhandler.getMediaUrl(fileRef);
@@ -509,7 +509,7 @@ class OngController {
       // altering @banner
       if (banner != null) {
         const u8array = base64intoUint8Array(banner.base64);
-        const fileRef = `${ongMask.nome}/banner/${banner.fileName}`;
+        const fileRef = `/ongs/${ongMask.nome}/banner/${banner.fileName}`;
 
         await fbhandler.uploadUint8Array(u8array, fileRef);
         const url = await fbhandler.getMediaUrl(fileRef);
