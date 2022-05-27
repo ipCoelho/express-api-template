@@ -14,4 +14,9 @@ router.get("/feed/:type/:page", (req, res) => {
   feedController.buildSpecificFeed(req, res);
 });
 
+router.get("/feed/:type/ong/:idOng/:page", (req, res) => {
+  console.info(`> Request GET recieved in '/feed/:type/ong/:idOng' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+  feedController.buildSpecificFeedByOng(req, res);
+});
+
 export default router;

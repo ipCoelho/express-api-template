@@ -160,6 +160,105 @@ class FeedController {
       });
     }
   }
+
+  async buildSpecificFeedByOng(req: Request, res: Response) {
+    try {
+      const idOng = Number(req.params.idOng);
+      const allPosts = await prisma.tbl_post.findMany({
+        where: {
+          tbl_ong: { idOng: idOng }
+        },
+        include: {
+          tbl_ong: {
+            select: {
+              tbl_login:true
+            }
+          },
+          tbl_post_media: true,
+          tbl_comentario: true,
+        }
+      });
+      const allEvents = await prisma.tbl_eventos.findMany({
+        where: {
+          tbl_ong: { idOng: idOng }
+        },
+        include: {
+          tbl_ong: {
+            select: {
+              tbl_login:true
+            }
+          },
+          tbl_evento_media: true,
+          tbl_endereco: true
+        }
+      });
+      const allVacancies = await prisma.tbl_vagas.findMany({
+        where: {
+          tbl_ong: { idOng: idOng }
+        },
+        include: {
+          tbl_ong: {
+            select: {
+              tbl_login:true
+            }
+          },
+          tbl_contato: true,
+          tbl_endereco: true
+        }
+      });
+
+      allEvents.map(event => event["type"] = "evento");
+      allVacancies.map(vacancy => vacancy["type"] = "vaga");
+      allPosts.map(post => {
+        post["type"] = "post";
+        post["dataDeCriacao"] = post.createdAt;
+        delete post["createdAt"];
+      });
+      
+      const page = Number(req.params.page);
+      const type: string = req.params.type;
+      let feed;
+
+      switch (type) {
+        case "post":
+          feed = sortByDate([...allPosts]);
+          break;
+
+        case "evento":
+          feed = sortByDate([...allEvents]);
+          break;
+        case "vaga":
+          feed = sortByDate([...allVacancies]);
+          break;
+      
+        default:
+          feed = sortByDate([...allPosts, ...allEvents, ...allVacancies]);
+          break;
+      }
+
+      const filteredFeed = [];
+      feed.map((item) => {
+        console.log(item);
+        if (item.tbl_ong.tbl_login.accountStatus === true && item.idOng === idOng) {
+          filteredFeed.push(item);
+        }
+      });
+
+      const immutableFeed = filteredFeed.slice(page * 9, page * 9 + 9);
+
+      return res.status(200).json({
+        message: `Feed de '${type}' da ONG de ID '${idOng}' devolvido com sucesso, página ${page}.`,
+        data: immutableFeed,
+      });
+   } catch (error) {
+      console.log(`Error: ${error}`);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+
 }
 
 function sortByDate(array) {
