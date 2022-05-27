@@ -268,8 +268,9 @@ model tbl_firebase_banner {
   tipo             String? @db.VarChar(50)
   url              String? @db.VarChar(500)
 
-  tbl_ong     tbl_ong[]
-  tbl_usuario tbl_usuario[]
+  tbl_ong            tbl_ong[]
+  tbl_usuario        tbl_usuario[]
+  tbl_patrocinadores tbl_patrocinadores[]
 }
 
 model tbl_firebase_foto {
@@ -279,8 +280,9 @@ model tbl_firebase_foto {
   tipo           String? @db.VarChar(50)
   url            String? @db.VarChar(500)
 
-  tbl_ong     tbl_ong[]
-  tbl_usuario tbl_usuario[]
+  tbl_ong            tbl_ong[]
+  tbl_usuario        tbl_usuario[]
+  tbl_patrocinadores tbl_patrocinadores[]
 }
 
 model tbl_ong_categoria {
@@ -322,6 +324,10 @@ model tbl_patrocinadores {
   titulo                 String                   @db.VarChar(500)
   referencia             String?                  @db.VarChar(500)
   url                    String?                  @db.VarChar(500)
+  idFirebaseBanner       Int?
+  idFirebaseFoto         Int?
+  tbl_firebase_banner    tbl_firebase_banner?     @relation(fields: [idFirebaseBanner], references: [idFirebaseBanner], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblPatrocinadores_tblFirebaseBanner1")
+  tbl_firebase_foto      tbl_firebase_foto?       @relation(fields: [idFirebaseFoto], references: [idFirebaseFoto], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblPatrocinadores_tblFirebaseFoto1")
   tbl_ong_patrocinadores tbl_ong_patrocinadores[]
 }
 
