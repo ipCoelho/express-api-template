@@ -5,69 +5,69 @@ const prisma = new PrismaClient();
 
 class SponsorController {
   async create(req: Request, res: Response) {
-    try {
-        if (!req.body.name || !req.body.url || (!req.body.media || req.body.media.length === 0)) {
-          return res.status(400).json({
-            message: `Requisição vazia ou inválida.`,
-            expected: {
-              name: "string",
-              url: "string",
-              media: [
-                {
-                  fileName: "string",
-                  fileType: "string",
-                  base64: "string"
-                }
-              ]
-            }
-          });
-        }
+    // try {
+    //     if (!req.body.name || !req.body.url || (!req.body.media || req.body.media.length === 0)) {
+    //       return res.status(400).json({
+    //         message: `Requisição vazia ou inválida.`,
+    //         expected: {
+    //           name: "string",
+    //           url: "string",
+    //           media: [
+    //             {
+    //               fileName: "string",
+    //               fileType: "string",
+    //               base64: "string"
+    //             }
+    //           ]
+    //         }
+    //       });
+    //     }
 
-        const sponsorVef 
+    //     const sponsorVef
 
-        if (nameVerify) {
-          console.info(`> Returned:
-            {
-              message: "O nome '${sponsor.nome}' já está em uso.",
-              status: 400,
-            }
-          `);
+    //     if (nameVerify) {
+    //       console.info(`> Returned:
+    //         {
+    //           message: "O nome '${sponsor.nome}' já está em uso.",
+    //           status: 400,
+    //         }
+    //       `);
 
-          return res.status(400).json({
-            message: `O nome '${sponsor.nome}' já está em uso.`,
-            status: 400,
-          });
-        }
-      }
+    //       return res.status(400).json({
+    //         message: `O nome '${sponsor.nome}' já está em uso.`,
+    //         status: 400,
+    //       });
+    //     }
+    //   }
 
-      const databaseData = await prisma.tbl_patrocinadores.create({
-        data: {
-          nome: sponsor.nome,
-          foto: sponsor.foto,
-          link: sponsor.link,
-        },
-      });
+    //   const databaseData = await prisma.tbl_patrocinadores.create({
+    //     data: {
+    //       nome: sponsor.nome,
+    //       foto: sponsor.foto,
+    //       link: sponsor.link,
+    //     },
+    //   });
 
-      console.info(`> Returned:
-        {
-          message: "Patrocinador '${sponsor.nome}' criado com sucesso.",
-          data: ${JSON.stringify(databaseData)},
-          status: 200,
-        }
-      `);
+    //   console.info(`> Returned:
+    //     {
+    //       message: "Patrocinador '${sponsor.nome}' criado com sucesso.",
+    //       data: ${JSON.stringify(databaseData)},
+    //       status: 200,
+    //     }
+    //   `);
 
-      return res.status(200).json({
-        message: `Patrocinador '${sponsor.nome}' criado com sucesso.`,
-        data: databaseData,
-        status: 200,
-      });
-    } catch (error) {
-      console.log("Error: ", error);
-      return res.status(500).json({
-        message: process.env.ERRO_500 ?? `Erro no servidor`,
-        status: 500,
-      });
-    }
+    //   return res.status(200).json({
+    //     message: `Patrocinador '${sponsor.nome}' criado com sucesso.`,
+    //     data: databaseData,
+    //     status: 200,
+    //   });
+    // } catch (error) {
+    //   console.log("Error: ", error);
+    //   return res.status(500).json({
+    //     message: process.env.ERRO_500 ?? `Erro no servidor`,
+    //     status: 500,
+    //   });
+    // }
   }
 
   async getAll(req: Request, res: Response) {

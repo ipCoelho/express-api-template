@@ -34,6 +34,11 @@ router.delete("/ong/:id", (req, res) => {
     ongController.remove(req, res)
 });
 
+router.put("/ong/media/:idOng", (req, res) => {
+    console.info(`> Request PUT recieved in '/ong/media/:idOng' at ${new Date().toLocaleString()}. \n> req.body:`, req.body, `\n> req.params:`, req.params);
+    ongController.updatePhotoAndBanner(req, res)
+});
+
 
 
 

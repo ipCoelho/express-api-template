@@ -240,6 +240,10 @@ model tbl_ong {
   dataDeFundacao         DateTime?                @default(now())
   idLogin                Int                      @unique
   tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_tbl_login1")
+  idFirebaseBanner       Int?
+  idFirebaseFoto         Int?
+  tbl_firebase_banner    tbl_firebase_banner?     @relation(fields: [idFirebaseBanner], references: [idFirebaseBanner], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_tbl_firebase_banner1")
+  tbl_firebase_foto      tbl_firebase_foto?       @relation(fields: [idFirebaseFoto], references: [idFirebaseFoto], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_tbl_firebase_foto1")
   tbl_eventos            tbl_eventos[]
   tbl_favoritos          tbl_favoritos[]
   tbl_ong_categoria      tbl_ong_categoria[]
@@ -252,8 +256,31 @@ model tbl_ong {
   tbl_dados_bancarios    tbl_dados_bancarios[]
   tbl_post_media         tbl_post_media[]
 
+
   tbl_evento_media tbl_evento_media[]
   @@index([idLogin], map: "fk_tbl_ong_tbl_login1_idx")
+}
+
+model tbl_firebase_banner {
+  idFirebaseBanner Int     @id @unique(map: "idFirebaseBanner_UNIQUE") @default(autoincrement())
+  titulo           String  @db.VarChar(500)
+  referencia       String? @db.VarChar(500)
+  tipo             String? @db.VarChar(50)
+  url              String? @db.VarChar(500)
+
+  tbl_ong     tbl_ong[]
+  tbl_usuario tbl_usuario[]
+}
+
+model tbl_firebase_foto {
+  idFirebaseFoto Int     @id @unique(map: "idFirebaseFoto_UNIQUE") @default(autoincrement())
+  titulo         String  @db.VarChar(500)
+  referencia     String? @db.VarChar(500)
+  tipo           String? @db.VarChar(50)
+  url            String? @db.VarChar(500)
+
+  tbl_ong     tbl_ong[]
+  tbl_usuario tbl_usuario[]
 }
 
 model tbl_ong_categoria {
@@ -360,6 +387,10 @@ model tbl_usuario {
   banner                     String?                      @db.VarChar(100)
   idLogin                    Int
   tbl_login                  tbl_login                    @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_tbl_login1")
+  idFirebaseBanner           Int?
+  idFirebaseFoto             Int?
+  tbl_firebase_banner        tbl_firebase_banner?         @relation(fields: [idFirebaseBanner], references: [idFirebaseBanner], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_tbl_firebase_banner1")
+  tbl_firebase_foto          tbl_firebase_foto?           @relation(fields: [idFirebaseFoto], references: [idFirebaseFoto], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_usuario_tbl_firebase_foto1")
   tbl_favoritos              tbl_favoritos[]
   tbl_informacoes_de_contato tbl_informacoes_de_contato[]
   tbl_seguidor               tbl_seguidor[]

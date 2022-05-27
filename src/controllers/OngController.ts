@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import FirebaseHandler from "@utils/FirebaseHandler";
+import { base64intoUint8Array } from "@utils/base64intoUint8Array";
 
 const prisma = new PrismaClient();
+const fbhandler = new FirebaseHandler();
 
 class OngController {
   async preRegister(req: Request, res: Response) {
@@ -301,9 +304,7 @@ class OngController {
               descricao: "string?",
               numeroDeSeguidores: "number?",
               cnpj: "string?",
-              banner: "string?",
               historia: "string?",
-              foto: "string",
               qtdDeMembros: "number?",
               dataDeFundacao: "string?",
             },
@@ -427,6 +428,150 @@ class OngController {
       });
     }
   }
+
+  async updatePhotoAndBanner(req: Request, res: Response) {
+    try {
+      if (!req.body.foto || !req.body.banner) {
+        return res.status(400).json({
+          status: 400,
+          message: "Os dados enviados são nulos ou inválidos.",
+          expected: {
+            foto: [
+              {
+                fileName: "string?",
+                type: "string?",
+                base64: "string?",
+              }
+            ],
+            banner: [
+              {
+                fileName: "string?",
+                type: "string?",
+                base64: "string?",
+              }
+            ],
+          },
+        });
+      }
+
+      const idOng = Number(req.params.idOng);
+      const foto: File = req.body.foto[0];
+      const banner: File = req.body.banner[0];
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: { idOng: Number(idOng) },
+      });
+
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `ONG com ID '${idOng}' não foi encontrada.`,
+          status: 404,
+        });
+      }
+
+      const data = [];
+      // altering @foto
+      if (foto != null) {
+        const u8array = base64intoUint8Array(foto.base64);
+        const fileRef = `${ongMask.nome}/foto/${foto.fileName}`;
+
+        await fbhandler.uploadUint8Array(u8array, fileRef);
+        const url = await fbhandler.getMediaUrl(fileRef);
+        console.log(`> imageUrl: `, url);
+
+        const fbFoto = await prisma.tbl_firebase_foto.upsert({
+          where: { idFirebaseFoto: Number(ongMask.idFirebaseFoto) },
+          create: {
+            referencia: fileRef,
+            titulo: foto.fileName,
+            tipo: foto.type,
+            url: url,
+          },
+          update: {
+            referencia: fileRef,
+            titulo: foto.fileName,
+            tipo: foto.type,
+            url: url
+          }
+        });
+        console.log(`> tbl_firebase_foto(upsert): `, fbFoto);
+
+        const fotoMask = await prisma.tbl_ong.update({
+          where: { idOng: Number(idOng) },
+          data: {
+            foto: url,
+            idFirebaseFoto: Number(fbFoto.idFirebaseFoto),
+          }
+        });
+        data.push({ foto: fotoMask });
+      }
+
+      // altering @banner
+      if (banner != null) {
+        const u8array = base64intoUint8Array(banner.base64);
+        const fileRef = `${ongMask.nome}/banner/${banner.fileName}`;
+
+        await fbhandler.uploadUint8Array(u8array, fileRef);
+        const url = await fbhandler.getMediaUrl(fileRef);
+        console.log(`> bannerUrl: `, url);
+
+        const fbBanner = await prisma.tbl_firebase_banner.upsert({
+          where: { idFirebaseBanner: Number(ongMask.idFirebaseFoto) },
+          create: {
+            referencia: fileRef,
+            titulo: banner.fileName,
+            tipo: banner.type,
+            url: url,
+          },
+          update: {
+            referencia: fileRef,
+            titulo: banner.fileName,
+            tipo: banner.type,
+            url: url
+          }
+        });
+        console.log(`> tbl_firebase_banner(upsert): `, fbBanner);
+
+        const bannerMask = await prisma.tbl_ong.update({
+          where: { idOng: Number(idOng) },
+          data: {
+            banner: url,
+            idFirebaseBanner: Number(fbBanner.idFirebaseBanner),
+          }
+        });
+        data.push({ banner: bannerMask });
+      }
+
+      if (banner == null && foto == null) {
+        return res.status(400).json({
+          message: "Nenhum dado foi enviado.",
+          status: 400,
+        });
+      }
+
+      const ongAltered = await prisma.tbl_ong.findUnique({
+        where: { idOng: Number(idOng) },
+      });
+
+      return res.status(200).json({
+        message: `ONG com ID '${idOng}' atualizada com sucesso.`,
+        status: 200,
+        data: ongAltered,
+      });
+    } catch (error) {
+      console.log(`> Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+}
+
+type File = {
+  fileName: string;
+  type: string;
+  base64: string;
 }
 
 export default OngController;
