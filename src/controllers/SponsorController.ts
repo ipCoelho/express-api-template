@@ -6,36 +6,24 @@ const prisma = new PrismaClient();
 class SponsorController {
   async create(req: Request, res: Response) {
     try {
-      const sponsor = req.body;
+        if (!req.body.name || !req.body.url || (!req.body.media || req.body.media.length === 0)) {
+          return res.status(400).json({
+            message: `Requisição vazia ou inválida.`,
+            expected: {
+              name: "string",
+              url: "string",
+              media: [
+                {
+                  fileName: "string",
+                  fileType: "string",
+                  base64: "string"
+                }
+              ]
+            }
+          });
+        }
 
-      if (!req.body.nome) {
-        console.info(`> Returned:
-          {
-            message: "O campo 'nome' é obrigatório.",
-            fields: {
-              nome: "string",
-              foto: "string?",
-              link: "string?",
-            },
-            status: 400,
-          }
-        `);
-
-        return res.status(400).json({
-          message: "O campo 'nome' é obrigatório.",
-          fields: {
-            nome: "string",
-            foto: "string?",
-            link: "string?",
-          },
-          status: 400,
-        });
-      } else {
-        const nameVerify = await prisma.tbl_patrocinadores.findUnique({
-          where: {
-            nome: sponsor.nome,
-          },
-        });
+        const sponsorVef 
 
         if (nameVerify) {
           console.info(`> Returned:
