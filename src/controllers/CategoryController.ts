@@ -255,6 +255,135 @@ class CategoryController {
       });
     }
   }
+
+  async registerACategoryToAOng(req: Request, res: Response) {
+    try {
+      const idOng = Number(req.body.idOng);
+      const categoria: string = req.body.categoria;
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: {
+          idOng: idOng,
+        },
+      });
+
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `Nenhuma ONG com ID '${idOng}'.`,
+          status: 404
+        });
+      }
+
+      const categoriaMask = await prisma.tbl_categorias.findUnique({
+        where: {
+          nome: categoria,
+        },
+      });
+
+      if (categoriaMask == null) {
+        return res.status(404).json({
+          message: `Nenhuma categoria com nome '${req.body.categoria}'.`,
+          status: 404
+        });
+      }
+
+      const ongCategoryMask = await prisma.tbl_ong_categoria.findFirst({
+        where: {
+          idOng: idOng,
+          idCategorias: categoriaMask.idCategorias,
+        },
+      });
+
+      if (ongCategoryMask != null) {
+        return res.status(400).json({
+          message: `A ONG '${idOng}' já possui a categoria '${categoria}'.`,
+          status: 400
+        });
+      }
+
+      const ongCategoryCreate = await prisma.tbl_ong_categoria.create({
+        data: {
+          idOng: idOng,
+          idCategorias: Number(categoriaMask.idCategorias),
+        },
+      });
+
+      return res.status(200).json({
+        message: `Categoria '${categoria}' registrada para ONG com ID '${idOng}' com sucesso.`,
+        status: 200,
+        data: ongCategoryCreate,
+      });
+    } catch(error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
+
+  async removeACategoryToAOng(req: Request, res: Response) {
+    try {
+      const idOng = Number(req.params.idOng);
+      const categoria: string = req.params.categoria;
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: {
+          idOng: idOng,
+        },
+      });
+
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `Nenhuma ONG com ID '${idOng}'.`,
+          status: 404
+        });
+      }
+
+      const categoriaMask = await prisma.tbl_categorias.findUnique({
+        where: {
+          nome: categoria,          
+        },
+      });
+
+      if (categoriaMask == null) {
+        return res.status(404).json({
+          message: `Nenhuma categoria com nome '${req.body.categoria}'.`,
+          status: 404
+        });
+      }
+
+      const ongCategoryMask = await prisma.tbl_ong_categoria.findFirst({
+        where: {
+          idOng: idOng,
+          idCategorias: categoriaMask.idCategorias,
+        },
+      });
+
+      if (ongCategoryMask == null) {
+        return res.status(400).json({
+          message: `A ONG '${idOng}' não possui a categoria '${categoria}'.`,
+          status: 400
+        });
+      }
+
+      const ongCategoryDelete = await prisma.tbl_ong_categoria.delete({
+        where: { idOngCategoria: Number(ongCategoryMask.idOngCategoria) },	
+      });
+
+      return res.status(200).json({
+        message: `Categoria '${categoria}' removida para ONG com ID '${idOng}' com sucesso.`,
+        status: 200,
+        data: ongCategoryDelete,
+      });
+    } catch(error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 export default CategoryController;

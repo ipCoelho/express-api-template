@@ -29,4 +29,14 @@ router.post("/category/filter", (req, res) => {
     categoryController.filterByCategory(req, res);
 });
 
+router.post("/category/ong", (req, res) => {
+    console.info(`> Request POST recieved in '/category/register' at ${new Date().toLocaleString()}. \n> req.body:`, req.body);
+    categoryController.registerACategoryToAOng(req, res);
+});
+
+router.delete("/category/ong/:idOng/:categoria", (req, res) => {
+    console.info(`> Request DELETE recieved in '/category/ong' at ${new Date().toLocaleString()}. \n> req.params:`, req.params);
+    categoryController.removeACategoryToAOng(req, res);
+});
+
 export default router;
