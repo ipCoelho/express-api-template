@@ -141,6 +141,9 @@ class CategoryController {
         where: {
           idOng: Number(req.params.id),
         },
+        include: {
+          tbl_categorias: true
+        }
       });
 
       return res.status(200).json({
