@@ -26,6 +26,7 @@ class FeedController {
               idUsuario: true
             }
           },
+          tbl_curtidas_dos_posts: true,
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
@@ -140,6 +141,7 @@ class FeedController {
               idUsuario: true
             }
           },
+          tbl_curtidas_dos_posts: true,
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
@@ -274,6 +276,7 @@ class FeedController {
               idUsuario: true
             }
           },
+          tbl_curtidas_dos_posts: true,
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
