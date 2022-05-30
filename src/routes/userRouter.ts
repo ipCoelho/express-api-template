@@ -1,5 +1,10 @@
 import UserController from "@controllers/UserController";
 import { Router } from "express";
+import multer from "multer";
+
+const upload = multer({
+  dest: "./temp/",
+});
 
 const userController = new UserController();
 const router = Router();
@@ -27,6 +32,11 @@ router.get("/user/:id", (req, res) => {
 router.put("/user/:id", (req, res) => {
   console.info(`> Request PUT recieved in '/user/:id' at ${new Date().toLocaleString()}. \n> req.body:`, req.body, `\n> req.params:`, req.params);
   userController.update(req, res)
+});
+
+router.put("/user/upload/:type/:id", upload.single("curriculum"), (req, res) => {
+  console.info(`> Request PUT recieved in '/user/upload/:type/:id' at ${new Date().toLocaleString()}. \n> req.body:`, req.body, `\n> req.params:`, req.params);
+  userController.uploadCurriculum(req, res)
 });
 
 router.delete("/user/:id", (req, res) => {
