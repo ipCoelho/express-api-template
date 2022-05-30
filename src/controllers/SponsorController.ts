@@ -277,6 +277,146 @@ class SponsorController {
       });
     }
   }
+
+  async sponsoringOng(req: Request, res: Response) {
+    try {
+      const ong = Number(req.body.idOng);
+      const idPatrocinadores = Number(req.body.idPatrocinador);
+
+      const sponsorMask = await prisma.tbl_patrocinadores.findUnique({
+        where: { idPatrocinadores: idPatrocinadores }
+      });
+
+      if (sponsorMask == null) {
+        return res.status(404).json({
+          message: `Patrocinador com id '${idPatrocinadores}' não encontrado.`,
+          status: 404,
+        });
+      }
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: { idOng: Number(ong) }
+      });
+
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `ONG com id '${ong}' não encontrada.`,
+          status: 404,
+        });
+      }
+
+      const sponsoring = await prisma.tbl_ong_patrocinadores.findFirst({
+        where: {
+          idOng: Number(ong),
+          idPatrocinadores: Number(idPatrocinadores),
+        }
+      });
+
+      if (sponsoring != null) {
+        return res.status(400).json({
+          message: `O patrocinador '${sponsorMask.nome}' já está patrocinando a ONG '${ongMask.nome}'.`,
+          status: 400,
+        });
+      }
+
+      const newSponsoring = await prisma.tbl_ong_patrocinadores.create({
+        data: {
+          idOng: Number(ong),
+          idPatrocinadores: Number(idPatrocinadores),
+        },
+        include: {
+          tbl_ong: true,
+          tbl_patrocinadores: true
+        }
+      });
+
+      return res.status(200).json({
+        message: `O patrocinador '${sponsorMask.nome}' patrocinou a ONG '${ongMask.nome}' com sucesso.`,
+        status: 200,
+        data: newSponsoring,
+      });
+    } catch (error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? `Erro no servidor`,
+        status: 500,
+      });
+    }
+  }
+
+  async findAllSponsorsByOng(req: Request, res: Response) {
+    try {
+      const ong = Number(req.params.id);
+
+      const ongMask = await prisma.tbl_ong.findUnique({
+        where: { idOng: Number(ong) }
+      });
+
+      if (ongMask == null) {
+        return res.status(404).json({
+          message: `ONG com id '${ong}' não encontrada.`,
+          status: 404,
+        });
+      }
+
+      const sponsors = await prisma.tbl_ong_patrocinadores.findMany({
+        where: { idOng: Number(ong) },
+        include: {
+          tbl_patrocinadores: true,
+          tbl_ong: true
+        }
+      });
+
+      return res.status(200).json({
+        message: `Patrocinadores da ONG '${ongMask.nome}' encontrados com sucesso.`,
+        status: 200,
+        data: sponsors,
+      });
+    } catch (error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? `Erro no servidor`,
+        status: 500,
+      });
+    }
+  }
+
+  async findAllOngsBySponsor(req: Request, res: Response) {
+    try {
+      const sponsor = Number(req.params.id);
+
+      const sponsorMask = await prisma.tbl_patrocinadores.findUnique({
+        where: { idPatrocinadores: Number(sponsor) }
+      });
+
+      if (sponsorMask == null) {
+        return res.status(404).json({
+          message: `Patrocinador com id '${sponsor}' não encontrado.`,
+          status: 404,
+        });
+      }
+
+      const ongs = await prisma.tbl_ong_patrocinadores.findMany({
+        where: { idPatrocinadores: Number(sponsor) },
+        include: {
+          tbl_patrocinadores: true,
+          tbl_ong: true
+        }
+      });
+
+      return res.status(200).json({
+        message: `ONGs patrocinadas pelo patrocinador '${sponsorMask.nome}' encontradas com sucesso.`,
+        status: 200,
+        data: ongs,
+      });
+    } catch (error) {
+      console.log("Error: ", error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? `Erro no servidor`,
+        status: 500,
+      });
+    }
+  }
 }
 
 type File = {
