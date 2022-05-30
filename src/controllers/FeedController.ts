@@ -23,10 +23,14 @@ class FeedController {
               filhoDoComentario: true,
               indiceNaConversa: true,
               tbl_curtida_do_comentario: true,
-              idUsuario: true
+              tbl_usuario: true
             }
           },
-          tbl_curtidas_dos_posts: true,
+          tbl_curtidas_dos_posts: {
+            select: {
+              tbl_usuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
@@ -138,10 +142,14 @@ class FeedController {
               filhoDoComentario: true,
               indiceNaConversa: true,
               tbl_curtida_do_comentario: true,
-              idUsuario: true
+              tbl_usuario: true
             }
           },
-          tbl_curtidas_dos_posts: true,
+          tbl_curtidas_dos_posts: {
+            select: {
+              tbl_usuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
@@ -273,10 +281,14 @@ class FeedController {
               filhoDoComentario: true,
               indiceNaConversa: true,
               tbl_curtida_do_comentario: true,
-              idUsuario: true
+              tbl_usuario: true
             }
           },
-          tbl_curtidas_dos_posts: true,
+          tbl_curtidas_dos_posts: {
+            select: {
+              tbl_usuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
@@ -425,7 +437,12 @@ class FeedController {
               filhoDoComentario: true,
               indiceNaConversa: true,
               tbl_curtida_do_comentario: true,
-              idUsuario: true
+              tbl_usuario: true
+            }
+          },
+          tbl_curtidas_dos_posts: {
+            select: {
+              tbl_usuario: true
             }
           },
         }
