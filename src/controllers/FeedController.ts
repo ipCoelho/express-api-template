@@ -8,9 +8,19 @@ class FeedController {
     try {
       const allPosts = await prisma.tbl_post.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_post_media: true,
@@ -19,9 +29,19 @@ class FeedController {
       });
       const allEvents = await prisma.tbl_eventos.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_evento_media: true,
@@ -30,9 +50,19 @@ class FeedController {
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_contato: true,
@@ -77,9 +107,19 @@ class FeedController {
     try {
       const allPosts = await prisma.tbl_post.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_post_media: true,
@@ -88,9 +128,19 @@ class FeedController {
       });
       const allEvents = await prisma.tbl_eventos.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_evento_media: true,
@@ -99,9 +149,19 @@ class FeedController {
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_contato: true,
@@ -169,9 +229,19 @@ class FeedController {
           tbl_ong: { idOng: idOng }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_post_media: true,
@@ -183,9 +253,19 @@ class FeedController {
           tbl_ong: { idOng: idOng }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_evento_media: true,
@@ -197,9 +277,19 @@ class FeedController {
           tbl_ong: { idOng: idOng }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_contato: true,
@@ -281,9 +371,19 @@ class FeedController {
           tbl_ong: { nome: ongName }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_post_media: true,
@@ -295,9 +395,19 @@ class FeedController {
           tbl_ong: { nome: ongName }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_evento_media: true,
@@ -309,9 +419,19 @@ class FeedController {
           tbl_ong: { nome: ongName }
         },
         include: {
-          tbl_ong: {
+           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
+              nome: true,
+              descricao: true,
+              cnpj: true,
+              dataDeCriacao: true,
+              dataDeFundacao: true,
+              foto: true,
+              historia: true,
+              numeroDeSeguidores: true,
+              qtdDeMembros: true,
             }
           },
           tbl_contato: true,
