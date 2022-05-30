@@ -10,33 +10,78 @@ class FeedController {
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_post_media: true,
-          tbl_comentario: true,
+          tbl_comentario: {
+            select: {
+              comentario: true,
+              dataDeCriacao: true,
+              filhoDoComentario: true,
+              indiceNaConversa: true,
+              tbl_curtida_do_comentario: true,
+              idUsuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_evento_media: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
         include: {
           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              nome: true,
+              foto: true,
             }
           },
           tbl_contato: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
 
@@ -79,33 +124,78 @@ class FeedController {
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_post_media: true,
-          tbl_comentario: true,
+          tbl_comentario: {
+            select: {
+              comentario: true,
+              dataDeCriacao: true,
+              filhoDoComentario: true,
+              indiceNaConversa: true,
+              tbl_curtida_do_comentario: true,
+              idUsuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_evento_media: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
         include: {
           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              nome: true,
+              foto: true,
             }
           },
           tbl_contato: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
 
@@ -165,31 +255,53 @@ class FeedController {
     try {
       const idOng = Number(req.params.idOng);
       const allPosts = await prisma.tbl_post.findMany({
-        where: {
-          tbl_ong: { idOng: idOng }
-        },
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_post_media: true,
-          tbl_comentario: true,
+          tbl_comentario: {
+            select: {
+              comentario: true,
+              dataDeCriacao: true,
+              filhoDoComentario: true,
+              indiceNaConversa: true,
+              tbl_curtida_do_comentario: true,
+              idUsuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
-        where: {
-          tbl_ong: { idOng: idOng }
-        },
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_evento_media: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
@@ -199,11 +311,28 @@ class FeedController {
         include: {
           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              nome: true,
+              foto: true,
             }
           },
           tbl_contato: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
 
@@ -277,31 +406,53 @@ class FeedController {
       }
 
       const allPosts = await prisma.tbl_post.findMany({
-        where: {
-          tbl_ong: { nome: ongName }
-        },
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_post_media: true,
-          tbl_comentario: true,
+          tbl_comentario: {
+            select: {
+              comentario: true,
+              dataDeCriacao: true,
+              filhoDoComentario: true,
+              indiceNaConversa: true,
+              tbl_curtida_do_comentario: true,
+              idUsuario: true
+            }
+          },
         }
       });
       const allEvents = await prisma.tbl_eventos.findMany({
-        where: {
-          tbl_ong: { nome: ongName }
-        },
         include: {
           tbl_ong: {
             select: {
+              nome: true,
+              foto: true,
               tbl_login:true
             }
           },
           tbl_evento_media: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
       const allVacancies = await prisma.tbl_vagas.findMany({
@@ -311,11 +462,28 @@ class FeedController {
         include: {
           tbl_ong: {
             select: {
-              tbl_login:true
+              tbl_login:true,
+              nome: true,
+              foto: true,
             }
           },
           tbl_contato: true,
-          tbl_endereco: true
+          tbl_endereco: {
+            select: {
+              bairro: true,
+              cep: true,
+              complemento: true,
+              municipio: true,
+              numero: true,
+              rua: true,
+              tbl_estado: {
+                select: {
+                  nome: true,
+                  sigla: true
+                }
+              }
+            }
+          }
         }
       });
 
