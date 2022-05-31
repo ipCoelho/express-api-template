@@ -3,6 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+type Donation = {
+  site?: string;
+  pix?: string;
+  tipoPix?: string;
+}
+
 class DonationsController {
   async create(req: Request, res: Response) {
     try {
@@ -21,6 +27,7 @@ class DonationsController {
             idOng: "number",
             site: "string?",
             pix: "string?",
+            tipoPix: "string?",
           },
           status: 400,
         });
@@ -32,7 +39,8 @@ class DonationsController {
         },
       });
 
-      if (donationVerify) {
+
+      if (donationVerify != null) {
         return res.status(400).json({
           message: `Doação já cadastrada para ONG '${req.body.idOng}'.`,
           status: 400,
@@ -40,15 +48,16 @@ class DonationsController {
         });
       }
 
+      const bodyDoacao: Donation = req.body;
+
       const donation = await prisma.tbl_meios_de_doacao.create({
         data: {
           idOng: Number(req.body.idOng),
-          site: req.body.site,
-          pix: req.body.pix,
+          ...bodyDoacao,
         },
       });
 
-      if (donation) {
+      if (donation != null) {
         return res.status(200).json({
           message: "Doação cadastrada com sucesso.",
           status: 200,
@@ -56,6 +65,7 @@ class DonationsController {
         });
       }
     } catch (error) {
+      console.log(`Erro: `, error);
       return res.status(500).json({
         message: process.env.ERRO_500 ?? "Erro no servidor.",
         status: 500,
@@ -160,13 +170,13 @@ class DonationsController {
         });
       }
 
+      const bodyDoacao: Donation = req.body;
       const donation = await prisma.tbl_meios_de_doacao.update({
         where: {
           idOng: Number(req.params.id),
         },
         data: {
-          site: req.body.site,
-          pix: req.body.pix,
+          ...bodyDoacao,
         },
       });
 

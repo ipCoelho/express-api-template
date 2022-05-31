@@ -220,8 +220,9 @@ model tbl_login_reacao {
 
 model tbl_meios_de_doacao {
   idmeiosDeDoacao Int     @id @unique(map: "idmeiosDeDoacao_UNIQUE") @default(autoincrement())
-  site            String? @db.VarChar(150)
-  pix             String? @db.VarChar(100)
+  site            String? @db.VarChar(200)
+  pix             String? @db.VarChar(500)
+  tipoPix         String? @db.VarChar(100)
   idOng           Int     @unique(map: "idOng_UNIQUE")
   tbl_ong         tbl_ong @relation(fields: [idOng], references: [idOng], onDelete: Cascade, onUpdate: Cascade, map: "fk_tblMeiosDeDoacao_tblOng")
 }
