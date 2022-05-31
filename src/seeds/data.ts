@@ -497,28 +497,33 @@ const data = {
   patrocinadores: [
     {
       nome: "Coca-Cola",
-      foto: "https://www.coca-cola.com/contenhttps://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
-      link: "https://www.coca-cola.com/",
+      url: "https://www.coca-cola.com/",
+      titulo: "https://www.coca-cola.com/contenhttps://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
+      referencia: "https://www.coca-cola.com/contenhttps://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
     },
     {
       nome: "Petrobras",
-      foto: "https://logospng.org/download/petrobras/logo-petrobras-escudo-2048.png",
-      link: "https://www.petrobras.com.br/",
+      url: "https://www.petrobras.com.br/",
+      titulo: "https://logospng.org/download/petrobras/logo-petrobras-escudo-2048.png",
+      referencia: "https://logospng.org/download/petrobras/logo-petrobras-escudo-2048.png",
     },
     {
       nome: "Santander",
-      foto: "https://logospng.org/download/santander/logo-santander-512.png",
-      link: "https://www.santander.com.br/",
+      url: "https://www.santander.com.br/",
+      titulo: "https://logospng.org/download/santander/logo-santander-512.png",
+      referencia: "https://logospng.org/download/santander/logo-santander-512.png",
     },
     {
       nome: "Uber",
-      foto: "https://logospng.org/download/uber/logo-uber-preta-1024.png",
-      link: "https://www.uber.com.br/",
+      url: "https://www.uber.com.br/",
+      titulo: "https://logospng.org/download/uber/logo-uber-preta-1024.png",
+      referencia: "https://logospng.org/download/uber/logo-uber-preta-1024.png",
     },
     {
       nome: "iFood",
-      foto: "https://static-images.ifood.com.br/image/upload/t_high/logosgde/15def965-6971-41c7-9aa1-25f71d40f45f_CAFET_SASCO.png",
-      link: "https://www.ifood.com.br/",
+      url: "https://www.ifood.com.br/",
+      titulo: "https://static-images.ifood.com.br/image/upload/t_high/logosgde/15def965-6971-41c7-9aa1-25f71d40f45f_CAFET_SASCO.png",
+      referencia: "https://static-images.ifood.com.br/image/upload/t_high/logosgde/15def965-6971-41c7-9aa1-25f71d40f45f_CAFET_SASCO.png",
     },
   ],
   favoritos: [
