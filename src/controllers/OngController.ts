@@ -119,19 +119,10 @@ class OngController {
 
   async login(req: Request, res: Response) {
     try {
-      const { email, senha } = req.body;
+      const email: string = req.body.email;
+      const senha: string = req.body.senha;
 
       if (req.body.email == null || req.body.senha == null) {
-        console.info(`> Returned:
-          {
-            message: "Os dados enviados são nulos ou inválidos.",
-            status: 400,
-            expected: {
-              email: "string",
-              senha: "string",
-            }
-          }`);
-
         return res.status(400).json({
           message: "Os dados enviados são nulos ou inválidos.",
           status: 400,
@@ -143,66 +134,41 @@ class OngController {
       }
 
       const database = await prisma.tbl_login.findUnique({
-        where: { email: email },
+        where: { email: email }
       });
 
       if (database == null) {
-        console.info(`> Returned:
-          {
-            message: "O e-mail '${email}' não foi encontrado.",
-            status: 404,
-          }`);
-
         return res.status(404).json({
           message: `O e-mail '${email}' não foi encontrado.`,
           status: 404,
         });
       } else if (database.accountStatus == false) {
         return res.status(403).json({
-          message: `O login '${email}' está DESATIVADO.`,
+          message: `O e-mail '${email}' está DESATIVADO.`,
           status: 403,
         });
       }
 
       if (database.senha === senha) {
-        const tblOng = await prisma.tbl_ong.findMany({
+        const tblOng = await prisma.tbl_ong.findUnique({
           where: { idLogin: database.idLogin },
         });
 
-        if (tblOng.length > 0 && tblOng.length <= 1) {
-          console.info(`> Returned:
-            {
-              message: "E-mail e senha conferem.",
-              status: 200,
-              data: ${JSON.stringify(tblOng[0])},
-            }`);
-
+        if (tblOng != null) {
           return res.status(200).json({
-            message: "E-mail e senha conferem.",
+            message: `O e-mail '${email}' foi autenticado com sucesso.`,
             status: 200,
             data: tblOng,
           });
         } else {
-          console.info(`Returned:
-            {
-              message: "Nenhum ONG encontrada para o e-mail '${email}'.",)
-              status: 404,
-            }`);
-
-          return res.status(404).json({
+         return res.status(404).json({
             message: `Nenhum ONG encontrada para o e-mail '${email}'.`,
             status: 404,
           });
         }
       } else {
-        console.info(`> Returned:
-          {
-            message: "E-mail e senha não conferem.",
-            status: 401,
-          }`);
-
         return res.status(401).json({
-          message: "E-mail e senha não conferem.",
+          message: `Senha inválida para o e-mail '${email}'.`,
           status: 401,
         });
       }
@@ -316,38 +282,53 @@ class OngController {
         });
       }
   
-      const { id } = req.params, ong = req.body.ong, login = req.body.login; 
+      const idOng = Number(req.params.id);
+      const ong = req.body.ong;
+      const login = req.body.login;
   
       const ongMask = await prisma.tbl_ong.findUnique({
-        where: { idOng: Number(id) },
+        where: { idOng: Number(idOng) }
       });
   
       if (ongMask == null) {
         return res.status(404).json({
-          message: `ONG com ID '${id}' não foi encontrada.`,
+          message: `ONG com ID '${idOng}' não foi encontrada.`,
           status: 404,
         });
       }
   
-      let ongData, loginData;
+      const updated = [];
       if (ong != null) {
-        ongData = await prisma.tbl_ong.update({
-          where: { idOng: Number(id) },
-          data: { ...ong },
+        const ongUpdated = await prisma.tbl_ong.update({
+          where: { idOng: Number(idOng) },
+          data: { ...ong }
         });
+        updated.push({ ong: ongUpdated });
       }
   
       if (login != null) {
-        loginData = await prisma.tbl_login.update({
-          where: { idLogin: Number(id) },
-          data: { ...login },
+        const emailVerify = await prisma.tbl_login.findUnique({
+          where: { email: login.email }
         });
+
+        if (emailVerify != null) {
+          return res.status(400).json({
+            message: `O e-mail '${login.email}' já está em uso.`,
+            status: 400,
+          });
+        }
+
+        const loginUpdated = await prisma.tbl_login.update({
+          where: { idLogin: ongMask.idLogin },
+          data: { email: login.email, senha: login.senha }
+        });
+        updated.push({ login: loginUpdated });
       }
 
       return res.status(200).json({
-        message: `ONG com ID '${id}' atualizada com sucesso.`,
+        message: `ONG com ID '${idOng}' atualizada com sucesso.`,
         status: 200,
-        data: { ong: ongData, login: loginData },
+        data: updated,
       });
     } catch (error) {
       console.error(`> Error: ${error}`);
