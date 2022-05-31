@@ -566,6 +566,74 @@ class UserController {
       });
     }
   }
+
+  async uploadCurriculum(req: Request, res: Response) {
+    try {
+      if (!req.body.curriculum) {
+        return res.status(400).json({
+          status: 400,
+          message: "Os dados enviados são nulos ou inválidos.",
+          expected: {
+            curriculum: [
+              {
+                fileName: "string?",
+                type: "string?",
+                base64: "string?",
+              }
+            ],
+          },
+        });
+      }
+
+      const curriculum: File = req.body.curriculum[0];
+
+      const idUsuario = Number(req.params.idUser);
+
+      const userMask = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: Number(idUsuario) },
+      });
+
+      if (userMask == null) {
+        return res.status(404).json({
+          message: `Usuário com ID '${idUsuario}' não foi encontrado.`,
+          status: 404,
+        });
+      }
+
+      if (curriculum != null) {
+        const u8array = base64intoUint8Array(curriculum.base64);
+        const fileRef = `/usuários/${userMask.nome}/curriculum/${curriculum.fileName}`;
+
+        await fbhandler.uploadUint8Array(u8array, fileRef);
+        const url = await fbhandler.getMediaUrl(fileRef);
+        console.log(`> curriculumUrl: `, url);
+
+        await prisma.tbl_usuario.update({
+          where: { idUsuario: Number(idUsuario) },
+          data: {
+            curriculo: url
+          }
+        });
+      }
+
+      const userAltered = await prisma.tbl_usuario.findUnique({
+        where: { idUsuario: Number(idUsuario) }
+      });
+
+      return res.status(200).json({
+        message: `ONG com ID '${idUsuario}' atualizada com sucesso.`,
+        status: 200,
+        data: userAltered,
+      });
+
+    } catch (error) {
+      console.log(`> Error: `, error);
+      return res.status(500).json({
+        message: process.env.ERRO_500 ?? "Erro no servidor.",
+        status: 500,
+      });
+    }
+  }
 }
 
 type File = {

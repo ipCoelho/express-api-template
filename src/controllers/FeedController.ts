@@ -12,6 +12,7 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
+              banner: true,
               tbl_login:true
             }
           },
@@ -39,7 +40,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_evento_media: true,
@@ -68,6 +70,7 @@ class FeedController {
               tbl_login:true,
               nome: true,
               foto: true,
+              banner: true,
             }
           },
           tbl_contato: true,
@@ -131,7 +134,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_post_media: true,
@@ -158,7 +162,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_evento_media: true,
@@ -187,6 +192,7 @@ class FeedController {
               tbl_login:true,
               nome: true,
               foto: true,
+              banner: true,
             }
           },
           tbl_contato: true,
@@ -270,7 +276,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_post_media: true,
@@ -297,7 +304,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_evento_media: true,
@@ -329,6 +337,7 @@ class FeedController {
               tbl_login:true,
               nome: true,
               foto: true,
+              banner: true,
             }
           },
           tbl_contato: true,
@@ -426,7 +435,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_post_media: true,
@@ -453,7 +463,8 @@ class FeedController {
             select: {
               nome: true,
               foto: true,
-              tbl_login:true
+              tbl_login:true,
+              banner: true,
             }
           },
           tbl_evento_media: true,
@@ -485,6 +496,7 @@ class FeedController {
               tbl_login:true,
               nome: true,
               foto: true,
+              banner: true,
             }
           },
           tbl_contato: true,
