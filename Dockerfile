@@ -9,6 +9,5 @@ COPY . .
 RUN yarn prisma generate
 
 EXPOSE 3131
+
 CMD [ "yarn", "migrate" ]
-CMD [ "yarn", "seeds" ]
-CMD [ "yarn", "dev" ]
