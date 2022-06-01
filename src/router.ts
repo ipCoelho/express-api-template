@@ -1,3 +1,5 @@
+import { requiresAuth } from "express-openid-connect";
+
 import ongRouter from "./routes/ongRouter";
 import userRouter from "./routes/userRouter";
 import sponsorRouter from "./routes/sponsorRouter";
@@ -23,8 +25,7 @@ import { Router } from "express";
 
 const router = Router(); 
 
-router.get("/", (_, res) => res.json({ message: "API working." }));
-router.use("/", ongRouter);
+router.use("/", requiresAuth(), ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
 router.use("/", favRouter);
@@ -44,5 +45,11 @@ router.use("/", userVacancyRouter);
 router.use("/", commentRouter);
 router.use("/", followerRouter);
 router.use("/", likeRouter);
+router.get("/", (req, res) => {
+  // res.json({ message: "API working." });
+  console.log(req.oidc.user);
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+
+});
 
 export default router;
