@@ -6,11 +6,13 @@ import { auth } from "express-openid-connect";
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: 'b0fa47e535114b7488e19076b5c0384033479d633c3d731fb70ee2be83dc1eb1',
-  baseURL: 'http://localhost:3131',
-  clientID: 'VxwZHlRYfLHuFivEJm5gCV7RCFP3TNKm',
-  issuerBaseURL: 'https://dev-7g-95hw4.us.auth0.com'
+  secret: process.env.SECRET,
+  baseURL: process.env.BASE_URL,
+  clientID: process.env.CLIENT_ID,
+  issuerBaseURL: process.env.ISSUER_BASE_URL,
 };
+
+console.log(`config: `, config);
 
 export class API {
   api;

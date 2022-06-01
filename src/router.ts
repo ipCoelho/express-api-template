@@ -20,11 +20,14 @@ import userVacancyRouter from "./routes/userToVacancyRouter";
 import commentRouter from "./routes/commentRouter";
 import followerRouter from "./routes/followerRouter";
 import likeRouter from "./routes/likeRouter";
+import authRouter from "./auth/Authentication";
 
 import { Router } from "express";
 
 const router = Router(); 
 
+router.get("/heath", (_, res) => res.status(200).json({ status: 200, health: "Integrity OK" }));
+router.use("/auth", authRouter);
 router.use("/", requiresAuth(), ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
@@ -45,11 +48,5 @@ router.use("/", userVacancyRouter);
 router.use("/", commentRouter);
 router.use("/", followerRouter);
 router.use("/", likeRouter);
-router.get("/", (req, res) => {
-  // res.json({ message: "API working." });
-  console.log(req.oidc.user);
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-
-});
 
 export default router;
