@@ -59,7 +59,8 @@ class CommentController {
         },
         include: {
           tbl_usuario: true,
-          tbl_post: true
+          tbl_post: true,
+          tbl_curtida_do_comentario: true,
         }
       });
 
