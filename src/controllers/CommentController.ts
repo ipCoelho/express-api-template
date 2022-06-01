@@ -92,8 +92,17 @@ class CommentController {
         where: { idPost: idPost },
         include: {
           tbl_ong: true,
-          tbl_comentario: true,
-          tbl_post_media: true
+          tbl_comentario: {
+            select: {
+              comentario: true,
+              indiceNaConversa: true,
+              filhoDoComentario: true,
+              dataDeCriacao: true,
+              tbl_curtida_do_comentario: true,
+              tbl_usuario: true
+            }
+          },
+          tbl_post_media: true,
         }
       });
 
