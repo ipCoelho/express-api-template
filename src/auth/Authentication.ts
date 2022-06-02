@@ -1,23 +1,13 @@
-import { Request, Response, Router } from "express";
-import {jwt} from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-const router = Router();
-
-async function getCredentials(req: Request, res: Response) {
-  console.log(`auth: `, req.oidc.isAuthenticated());
-  return res.status(200).json({
-    credentials: req.oidc
+async function generateAccessToken(credentials: object, secrect: string) {
+  const accessToken = jwt.sign(credentials, secrect, {
+    expiresIn: "24h"
   });
+
+  return accessToken;
 }
 
-async function authStatus(req: Request, res: Response) {
-  console.log(`auth: `, req.oidc.isAuthenticated());  
-  return res.status(200).json({
-    authenticated: req.oidc.isAuthenticated()
-  });
-}
-
-router.get("/credentials", getCredentials);
-router.get("/status", authStatus);
-
-export default router;
+export {
+  generateAccessToken,
+};
