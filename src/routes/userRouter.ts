@@ -35,7 +35,7 @@ router.put("/user/:id", (req, res) => {
   userController.update(req, res)
 });
 
-router.put("/user/upload/:type/:id", upload.single("curriculum"), (req, res) => {
+router.put("/user/upload/:type/:idUser", upload.single("curriculum"), (req, res) => {
   console.info(`> Request PUT recieved in '/user/upload/:type/:id' at ${new Date().toLocaleString()}. \n> req.body:`, req.body, `\n> req.params:`, req.params);
   userController.uploadCurriculum(req, res)
 });
