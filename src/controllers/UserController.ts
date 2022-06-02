@@ -569,25 +569,23 @@ class UserController {
 
   async uploadCurriculum(req: Request, res: Response) {
     try {
-      if (!req.body.curriculum) {
+      if (req.body.curriculum == null) {
         return res.status(400).json({
           status: 400,
           message: "Os dados enviados são nulos ou inválidos.",
           expected: {
-            curriculum: [
-              {
-                fileName: "string?",
-                type: "string?",
-                base64: "string?",
-              }
-            ],
+            curriculum: {
+              fileName: "string?",
+              type: "string?",
+              base64: "string?",
+            },
           },
         });
       }
 
-      const curriculum: File = req.body.curriculum[0];
+      const curriculum: File = req.body.curriculum;
 
-      const idUsuario = Number(req.params.idUser);
+      const idUsuario = req.params.idUser;
 
       const userMask = await prisma.tbl_usuario.findUnique({
         where: { idUsuario: Number(idUsuario) },
@@ -604,7 +602,7 @@ class UserController {
         const u8array = base64intoUint8Array(curriculum.base64);
         const fileRef = `/usuários/${userMask.nome}/curriculum/${curriculum.fileName}`;
 
-        await fbhandler.uploadUint8Array(u8array, fileRef);
+        await fbhandler.uploadUint8Array(u8array, fileRef, curriculum.type);
         const url = await fbhandler.getMediaUrl(fileRef);
         console.log(`> curriculumUrl: `, url);
 
