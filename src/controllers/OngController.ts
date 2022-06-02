@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import FirebaseHandler from "@utils/FirebaseHandler";
 import { base64intoUint8Array } from "@utils/base64intoUint8Array";
+import { generateAccessToken } from "src/auth/Authentication";
 
 const prisma = new PrismaClient();
 const fbhandler = new FirebaseHandler();
@@ -153,12 +154,20 @@ class OngController {
         const tblOng = await prisma.tbl_ong.findUnique({
           where: { idLogin: database.idLogin },
         });
+        const credentials = {
+          email: email,
+          senha: senha,
+        };
+
+        const accessToken = await generateAccessToken(credentials, process.env.SECRET);
+        console.log("ongsToken: ", accessToken);
 
         if (tblOng != null) {
           return res.status(200).json({
             message: `O e-mail '${email}' foi autenticado com sucesso.`,
             status: 200,
             data: tblOng,
+            accessToken: accessToken,
           });
         } else {
          return res.status(404).json({
@@ -339,7 +348,7 @@ class OngController {
     }
   }
 
-  async remove(req: Request, res: Response) {
+  async remove(req: Request | any, res: Response) {
     try {
       const idOng = Number(req.params.id);
   
@@ -365,6 +374,14 @@ class OngController {
       const loginMask = await prisma.tbl_login.findUnique({
         where: { idLogin: Number(ongMask.idLogin) },
       });
+
+      const { ...access } = req.access;
+
+      if (access.email != ongMask.tbl_login.email) {
+        console.log(`access:`, access.email);
+        console.log(`login: `, ongMask.tbl_login.email);
+        return res.sendStatus(401);
+      }
 
       if (ongMask == null) {
         return res.status(404).json({

@@ -1,4 +1,5 @@
 import UserController from "@controllers/UserController";
+import { authMiddleware } from "@middlewares/AuthMiddleware";
 import { Router } from "express";
 import multer from "multer";
 
@@ -39,7 +40,7 @@ router.put("/user/upload/:type/:id", upload.single("curriculum"), (req, res) => 
   userController.uploadCurriculum(req, res)
 });
 
-router.delete("/user/:id", (req, res) => {
+router.delete("/user/:id", authMiddleware, (req, res) => {
   console.info(`> Request DELETE recieved in '/user/:id' at ${new Date().toLocaleString()}. \n> req.params:`, req.params);
   userController.removeUser(req, res)
 });

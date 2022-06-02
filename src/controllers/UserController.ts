@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { base64intoUint8Array } from "@utils/base64intoUint8Array";
 import FirebaseHandler from "@utils/FirebaseHandler";
+import { generateAccessToken } from "src/auth/Authentication";
 
 const prisma = new PrismaClient();
 const fbhandler = new FirebaseHandler();
@@ -147,6 +148,14 @@ class UserController {
         });
 
         if (tblUser.length > 0 && tblUser.length <= 1) {
+          const credentials = {
+            email: tblLogin.email,
+            senha: tblLogin.senha,
+          };
+
+          const accessToken = await generateAccessToken(credentials, process.env.SECRET);
+          console.log("usersToken: ", accessToken);
+
           console.info(`> Returned:
             {
               message: "Login realizado com sucesso.",
@@ -158,6 +167,7 @@ class UserController {
             message: "Login realizado com sucesso.",
             status: 200,
             usuario: tblUser[0],
+            accessToken: accessToken
           });
         }
       } else {
@@ -372,10 +382,10 @@ class UserController {
     }
   }
 
-  async removeUser(req: Request, res: Response) {
+  async removeUser(req: Request | any, res: Response) {
     try {
       const idUsuario = Number(req.params.id);
-
+      
       const userMask = await prisma.tbl_usuario.findUnique({
         where: { idUsuario: idUsuario },
         include: {
@@ -389,6 +399,14 @@ class UserController {
           tbl_vagas_usuario: true
         }
       });
+
+      const { ...access } = req.access;
+
+      if (access.email != userMask.tbl_login.email) {
+        console.log(`access:`, access.email);
+        console.log(`login: `, userMask.tbl_login.email);
+        return res.sendStatus(401);
+      }
 
       if (userMask == null) {
         return res.status(404).json({
