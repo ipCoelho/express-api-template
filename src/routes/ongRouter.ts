@@ -1,4 +1,5 @@
 import OngController from "@controllers/OngController";
+import { authMiddleware } from "@middlewares/AuthMiddleware";
 import { Router } from "express";
 
 const router = Router();
@@ -29,7 +30,7 @@ router.post("/ong/login", (req, res) => {
     ongController.login(req, res)
 });
 
-router.delete("/ong/:id", (req, res) => {
+router.delete("/ong/:id", authMiddleware, (req, res) => {
     console.info(`> Request DELETE recieved in '/ong/:id' at ${new Date().toLocaleString()}. \n> req.params:`, req.params);
     ongController.remove(req, res)
 });

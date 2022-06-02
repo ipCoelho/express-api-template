@@ -23,7 +23,7 @@ import { Router } from "express";
 
 const router = Router(); 
 
-router.get("/", (_, res) => res.json({ message: "API working." }));
+router.get("/heath", (_, res) => res.status(200).json({ status: 200, health: "Integrity OK" }));
 router.use("/", ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
