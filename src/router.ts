@@ -1,5 +1,3 @@
-import { requiresAuth } from "express-openid-connect";
-
 import ongRouter from "./routes/ongRouter";
 import userRouter from "./routes/userRouter";
 import sponsorRouter from "./routes/sponsorRouter";
@@ -20,15 +18,13 @@ import userVacancyRouter from "./routes/userToVacancyRouter";
 import commentRouter from "./routes/commentRouter";
 import followerRouter from "./routes/followerRouter";
 import likeRouter from "./routes/likeRouter";
-import authRouter from "./auth/Authentication";
 
 import { Router } from "express";
 
 const router = Router(); 
 
 router.get("/heath", (_, res) => res.status(200).json({ status: 200, health: "Integrity OK" }));
-router.use("/auth", authRouter);
-router.use("/", requiresAuth(), ongRouter);
+router.use("/", ongRouter);
 router.use("/", userRouter);
 router.use("/", sponsorRouter);
 router.use("/", favRouter);

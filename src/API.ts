@@ -1,18 +1,6 @@
 import cors from "cors";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import { auth } from "express-openid-connect";
-
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.SECRET,
-  baseURL: process.env.BASE_URL,
-  clientID: process.env.CLIENT_ID,
-  issuerBaseURL: process.env.ISSUER_BASE_URL,
-};
-
-console.log(`config: `, config);
 
 export class API {
   api;
@@ -37,7 +25,6 @@ export class API {
       .use(bodyParser.json({ limit: '50mb' }))
       .use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
       .use(cors())
-      .use(auth(config))
       .use("/", this.router);
   }
 }
