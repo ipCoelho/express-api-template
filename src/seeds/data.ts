@@ -28,256 +28,62 @@ const data = {
     { nome: "Sergipe", sigla: "SE" },
     { nome: "Tocantins", sigla: "TO" },
   ],
-  loginMock: [
-    {
-      email: "Ruthie_Berge@gmail.com",
-      senha: "3pdmkkzVVikKxZu",
-      idLogin: 1,
-    },
-    {
-      email: "Lucas33@gmail.com",
-      senha: "8nu9awOSaO8ynCf",
-      idLogin: 2,
-    },
-    {
-      email: "Nels.Hills@gmail.com",
-      senha: "Q6WLiNY46d1rwik",
-      idLogin: 3,
-    },
-    {
-      email: "Letha_Paucek52@yahoo.com",
-      senha: "1iDe7ZFnDYGgcyQ",
-      idLogin: 4,
-    },
-    {
-      email: "Tyrel71@hotmail.com",
-      senha: "e3CxRBCzc2KsGXI",
-      idLogin: 5,
-    },
-    {
-      email: "Frieda.Blick27@hotmail.com",
-      senha: "8W8uZmkTnvcQyIa",
-      idLogin: 6,
-    },
-    {
-      email: "Jordon.Hodkiewicz@gmail.com",
-      senha: "CU751ep_TKda5Kd",
-      idLogin: 7,
-    },
-    {
-      email: "Mabel.Ritchie@yahoo.com",
-      senha: "77DJURfsObWicRI",
-      idLogin: 8,
-    },
-    {
-      email: "Lavinia85@yahoo.com",
-      senha: "i092oFRhDoMMTIE",
-      idLogin: 9,
-    },
-    {
-      email: "Tianna1@gmail.com",
-      senha: "t3_vF2aDPbt4hl4",
-      idLogin: 10,
-    },
-  ],
-  ongMock: [
-    {
-      descricao: "vitae provident nisi",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "7e40186e-f88b-4fff-a8df-2562466d77d1",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Veum, Casper and Koepp",
-      idLogin: 1,
-    },
-    {
-      descricao: "commodi consequuntur ut",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "c42921a1-5de4-4444-95d5-e699b13cf56a",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Veum, Casper and Koepp",
-      idLogin: 2,
-    },
-    {
-      descricao: "pariatur quam vitae",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "8570d1b4-300f-4b3c-8e16-f51e34332866",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Nolan - Kozey",
-      idLogin: 3,
-    },
-    {
-      descricao: "incidunt dignissimos vel",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "5db64893-356e-497e-af30-f09dd3b8be50",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Schaden - Jakubowski",
-      idLogin: 4,
-    },
-    {
-      descricao: "et labore voluptas",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "f874907a-87b0-4d8d-9f47-1141f5a36a60",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Cummings - Cassin",
-      idLogin: 5,
-    },
-    {
-      descricao: "eligendi velit quia",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "c161236d-e6a6-4c4c-945a-6b5891fe5f97",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Bartell LLC",
-      idLogin: 6,
-    },
-    {
-      descricao: "sunt fugit autem",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "6d1c1eeb-2aee-45fe-afe6-62331914fe20",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Schaden - Bergnaum",
-      idLogin: 7,
-    },
-    {
-      descricao: "magni accusamus consectetur",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "a9946117-8079-402d-9614-e53339049e7a",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "D'Amore Group",
-      idLogin: 8,
-    },
-    {
-      descricao: "voluptas sint placeat",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "0cd47c0c-abb5-469e-8d2c-1fae4828944e",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Emard - Rohan",
-      idLogin: 9,
-    },
-    {
-      descricao: "quia est cumque",
-      foto: "https://jornalistainclusivo.com/wp-content/uploads/2020/11/20171016-teleton-1170x650.jpg",
-      banner:
-        "https://stevenagesportingfutures.co.uk/wp-content/uploads/2016/10/festival-7-300x1080-banner.jpg",
-      historia:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      cnpj: "3937e9f5-ee03-45ba-841b-7e396b50c3ae",
-      qtdDeMembros: 234871287,
-      dataDeFundacao: "2008-12-31 18:20:00",
-      dataDeCriacao: "2008-12-31 18:20:00",
-      nome: "Dare, Gerhold and Towne",
-      idLogin: 10,
-    },
-  ],
   login: [
     {
       email: "aacd@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "greenpeace@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "vivario@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "sosmataatlantica@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "israel@gmail.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "vandao@email.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "guilherme@email.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "carlos@email.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "kevin@email.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "filipi@email.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "amada@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "pas@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "sbsc@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
     {
       email: "lbv@ong.com",
-      senha: "1",
+      senha: "123456789",
     },
   ],
   usuario: [
@@ -498,8 +304,8 @@ const data = {
     {
       nome: "Coca-Cola",
       url: "https://www.coca-cola.com/",
-      titulo: "https://www.coca-cola.com/contenhttps://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
-      referencia: "https://www.coca-cola.com/contenhttps://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
+      titulo: "https://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
+      referencia: "https://logodownload.org/wp-content/uploads/2014/04/coca-cola-logo-1-1.png",
     },
     {
       nome: "Petrobras",
@@ -686,68 +492,72 @@ const data = {
   ],
 };
 
-data.categorias.map((_, catIndex) => {
-  data.categoriasDasOngs.push({
-    idOng: catIndex + 1,
-    idCategorias: catIndex + 1,
+function formatData() {
+  data.categorias.map((_, catIndex) => {
+    data.categoriasDasOngs.push({
+      idOng: catIndex + 1,
+      idCategorias: catIndex + 1,
+    });
+    data.categoriasDasOngs.push({
+      idOng: catIndex + 1,
+      idCategorias: 8,
+    });
   });
-  data.categoriasDasOngs.push({
-    idOng: catIndex + 1,
-    idCategorias: 8,
-  });
-});
-
-data.categoriasDasOngs.push(
-  {
-    idOng: 2,
-    idCategorias: 1,
-  },
-  {
-    idOng: 2,
-    idCategorias: 7,
-  },
-  {
-    idOng: 2,
-    idCategorias: 3,
-  },
-  {
-    idOng: 2,
-    idCategorias: 4,
-  },
-  {
-    idOng: 2,
-    idCategorias: 5,
-  },
-  {
-    idOng: 2,
-    idCategorias: 6,
-  },
-);
-
-for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
-  for(let i = 0; i < 4; i++) {
-    let number = Math.floor(Math.random() * 10 + i);
-    number > 26? number = 26 : "";
   
-    data.estadoDasOngs.push({
-      idOng: iTwo + 1,
-      idEstado: number,
+  data.categoriasDasOngs.push(
+    {
+      idOng: 2,
+      idCategorias: 1,
+    },
+    {
+      idOng: 2,
+      idCategorias: 7,
+    },
+    {
+      idOng: 2,
+      idCategorias: 3,
+    },
+    {
+      idOng: 2,
+      idCategorias: 4,
+    },
+    {
+      idOng: 2,
+      idCategorias: 5,
+    },
+    {
+      idOng: 2,
+      idCategorias: 6,
+    },
+  );
+  
+  for(let iTwo = 0; iTwo < data.ong.length; iTwo++) {
+    for(let i = 0; i < 4; i++) {
+      let number = Math.floor(Math.random() * 10 + i);
+      number > 26? number = 26 : "";
+    
+      data.estadoDasOngs.push({
+        idOng: iTwo + 1,
+        idEstado: number,
+      });
+    }
+  }
+  
+  const adress = data.enderecos[0];
+  for (let i = 0; i < data.ong.length; i++) {
+    data.enderecos.push({
+      idLogin: i + 1,
+      cep: adress.cep.concat(String(i+1)),
+      bairro: adress.bairro.concat(String(i+1)),
+      numero: Math.trunc(( Math.random() * 100 ) + ( Math.random() * 100 )),
+      rua: adress.rua.concat(String(i+1)),
+      municipio: adress.municipio.concat(String(i+1)),
+      idEstado: Math.trunc(( Math.random() * 26 ) + i),
+      complemento: adress.complemento.concat(String(i+1)),
     });
   }
 }
 
-const adress = data.enderecos[0];
-for (let i = 0; i < data.ong.length; i++) {
-  data.enderecos.push({
-    idLogin: i + 1,
-    cep: adress.cep.concat(String(i+1)),
-    bairro: adress.bairro.concat(String(i+1)),
-    numero: Math.trunc(( Math.random() * 100 ) + ( Math.random() * 100 )),
-    rua: adress.rua.concat(String(i+1)),
-    municipio: adress.municipio.concat(String(i+1)),
-    idEstado: Math.trunc(( Math.random() * 26 ) + i),
-    complemento: adress.complemento.concat(String(i+1)),
-  });
-}
+formatData();
 
 export { data };
