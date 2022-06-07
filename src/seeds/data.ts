@@ -418,12 +418,14 @@ const data = {
     {
       idOng: 1,
       site: "https//www.aacd.com.br/",
-      pix: "010101010101",
+      pix: "54.421.484/0001-71",
+      tipoPix: "cpnj"
     },
     {
       idOng: 2,
       site: "https//www.greenpeace.com.br/",
-      pix: "0202020202020",
+      pix: "84.703.965/0001-30",
+      tipoPix: "cnpj",
     },
     {
       idOng: 3,
