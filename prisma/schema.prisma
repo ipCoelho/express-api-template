@@ -238,7 +238,7 @@ model tbl_ong {
   banner                 String?                  @db.VarChar(500)
   historia               String?                  @db.Text
   qtdDeMembros           Int?
-  dataDeFundacao         DateTime?                
+  dataDeFundacao         DateTime?                @default(now())
   idLogin                Int                      @unique
   tbl_login              tbl_login                @relation(fields: [idLogin], references: [idLogin], onDelete: Cascade, onUpdate: Cascade, map: "fk_tbl_ong_tbl_login1")
   idFirebaseBanner       Int?
