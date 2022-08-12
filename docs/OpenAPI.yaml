@@ -1,42 +1,42 @@
 openapi: 3.0.1
 info:
-  title: API - HelpOngs
-  description: 'API para sustentar o serviço de Frontend Web e Mobile.'
+  title: 
+  description: 
   version: 1.0.0
 
 tags:
-  - name: ong
-    description: Gestão de ong.
+  - name: 
+    description: 
 
 paths:
   /ong:
     delete:
-      summary: Delete a file
-      operationId: deleteFile
+      summary: 
+      operationId: 
       parameters:
-      - name: fileName
+      - name: 
         required: true
-        in: path
+        in: 
         schema:
-          type: string
+          type: 
       responses:
         200:
-          description: file deleted successfully
+          description: 
           content: {}
         404:
-          description: File not found
+          description: 
           content: {}
     get:
-      summary: Find the file by name
-      description: returns the content of a file
-      operationId: openFilebyName
+      summary:
+      description: 
+      operationId: 
       parameters:
-      - name: fileName
-        in: path
-        description: Name of file to return
+      - name: 
+        in:
+        description: 
         required: true
         schema:
-          type: string
+          type: 
       responses:
         200:
           description: Successful operation
