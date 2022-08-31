@@ -1,6 +1,4 @@
-
-import adressRouter from "./routes/adressRouter";
-
+import adressRouter from "@routes/taskRouter";
 import { Router } from "express";
 
 const router = Router(); 

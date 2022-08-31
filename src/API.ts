@@ -19,7 +19,7 @@ export class API {
 
   start() {
     this.api.listen(this.port, () =>
-      console.log(`\n > API listening at: ${this.host}${this.port}/`)
+      console.log(`\n > API starting at: ${this.host}${this.port}/`)
     );
     this.api
       .use(bodyParser.json({ limit: '50mb' }))
